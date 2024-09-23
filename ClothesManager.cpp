@@ -6,27 +6,29 @@
 #include <fstream>
 #include <sstream>
 
+using namespace std;
+
 void ClothesManager::addClothes(Clothes* clothes) {
     list.addNode(clothes);
 }
 
 void ClothesManager::printAllClothes() const {
     Node<Clothes*>* current = list.getHead();
-    std::cout << "+----------------+----------------+--------+--------+----------+-----------+" << std::endl;
-    std::cout << "| ID             | Ten            | Size   | Mau    | Gia      | So luong  |" << std::endl;
-    std::cout << "+----------------+----------------+--------+--------+----------+-----------+" << std::endl;
+    cout << "+----------------+----------------+--------+--------+----------+-----------+" << endl;
+    cout << "| ID             | Ten            | Size   | Mau    | Gia      | So luong  |" << endl;
+    cout << "+----------------+----------------+--------+--------+----------+-----------+" << endl;
     while (current != nullptr) {
         current->data->Print();
         current = current->next;
     }
-    std::cout << "+----------------+----------------+--------+--------+----------+-----------+" << std::endl;
+    cout << "+----------------+----------------+--------+--------+----------+-----------+" << endl;
 }
 
-void ClothesManager::printByType(const std::string& type) const {
+void ClothesManager::printByType(const string& type) const {
     Node<Clothes*>* current = list.getHead();
-    std::cout << "+----------------+----------------+--------+--------+----------+-----------+" << std::endl;
-    std::cout << "| ID             | Ten            | Size   | Mau    | Gia      | So luong  |" << std::endl;
-    std::cout << "+----------------+----------------+--------+--------+----------+-----------+" << std::endl;
+    cout << "+----------------+----------------+--------+--------+----------+-----------+" << endl;
+    cout << "| ID             | Ten            | Size   | Mau    | Gia      | So luong  |" << endl;
+    cout << "+----------------+----------------+--------+--------+----------+-----------+" << endl;
     while (current != nullptr) {
         if ((type == "Dress" && dynamic_cast<Dress*>(current->data)) ||
             (type == "Vest" && dynamic_cast<Vest*>(current->data))) {
@@ -34,21 +36,27 @@ void ClothesManager::printByType(const std::string& type) const {
         }
         current = current->next;
     }
-    std::cout << "+----------------+----------------+--------+--------+----------+-----------+" << std::endl;
+    cout << "+----------------+----------------+--------+--------+----------+-----------+" << endl;
 }
 
-Clothes* ClothesManager::findByID(const std::string& id) const {
-    return list.findByID(id);
+Clothes* ClothesManager::findByID(const string& id) const {
+    Node<Clothes*>* current = list.getHead();
+    while (current != nullptr) {
+        if (current->data->getID() == id) {
+            return current->data;
+        }
+        current = current->next;
+    }
+    return nullptr;
 }
 
-void ClothesManager::readClothesFromFile(const std::string& filename) {
-    std::ifstream filein(filename);
+void ClothesManager::readClothesFromFile(const string& filename) {
+    ifstream filein(filename);
     if (!filein.is_open()) {
-        std::cerr << "Không thể mở file!" << std::endl;
+        cerr << "Không thể mở file!" << endl;
         return;
     }
-
-    std::string line;
+    string line;
     Clothes* item = nullptr;
 
     while (getline(filein, line)) {
@@ -59,7 +67,7 @@ void ClothesManager::readClothesFromFile(const std::string& filename) {
         } 
 
         if (item != nullptr) {
-            std::stringstream ss(line);
+            stringstream ss(line);
             item->ReadFile(ss);
             addClothes(item);
             Clothes::updateHighestID(item->getID()); 
@@ -69,11 +77,25 @@ void ClothesManager::readClothesFromFile(const std::string& filename) {
     filein.close();
 }
 
+void ClothesManager::writeClothesToFile(const string& filename) {
+    ofstream fileout(filename);
+    if (!fileout.is_open()) {
+        cerr << "Khong the mo file!" << endl;
+        return;
+    }
+    Node<Clothes*>* current = list.getHead();
+    while (current != nullptr) {
+        current->data->WriteFile(fileout);
+        current = current->next;
+    }
+    fileout.close();
+}
+
 void ClothesManager::addClothesManually() {
     char type;
-    std::cout << "Nhap loai quan ao (V: Vest, D: Dress): ";
-    std::cin >> type;
-    std::cin.ignore(); 
+    cout << "Nhap loai quan ao (V: Vest, D: Dress): ";
+    cin >> type;
+    cin.ignore(); 
 
     Clothes* item = nullptr;
 
@@ -82,7 +104,7 @@ void ClothesManager::addClothesManually() {
     } else if (type == 'D') {
         item = new Dress();
     } else {
-        std::cout << "Loại quần áo không hợp lệ!" << std::endl;
+        cout << "Loai quan ao khong hop le!" << endl;
         return;
     }
 
@@ -90,4 +112,8 @@ void ClothesManager::addClothesManually() {
         item->ReadInput();
         addClothes(item);
     }
+}
+
+void ClothesManager::Sort_ByID() {
+    list.Sort(); 
 }

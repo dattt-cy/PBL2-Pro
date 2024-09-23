@@ -21,6 +21,7 @@ protected:
 
 public:
     virtual void ReadFile(istream& filein);
+    virtual void WriteFile(ostream& out) const = 0;
     virtual void ReadInput() = 0;
     virtual void Print();
     virtual string getID();

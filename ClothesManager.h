@@ -19,6 +19,8 @@ public:
     Clothes* findByID(const string& id) const;
     void readClothesFromFile(const string& filename);
     void addClothesManually();
+    void Sort_ByID();
+    void writeClothesToFile(const string& filename);
 };
 
 #endif // CLOTHESMANAGER_H

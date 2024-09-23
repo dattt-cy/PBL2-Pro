@@ -27,6 +27,7 @@ public:
     bool addNode(T newItem);
     T findByID(const string& ID) const;
     Node<T>* getHead() const { return head; }
+    void Sort();
 };
 
 template <class T>
@@ -69,5 +70,30 @@ T LinkedList<T>::findByID(const string& ID) const{
     }
     return nullptr;
 }
+template <class T>
+void LinkedList<T>::Sort(){
+    Node<T>* current = head;
+    Node<T>* index = NULL;
+    T temp;
+    if (head == NULL) {
+        return;
+    } 
+    else {
+        while(current != NULL){
+            index = current->next;
+            while(index != NULL){
+                if(current->data->getID() > index->data->getID())
+                {
+                    temp = current->data;
+                    current->data = index->data;
+                    index->data = temp;
+                }
+                index = index->next;
+            }
+            current = current->next;
+        }
+    }
+
+} 
 
 #endif // LINKEDLIST_H

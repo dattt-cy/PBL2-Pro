@@ -2,25 +2,31 @@
 #include <iostream>
 #include <sstream>
 
-void Dress::ReadFile(std::istream& filein) {
+using namespace std;
+
+void Dress::ReadFile(istream& filein) {
     Clothes::ReadFile(filein);
+}
+
+void Dress::WriteFile(ostream& out) const {
+    out << clothesID << ", " << name << ", " << size << ", " << color << ", " << price << ", " << quantity << endl;
 }
 
 void Dress::ReadInput() {
     char prefix = 'D';
     highestIDMap[prefix]++; 
-    clothesID = prefix + std::to_string(highestIDMap[prefix]); 
-    std::cout << "Ma quan ao (tu dong): " << clothesID << std::endl;
-    std::cout << "Nhap ten quan ao: ";
-    std::getline(std::cin, name);
-    std::cout << "Nhap kich co (S, M, L, XL, ...): ";
-    std::getline(std::cin, size);
-    std::cout << "Nhap mau sac: ";
-    std::getline(std::cin, color);
-    std::cout << "Nhap gia: ";
-    std::cin >> price;
-    std::cout << "Nhap so luong: ";
-    std::cin >> quantity;
-    std::cin.ignore(); 
-    std::cout << "-----------------------------------------" << std::endl;
+    clothesID = prefix + to_string(highestIDMap[prefix]); 
+    cout << "Ma quan ao (tu dong): " << clothesID << endl;
+    cout << "Nhap ten quan ao: ";
+    getline(cin, name);
+    cout << "Nhap kich co (S, M, L, XL, ...): ";
+    getline(cin, size);
+    cout << "Nhap mau sac: ";
+    getline(cin, color);
+    cout << "Nhap gia: ";
+    cin >> price;
+    cout << "Nhap so luong: ";
+    cin >> quantity;
+    cin.ignore(); 
+    cout << "-----------------------------------------" << endl;
 }

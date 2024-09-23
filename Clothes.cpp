@@ -41,4 +41,3 @@ string Clothes::getID() {
 void Clothes::setID(string id) {
     clothesID = id;
 }
-
