@@ -1,9 +1,8 @@
 #include "menu.h"
-#include "LinkedList.h"
-#include "Clothes.h"
+#include "ClothesManager.h"
 
 int main() {
-    LinkedList<Clothes*> list;
-    menu(list);
+    ClothesManager manager;
+    menu(manager);
     return 0;
 }

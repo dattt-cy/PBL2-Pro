@@ -2,7 +2,6 @@
 #define LINKEDLIST_H
 
 #include <iostream>
-#include <iomanip>
 #include <string>
 
 using namespace std;
@@ -26,14 +25,10 @@ public:
     ~LinkedList();
     bool isEmpty();
     bool addNode(T newItem);
-    int findNode(string ID);
-    template <typename U> void printByType();
-    void printList();
-    void printHeader();
-    void printFooter();
+    T findByID(const string& ID) const;
+    Node<T>* getHead() const { return head; }
 };
 
-// Định nghĩa các phương thức ngay trong file header
 template <class T>
 LinkedList<T>::LinkedList() : head(NULL) {}
 
@@ -54,7 +49,7 @@ bool LinkedList<T>::isEmpty() {
 
 template <class T>
 bool LinkedList<T>::addNode(T newItem) {
-    if (this->findNode(newItem->getID()) == -1) {
+    if (this->findByID(newItem->getID()) == nullptr) {
         Node<T>* newNode = new Node<T>(newItem);
         newNode->next = head;
         head = newNode;
@@ -64,55 +59,15 @@ bool LinkedList<T>::addNode(T newItem) {
 }
 
 template <class T>
-int LinkedList<T>::findNode(string ID) {
+T LinkedList<T>::findByID(const string& ID) const{
     Node<T>* temp = head;
-    int position = 0;
     while (temp != NULL) {
         if (temp->data->getID() == ID) {
-            return position;
-        }
-        temp = temp->next;
-        ++position;
-    }
-    return -1;
-}
-
-template <class T>
-template <typename U>
-void LinkedList<T>::printByType() {
-    Node<T>* temp = head;
-    printHeader();
-    while (temp != NULL) {
-        U* item = dynamic_cast<U*>(temp->data);
-        if (item != NULL) {
-            item->Print();
+            return temp->data;
         }
         temp = temp->next;
     }
-    printFooter();
+    return nullptr;
 }
 
-template <class T>
-void LinkedList<T>::printList() {
-    Node<T>* temp = head;
-    printHeader();
-    while (temp != NULL) {
-        temp->data->Print();
-        temp = temp->next;
-    }
-    printFooter();
-}
-
-template <class T>
-void LinkedList<T>::printHeader() {
-    cout << "+----------------+----------------+--------+--------+----------+-----------+" << endl;
-    cout << "| ID             | Ten            | Size   | Mau    | Gia      | So luong  |" << endl;
-    cout << "+----------------+----------------+--------+--------+----------+-----------+" << endl;
-}
-
-template <class T>
-void LinkedList<T>::printFooter() {
-    cout << "+----------------+----------------+--------+--------+----------+-----------+" << endl;
-}
-
-#endif
+#endif // LINKEDLIST_H
