@@ -1,5 +1,14 @@
 #include "Clothes.h"
 
+map<char, int> Clothes::highestIDMap;
+
+void Clothes::updateHighestID(const string& id) {
+    char prefix = id[0];
+    int numericID = stoi(id.substr(1)); 
+    if (highestIDMap.find(prefix) == highestIDMap.end() || numericID > highestIDMap[prefix]) {
+        highestIDMap[prefix] = numericID;
+    }
+}
 void Clothes::ReadFile(istream& filein) {
     getline(filein, clothesID, ',');
     filein.ignore();
@@ -13,7 +22,9 @@ void Clothes::ReadFile(istream& filein) {
     filein.ignore();
     filein >> quantity;
     filein.ignore();
+    updateHighestID(clothesID);
 }
+void Clothes::ReadInput(){}
 
 void Clothes::Print() {
     cout << "| " << setw(14) << left << clothesID << " | "
@@ -27,11 +38,7 @@ void Clothes::Print() {
 string Clothes::getID() {
     return clothesID;
 }
-
-void Vest::ReadFile(istream& filein) {
-    Clothes::ReadFile(filein);
+void Clothes::setID(string id) {
+    clothesID = id;
 }
 
-void Dress::ReadFile(istream& filein) {
-    Clothes::ReadFile(filein);
-}

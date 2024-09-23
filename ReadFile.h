@@ -6,5 +6,5 @@
 #include <string>
 
 void readClothesFromFile(const std::string& filename, LinkedList<Clothes*>& list);
-
+void addClothesManually(LinkedList<Clothes*>& list); 
 #endif
