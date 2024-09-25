@@ -117,3 +117,32 @@ void ClothesManager::addClothesManually() {
 void ClothesManager::Sort_ByID() {
     list.Sort(); 
 }
+void ClothesManager::removeClothesByID(const string& id) {
+    if (list.removeById(id)) {
+        cout << "Element with id " << id << " was removed successfully." << endl;
+        updateAllIDsFromID(id);
+        Clothes::decrementHighestID(id[0]);
+    } else {
+        cout << "Element with id " << id << " was not found." << endl;
+    }
+}
+void ClothesManager::updateAllIDsFromID(const string& deletedID) {
+    char prefix = deletedID[0];  
+    int deletedNumber = stoi(deletedID.substr(1));  
+
+    Node<Clothes*>* current = list.getHead();
+    while (current != nullptr) {
+        string currentID = current->data->getID();
+        
+        if (currentID[0] == prefix) {
+            int currentNumber = stoi(currentID.substr(1));
+    
+            if (currentNumber > deletedNumber) {
+                string newID = prefix + to_string(currentNumber - 1);
+                current->data->setID(newID);  
+            }
+        }
+
+        current = current->next;  
+    }
+}

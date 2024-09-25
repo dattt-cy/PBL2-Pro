@@ -1,22 +1,25 @@
 #include "menu.h"
 #include <iostream>
 
+using namespace std;
+
 void menu(ClothesManager& manager) {
     manager.readClothesFromFile("CLOTHES.txt");
 
     while (true) {
-        std::cout << "\n\n\t\t===== MENU =====";
-        std::cout << "\n1. Xem toan bo san pham";
-        std::cout << "\n2. Xem san pham Dress";
-        std::cout << "\n3. Xem san pham Vest";
-        std::cout << "\n4. Them san pham moi";
-        std::cout << "\n5. Ghi vao file";
-        std::cout << "\n0. Thoat";
-        std::cout << "\n\n\t\t================";
+        cout << "\n\n\t\t===== MENU =====";
+        cout << "\n1. Xem toan bo san pham";
+        cout << "\n2. Xem san pham Dress";
+        cout << "\n3. Xem san pham Vest";
+        cout << "\n4. Them san pham moi";
+        cout << "\n5. Ghi vao file";
+        cout << "\n6. Xoa san pham theo ID"; 
+        cout << "\n0. Thoat";
+        cout << "\n\n\t\t================";
         
         int choice;
-        std::cout << "\nNhap lua chon: ";
-        std::cin >> choice;
+        cout << "\nNhap lua chon: ";
+        cin >> choice;
 
         if (choice == 1) {
             manager.printAllClothes();  
@@ -27,13 +30,17 @@ void menu(ClothesManager& manager) {
         } else if (choice == 4) {
             manager.addClothesManually();  
             manager.Sort_ByID();
-        } else if (choice == 5){
+        } else if (choice == 5) {
             manager.writeClothesToFile("CLOTHES.txt");
-
+        } else if (choice == 6) { 
+            string id;
+            cout << "Nhap ID san pham can xoa: ";
+            cin >> id;
+            manager.removeClothesByID(id);
         } else if (choice == 0) {
             break;  
         } else {
-            std::cout << "Lua chon khong hop le!" << std::endl;
+            cout << "Lua chon khong hop le!" << endl;
         }
     }
 }

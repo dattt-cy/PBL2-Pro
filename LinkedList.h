@@ -28,6 +28,7 @@ public:
     T findByID(const string& ID) const;
     Node<T>* getHead() const { return head; }
     void Sort();
+    bool removeById(const string& id);
 };
 
 template <class T>
@@ -95,5 +96,31 @@ void LinkedList<T>::Sort(){
     }
 
 } 
+template <class T>
+bool LinkedList<T>::removeById(const string& id) {
+    if (head == NULL) {
+        return false;
+    }
 
+    if (head->data->getID() == id) {
+        Node<T>* temp = head;
+        head = head->next;
+        delete temp;
+        return true;
+    }
+
+    Node<T>* current = head;
+    while (current->next != NULL && current->next->data->getID() != id) {
+        current = current->next;
+    }
+
+    if (current->next == NULL) {
+        return false;
+    }
+
+    Node<T>* temp = current->next;
+    current->next = current->next->next;
+    delete temp;
+    return true;
+}
 #endif // LINKEDLIST_H

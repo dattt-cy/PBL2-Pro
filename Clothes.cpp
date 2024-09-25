@@ -41,3 +41,8 @@ string Clothes::getID() {
 void Clothes::setID(string id) {
     clothesID = id;
 }
+void Clothes::decrementHighestID(char prefix) {
+    if (highestIDMap.find(prefix) != highestIDMap.end() && highestIDMap[prefix] > 0) {
+        highestIDMap[prefix]--;
+    }
+}

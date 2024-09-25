@@ -21,6 +21,8 @@ public:
     void addClothesManually();
     void Sort_ByID();
     void writeClothesToFile(const string& filename);
+    void removeClothesByID(const std::string& id);
+    void updateAllIDsFromID(const std::string& deletedID);
 };
 
 #endif // CLOTHESMANAGER_H

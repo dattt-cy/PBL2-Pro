@@ -27,6 +27,7 @@ public:
     virtual string getID();
     virtual void setID(string id);
     static void updateHighestID(const std::string& id);
+    static void decrementHighestID(char prefix);
 };
 
 #endif
