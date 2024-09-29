@@ -8,8 +8,11 @@ void Dress::ReadFile(istream& filein) {
     Clothes::ReadFile(filein);
 }
 
-void Dress::WriteFile(ostream& out) const {
-    out << clothesID << ", " << name << ", " << size << ", " << color << ", " << price << ", " << quantity << endl;
+void Dress::WriteFile(ostream& fileout) const {
+    fileout << clothesID << "," << name << "," << price << endl;;
+    for (const auto& variant : variants) {
+        fileout << "," << variant.getSize() << "," << variant.getColor() << "," << variant.getQuantity();
+    }
 }
 
 void Dress::ReadInput() {
@@ -19,14 +22,27 @@ void Dress::ReadInput() {
     cout << "Ma quan ao (tu dong): " << clothesID << endl;
     cout << "Nhap ten quan ao: ";
     getline(cin, name);
-    cout << "Nhap kich co (S, M, L, XL, ...): ";
-    getline(cin, size);
-    cout << "Nhap mau sac: ";
-    getline(cin, color);
+    char addMore;
+    do {
+        string size, color;
+        int quantity;
+        cout << "Nhap kich co (S, M, L, XL, ...): ";
+        getline(cin, size);
+        cout << "Nhap mau sac: ";
+        getline(cin, color);
+        cout << "Nhap so luong: ";
+        cin >> quantity;
+        cin.ignore(); 
+        variants.emplace_back(size, color, quantity);
+
+        cout << "Ban co muon them bien the khac cho san pham nay khong? (y/n): ";
+        cin >> addMore;
+        cin.ignore(); 
+    } while (addMore == 'y' || addMore == 'Y');
+
     cout << "Nhap gia: ";
     cin >> price;
-    cout << "Nhap so luong: ";
-    cin >> quantity;
     cin.ignore(); 
+
     cout << "-----------------------------------------" << endl;
 }

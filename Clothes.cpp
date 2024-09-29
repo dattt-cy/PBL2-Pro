@@ -10,29 +10,34 @@ void Clothes::updateHighestID(const string& id) {
     }
 }
 void Clothes::ReadFile(istream& filein) {
-    getline(filein, clothesID, ',');
-    filein.ignore();
-    getline(filein, name, ',');
-    filein.ignore();
-    getline(filein, size, ',');
-    filein.ignore();
-    getline(filein, color, ',');
-    filein.ignore();
-    filein >> price;
-    filein.ignore();
-    filein >> quantity;
-    filein.ignore();
-    updateHighestID(clothesID);
+    getline(filein, clothesID, ','); 
+    filein.ignore(); 
+
+    getline(filein, name, ','); 
+    filein.ignore(); 
+
+    filein >> price; 
+    filein.ignore(); 
+
+    string size, color;
+    int quantity;
+    while (filein.peek() != '\n' && filein.peek() != EOF) {
+        getline(filein, size, ',');
+        filein.ignore(); 
+        getline(filein, color, ',');
+        filein.ignore(); 
+        filein >> quantity;
+        filein.ignore(); 
+        variants.emplace_back(size, color, quantity);
+    }
 }
 void Clothes::ReadInput(){}
 
 void Clothes::Print() {
-    cout << "| " << setw(14) << left << clothesID << " | "
-         << setw(14) << left << name << " | "
-         << setw(6) << left << size << " | "
-         << setw(6) << left << color << " | "
-         << setw(8) << right << fixed << setprecision(0) << price << " | "
-         << setw(9) << right << quantity << " |" << endl;
+    cout << "ID: " << clothesID << ", Name: " << name << ", Price: " << price << endl;
+    for (const auto& variant : variants) {
+        cout << "  Size: " << variant.getSize() << ", Color: " << variant.getColor() << ", Quantity: " << variant.getQuantity() << endl;
+    }
 }
 
 string Clothes::getID() {
@@ -45,4 +50,10 @@ void Clothes::decrementHighestID(char prefix) {
     if (highestIDMap.find(prefix) != highestIDMap.end() && highestIDMap[prefix] > 0) {
         highestIDMap[prefix]--;
     }
+}
+void Clothes::setVariant(const Variant& variant) {
+    variants.push_back(variant);
+}
+const vector<Variant>& Clothes::getVariants() const {
+    return variants;
 }

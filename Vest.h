@@ -6,9 +6,9 @@
 
 class Vest : public Clothes {
 public:
-    void ReadFile(istream& filein) override;
+    void ReadFile(std::istream& filein) override;
+    void WriteFile(std::ostream& fileout) const override;
     void ReadInput() override;
-    void WriteFile(ostream& out) const override;
 };
 
 #endif 
