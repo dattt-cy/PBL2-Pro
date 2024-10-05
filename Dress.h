@@ -2,11 +2,12 @@
 #define DRESS_H
 
 #include "Clothes.h"
-
+using namespace std;
 class Dress : public Clothes {
 public:
-    void ReadFile(std::istream& filein) override;
-    void WriteFile(std::ostream& fileout) const override;
+    Dress(const string &id, const string &name, double price, const string &size, const string &color, int quantity);
+    void ReadFile(istream &filein) override;
+    void WriteFile(ostream& fileout) const override;
     void ReadInput() override;
 };
 

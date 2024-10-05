@@ -2,17 +2,18 @@
 #define VARIANT_H
 
 #include <string>
+
 using namespace std;
+
 class Variant {
 private:
-    std::string size;
-    std::string color;
+    string color;
+    string size;
     int quantity;
-
 public:
-    Variant(const string& size, const string& color, int quantity);
-    string getSize() const;
+    Variant(const string& color, const string& size, int quantity);
     string getColor() const;
+    string getSize() const;
     int getQuantity() const;
     void setQuantity(int quantity);
 };

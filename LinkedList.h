@@ -29,6 +29,7 @@ public:
     Node<T>* getHead() const { return head; }
     void Sort();
     bool removeById(const string& id);
+    void push_back(T newItem);
 };
 
 template <class T>
@@ -48,7 +49,19 @@ template <class T>
 bool LinkedList<T>::isEmpty() {
     return head == NULL;
 }
-
+template <typename T>
+void LinkedList<T>::push_back(T newItem) {
+    Node<T>* newNode = new Node<T>(newItem);
+    if (head == nullptr) {
+        head = newNode;
+    } else {
+        Node<T>* temp = head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
 template <class T>
 bool LinkedList<T>::addNode(T newItem) {
     if (this->findByID(newItem->getID()) == nullptr) {

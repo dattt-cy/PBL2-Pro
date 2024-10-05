@@ -61,9 +61,9 @@ void ClothesManager::readClothesFromFile(const string& filename) {
 
     while (getline(filein, line)) {
         if (line[0] == 'V') {
-            item = new Vest();
+            item = new Vest("", "", 0.0, "", "", 0);
         } else if (line[0] == 'D') {
-            item = new Dress();
+            item = new Dress("", "", 0.0, "", "", 0);
         } 
 
         if (item != nullptr) {
@@ -76,6 +76,7 @@ void ClothesManager::readClothesFromFile(const string& filename) {
 
     filein.close();
 }
+
 
 void ClothesManager::writeClothesToFile(const string& filename) {
     ofstream fileout(filename);
@@ -100,9 +101,9 @@ void ClothesManager::addClothesManually() {
     Clothes* item = nullptr;
 
     if (type == 'V') {
-        item = new Vest();
+        item = new Vest("", "", 0.0, "", "", 0);
     } else if (type == 'D') {
-        item = new Dress();
+        item = new Dress("", "", 0.0, "", "", 0);
     } else {
         cout << "Loai quan ao khong hop le!" << endl;
         return;

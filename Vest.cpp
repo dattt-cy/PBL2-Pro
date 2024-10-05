@@ -1,30 +1,30 @@
-// Vest.cpp
 #include "Vest.h"
 #include <iostream>
 #include <sstream>
 
-using namespace std;
+Vest::Vest(const string& id, const string& name, double price, const string& size, const string& color, int quantity)
+    : Clothes(id, name) {
+    this->price = price;
+    variants.push_back(new Variant(size, color, quantity));
+}
 
 void Vest::ReadFile(istream& filein) {
     Clothes::ReadFile(filein);
 }
 
 void Vest::WriteFile(ostream& fileout) const {
-    fileout << clothesID << "," << name;
-    for (const auto& variant : variants) {
-        fileout << "," << variant.getSize() << "," << variant.getColor() << "," << variant.getQuantity();
-    }
-    fileout << "," << price << endl;
+    Clothes::WriteFile(fileout);
 }
 
 void Vest::ReadInput() {
-    char prefix = 'D';
+    char prefix = 'V';
     highestIDMap[prefix]++; 
     clothesID = prefix + to_string(highestIDMap[prefix]); 
     cout << "Ma quan ao (tu dong): " << clothesID << endl;
     cout << "Nhap ten quan ao: ";
     getline(cin, name);
-
+    cout << "Nhap gia: ";
+    cin >> price;
     char addMore;
     do {
         string size, color;
@@ -36,16 +36,10 @@ void Vest::ReadInput() {
         cout << "Nhap so luong: ";
         cin >> quantity;
         cin.ignore(); 
-        variants.emplace_back(size, color, quantity);
+        variants.push_back(new Variant(size, color, quantity));
 
         cout << "Ban co muon them bien the khac cho san pham nay khong? (y/n): ";
         cin >> addMore;
-        cin.ignore(); 
+        cin.ignore();
     } while (addMore == 'y' || addMore == 'Y');
-
-    cout << "Nhap gia: ";
-    cin >> price;
-    cin.ignore(); 
-
-    cout << "-----------------------------------------" << endl;
 }

@@ -1,1 +1,2 @@
-D100, VesrDa, 10000.0, XL, Black, 5, S, White, 6
+D100,VesrDa,10000,XL,Black,5,S,White,6
+D101,Dat,1000,XXL,po,10
