@@ -1,15 +1,14 @@
 #include "Clothes.h"
 #include <iostream>
 #include <sstream>
-
-
+#include <iomanip>
 using namespace std;
 
 int Clothes::highestID = 0;
 map<char, int> Clothes::highestIDMap;
 
-Clothes::Clothes(const string& id, const string& name)
-    : clothesID(id), name(name), price(0.0) {}
+Clothes::Clothes(const string& id, const string& name, const string& branch)
+    : clothesID(id), name(name), branch(branch), price(0.0) {}
 
 string Clothes::getID() const {
     return clothesID;
@@ -17,6 +16,13 @@ string Clothes::getID() const {
 
 string Clothes::getName() const {
     return name;
+}
+
+string Clothes::getBranch() const {
+    return branch;
+}
+double Clothes::getPrice() const {
+    return price;
 }
 
 void Clothes::setID(const string& newID) {
@@ -30,6 +36,7 @@ void Clothes::updateHighestID(const string& id) {
         highestIDMap[prefix] = numericID;
     }
 }
+
 void Clothes::decrementHighestID(char prefix) {
     if (highestIDMap.find(prefix) != highestIDMap.end() && highestIDMap[prefix] > 0) {
         highestIDMap[prefix]--;
@@ -45,18 +52,22 @@ void Clothes::addVariant(Variant* variant) {
 }
 
 void Clothes::Print() const {
-    cout << "ID: " << clothesID << ", Ten: " << name << ", Gia: " << price << endl;
+    cout << left << setw(10) << clothesID
+         << setw(15) << name
+         << setw(15) << branch
+         << setw(10) << price;
+
+    stringstream ss;
     Node<Variant*>* current = variants.getHead();
     while (current != nullptr) {
-        if(current->data->getSize() != "" && current->data->getColor() != "" && current->data->getQuantity() != 0)
-        {
-        cout << "  Size: " << current->data->getSize()
-             << ", Mau: " << current->data->getColor()
-             << ", So luong: " << current->data->getQuantity() << endl;
-        }
+        ss << "{Size: " << current->data->getSize()
+           << ", Mau: " << current->data->getColor()
+           << ", SL: " << current->data->getQuantity() << "} ";
         current = current->next;
     }
+    cout << setw(50) << ss.str() << endl;
 }
+
 void Clothes::ReadFile(istream& filein) {
     string line;
     if (getline(filein, line)) {
@@ -65,6 +76,7 @@ void Clothes::ReadFile(istream& filein) {
         getline(ss, name, ',');
         ss >> price;
         ss.ignore();
+        getline(ss, branch, ','); // Đọc branch
 
         string size, color;
         int quantity;
@@ -78,11 +90,11 @@ void Clothes::ReadFile(istream& filein) {
         }
     }
 }
+
 void Clothes::WriteFile(ostream& fileout) const {
-    fileout << clothesID << "," << name << "," << price;
+    fileout << clothesID << "," << name << "," << price << "," << branch;
     Node<Variant*>* current = variants.getHead();
     while (current != nullptr) {
-        // Kiểm tra các giá trị của Variant trước khi ghi vào tệp
         if (!current->data->getSize().empty() && 
             !current->data->getColor().empty() && 
             current->data->getQuantity() != 0) {
@@ -93,10 +105,26 @@ void Clothes::WriteFile(ostream& fileout) const {
     fileout << endl;
 }
 
-Clothes::~Clothes() {
+void Clothes::Edit(const string& newName, double newPrice, const string& newBranch, const LinkedList<Variant*>& newVariants) {
+    name = newName;
+    price = newPrice;
+    branch = newBranch; // Cập nhật branch
+    Node<Variant*>* current = newVariants.getHead();
+    while (current != nullptr) {
+        variants.push_back(new Variant(current->data->getSize(), current->data->getColor(), current->data->getQuantity()));
+        current = current->next;
+    }
+}
+
+void Clothes::clearVariants() {
     Node<Variant*>* current = variants.getHead();
     while (current != nullptr) {
         delete current->data;
         current = current->next;
     }
+    variants.clear();
+}
+
+Clothes::~Clothes() {
+    clearVariants();
 }

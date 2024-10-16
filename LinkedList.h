@@ -30,6 +30,7 @@ public:
     void Sort();
     bool removeById(const string& id);
     void push_back(T newItem);
+     void clear();
 };
 
 template <class T>
@@ -135,5 +136,15 @@ bool LinkedList<T>::removeById(const string& id) {
     current->next = current->next->next;
     delete temp;
     return true;
+}
+template <typename T>
+void LinkedList<T>::clear() {
+    Node<T>* current = head;
+    while (current != nullptr) {
+        Node<T>* next = current->next;
+        delete current;
+        current = next;
+    }
+    head = nullptr;
 }
 #endif // LINKEDLIST_H

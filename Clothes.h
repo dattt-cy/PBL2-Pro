@@ -14,6 +14,7 @@ protected:
     string name;
     LinkedList<Variant*> variants; 
     double price;
+    string branch;
     static int highestID;
     static map<char, int> highestIDMap; 
 public:
@@ -21,14 +22,18 @@ public:
     virtual void WriteFile(ostream& out) const;
     virtual void ReadInput() = 0;
     virtual void Print() const;
-    Clothes(const string &id, const string &name);
+    Clothes(const string &id, const string &name, const string &branch);
     virtual string getID() const;
     string getName() const;
+    string getBranch() const;
+    double getPrice() const;
     virtual void setID(const string &id);
     static void updateHighestID(const string& id);
     static void decrementHighestID(char prefix);
     const LinkedList<Variant*>& getVariants() const;
     void addVariant(Variant* variant);
+    void Edit(const string& newName, double newPrice, const string& newBranch, const LinkedList<Variant*>& newVariants);
+    void clearVariants();
     virtual ~Clothes(); 
 };
 
