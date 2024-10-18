@@ -35,6 +35,11 @@ public:
     void Edit(const string& newName, double newPrice, const string& newBranch, const LinkedList<Variant*>& newVariants);
     void clearVariants();
     virtual ~Clothes(); 
+    bool hasColor(const string& color) const;
+    bool hasSize(const string& color,const string &size) const;
+    bool checkQuantity(const string& color, const string& size, int quantity) const; 
+    void UpdateSL(const string& color, const string& size, int quantity);
+    void increaseSL(const string& color, const string& size, int quantity);
 };
 
 #endif // CLOTHES_H

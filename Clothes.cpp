@@ -128,3 +128,56 @@ void Clothes::clearVariants() {
 Clothes::~Clothes() {
     clearVariants();
 }
+bool Clothes::hasColor(const string& color) const {
+    Node<Variant*>* current = variants.getHead();
+    while(current != nullptr)
+    {
+        if(current->data->getColor() == color){
+            return true;
+        }
+        current = current->next;
+    }
+    return false;
+}
+bool Clothes::hasSize(const string& color, const string& size) const {
+    Node<Variant*>* current = variants.getHead();
+    while(current != nullptr)
+    {
+        if(current->data->getColor() == color && current->data->getSize() == size){
+            return true;
+        }
+        current = current->next;
+    }
+    return false;
+}
+bool Clothes::checkQuantity(const string& color, const string& size, int quantity) const {
+    Node<Variant*>* current = variants.getHead();
+    while (current != nullptr) {
+        if (current->data->getColor() == color && current->data->getSize() == size) {
+            return quantity <= current->data->getQuantity();
+        }
+        current = current->next;
+    }
+    return false;
+}
+void Clothes::UpdateSL(const string& color, const string& size, int quantity) {
+    Node<Variant*>* current = variants.getHead();
+    while(current != nullptr)
+    {
+        if(current->data->getColor() == color && current->data->getSize() == size){
+            current->data->setQuantity(current->data->getQuantity() - quantity);
+            return;
+        }
+        current = current->next;
+    }
+}
+void Clothes::increaseSL(const string& color, const string& size, int quantity) {
+    Node<Variant*>* current = variants.getHead();
+    while (current != nullptr) {
+        if (current->data->getColor() == color && current->data->getSize() == size) {
+            current->data->setQuantity(current->data->getQuantity() + quantity);
+            return;
+        }
+        current = current->next;
+    }
+}

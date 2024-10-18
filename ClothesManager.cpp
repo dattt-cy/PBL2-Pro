@@ -355,7 +355,6 @@ void ClothesManager::PrintClothesByID(const string& id) const {
 void ClothesManager::SearchBySubstring(const string& sub, const string& brand, const string& color, const string& size, const string& type) const {
     system("cls"); 
     Node<Clothes*>* current = list.getHead();
-    
     bool found = false;
 
     cout << "+----------+---------------------------+-------------------+---------------+-----------------------------------------------------------------------+" << endl;
@@ -385,9 +384,7 @@ void ClothesManager::SearchBySubstring(const string& sub, const string& brand, c
             check = false;
         }
 
-        // Kiểm tra tất cả các điều kiện
         if (isTypeValid && current->data->getName().find(sub) != string::npos && check) {
-            // In thông tin sản phẩm
             cout << "| " << left << setw(8) << current->data->getID() << " | "
                  << setw(25) << current->data->getName() << " | "
                  << setw(17) << current->data->getBranch() << " | "
@@ -400,7 +397,7 @@ void ClothesManager::SearchBySubstring(const string& sub, const string& brand, c
             while (variant != nullptr) {
                 if (!variant->data->getSize().empty() &&
                     !variant->data->getColor().empty() &&
-                    variant->data->getQuantity() > 0) {
+                    variant->data->getQuantity() >= 0) {
 
                     ss << "{" << variant->data->getSize()
                        << ", " << variant->data->getColor()
@@ -421,7 +418,7 @@ void ClothesManager::SearchBySubstring(const string& sub, const string& brand, c
     }
 
     if (!found) {
-        cout << "|                                                      KHONG TIM THAY SAN PHAM NAO!                                                            |" << endl;
+        cout << "|                                                      KHONG TIM THAY SAN PHAM NAO!                                                               |" << endl;
     }
 
     cout << "+----------+---------------------------+-------------------+---------------+-----------------------------------------------------------------------+" << endl;
@@ -448,5 +445,15 @@ bool ClothesManager::checkSize(Clothes* cloth, const string& size) const {
         variant = variant->next;
     }
     return false; // Không tìm thấy kích thước
+}
+double ClothesManager::getPriceByID(const string& itemID) const {
+    Node<Clothes*>* current = list.getHead();
+    while (current) {
+        if (current->data->getID() == itemID) {
+            return current->data->getPrice();
+        }
+        current = current->next;
+    }
+    return -1; 
 }
 

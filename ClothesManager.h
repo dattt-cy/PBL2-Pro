@@ -7,7 +7,8 @@
 #include <iostream>
 
 using namespace std;
-
+class OrderManager;
+class Order;
 class ClothesManager {
 private:
     LinkedList<Clothes*> list;
@@ -28,6 +29,8 @@ public:
     void SearchBySubstring(const string& sub = "", const string& brand = "", const string& color = "", const string& size = "", const string& type = "All") const;
     bool checkColor(Clothes* cloth, const string& color) const;
     bool checkSize(Clothes* cloth, const string& size) const;
+    double getPriceByID(const string& itemID) const;
+     friend class OrderManager;
 };
 
 #endif // CLOTHESMANAGER_H
