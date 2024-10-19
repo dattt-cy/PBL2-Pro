@@ -7,13 +7,11 @@ using namespace std;
 
 void OrderManager::createOrder(ClothesManager& clothesManager) {
     int orderID;
-    std::string customerName;
-    std::string customerPhone;
+    string customerName;
+    string customerPhone;
 
-    cout << "Nhap ma don hang: ";
-    cin >> orderID;
+    orderID = generateRandomOrderNumber();
     cin.ignore();
-
     cout << "Nhap ten khach hang: ";
     getline(cin, customerName);
 
@@ -154,6 +152,7 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
                             cout << "Nhap ma san pham can xoa: ";
                             cin >> itemID;
                             cin.ignore();
+                            itemID = nameStr(itemID);
                             int check = order->removeItem(itemID, clothesManager);
                             if (check == 1) {
                                 cout << "<!> XOA SAN PHAM THANH CONG." << endl;
@@ -190,5 +189,9 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
 
 void OrderManager::checkoutOrder(Order* order) {
     order->printInvoice();
+}
+int OrderManager::generateRandomOrderNumber() {
+    srand(time(NULL));  
+    return rand() % 900 + 100;  
 }
 

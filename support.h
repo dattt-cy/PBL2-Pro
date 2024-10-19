@@ -13,5 +13,6 @@ string doubleToString(double n);
 string formatMoney(double n);
 void get(int vt, int c[], ostringstream& oss);
 void read_number(double d, ostringstream& oss);
-
+int stringToInt(std::string str);
+string toUpper(const string& input);
 #endif

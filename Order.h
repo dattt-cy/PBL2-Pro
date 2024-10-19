@@ -4,7 +4,7 @@
 #include <string>
 #include "LinkedList.h"
 #include "ClothesManager.h"
-
+#include "support.h"
 using namespace std;
 
 struct OrderItem {
@@ -39,6 +39,8 @@ public:
     void printInvoice() const;
     LinkedList<OrderItem*> getItems() const;
     bool addClothesItem(ClothesManager& clothesManager);
+    string InvoiceID() const;
+    
 };
 
 #endif // ORDER_H
