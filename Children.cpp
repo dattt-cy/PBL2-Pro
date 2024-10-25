@@ -1,6 +1,11 @@
 #include "Children.h"
+#include "Variant.h"
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <map>
+#include <set>
+#include <limits>
 
 using namespace std;
 
@@ -18,7 +23,7 @@ void Children::ReadFile(istream &filein) {
         getline(ss, name, ',');
         ss >> price;
         ss.ignore();
-        getline(ss, branch, ','); // Đọc branch
+        getline(ss, branch, ','); 
 
         string size, color;
         int quantity;
@@ -49,41 +54,123 @@ void Children::WriteFile(ostream& fileout) const {
 
 void Children::ReadInput() {
     char prefix = 'C';
-    highestIDMap[prefix]++; 
-    clothesID = prefix + to_string(highestIDMap[prefix]); 
-    cout << "Ma quan ao (tu dong): " << clothesID << endl;
-    cout << "Nhap ten quan ao: ";
-    getline(cin, name);
-    cout << "Nhap gia: ";
-    cin >> price;
-    cin.ignore();
-    cout << "Nhap ten thuong hieu: ";
-    getline(cin, branch);
+    highestIDMap[prefix]++;
+    clothesID = prefix + to_string(highestIDMap[prefix]);
+    cout << "<!> Ma quan ao (tu dong): " << clothesID << endl;
+
+    while (true) {
+        cout << "<!> Nhap ten quan ao ( nhap 0 de huy ): ";
+        getline(cin, name);
+        name = nameStr(name);
+        if(name == "0") return;
+        if (!name.empty()) break;
+        cout << "<!> Ten quan ao khong duoc de trong. Vui long nhap lai." << endl;
+    }
+
+    while (true) {
+        string priceStr;
+        cout << "<!> Nhap gia: ";
+        getline(cin, priceStr);
+          if(isCharacter(priceStr)){
+            cout << "<!> Gia phai la so. Vui long nhap lai." << endl;
+            continue;
+        }
+        price = stoi(priceStr);
+        if (price <= 0) {
+            cout << "<!> Gia phai la so duong. Vui long nhap lai." << endl;
+            continue;
+        } else {
+            break;
+        }
+    }
+
+    while (true) {
+        cout << "<!> Nhap ten thuong hieu: ";
+        getline(cin, branch);
+        branch = nameStr(branch);
+        if (!branch.empty()) break;
+        cout << "<!> Ten thuong hieu khong duoc de trong. Vui long nhap lai." << endl;
+    }
 
     string size, color;
+    string quantity2;
     int quantity;
-    cout << "Nhap size: ";
-    getline(cin, size);
-    cout << "Nhap mau: ";
-    getline(cin, color);
-    cout << "Nhap so luong: ";
-    cin >> quantity;
-    cin.ignore();
+
+    set<string> validSizes = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"};
+
+    while (true) {
+        cout << "<!> Nhap size (XS, S, M, L, XL, XXL, XXXL): ";
+        getline(cin, size);
+        size = toUpper(size);
+        if (validSizes.find(size) != validSizes.end()) break;
+        cout << "<!> Size khong hop le. Vui long nhap lai." << endl;
+    }
+
+    set<string> validColors = {"Red", "Blue", "Green", "Yellow", "Black", "White", "Purple", "Brown", "Pink", "Beige", "Gray", "Orange"};
+
+    while (true) {
+        cout << "<!> Nhap mau (Red, Blue, Green, Yellow, Black, White, Purple, Brown, Pink, Beige, Gray, Orange): ";
+        getline(cin, color);
+        color = nameStr(color);
+        if (validColors.find(color) != validColors.end()) break;
+        cout << "<!> Mau khong hop le. Vui long nhap lai." << endl;
+    }
+
+    while (true) {
+        cout << "<!> Nhap so luong: ";
+        getline(cin, quantity2);
+        if(isCharacter(quantity2)){
+            cout << "<!> So luong phai la so. Vui long nhap lai." << endl;
+            continue;
+        }
+        quantity = stoi(quantity2);
+        if (quantity <= 0) {
+            cout << "<!> So luong phai la so duong. Vui long nhap lai." << endl;
+            continue;
+        } else {
+            break;
+        }
+    }
     addVariant(new Variant(size, color, quantity));
 
     char addMore;
     do {
-        cout << "Ban co muon them bien the khac cho san pham nay khong? (y/n): ";
+        cout << "<!> Ban co muon them bien the khac cho san pham nay khong? (y/n): ";
         cin >> addMore;
         cin.ignore();
         if (addMore == 'y' || addMore == 'Y') {
-            cout << "Nhap size: ";
-            getline(cin, size);
-            cout << "Nhap mau: ";
-            getline(cin, color);
-            cout << "Nhap so luong: ";
-            cin >> quantity;
+            while (true) {
+                cout << "<!> Nhap size (XS, S, M, L, XL, XXL, XXXL): ";
+                getline(cin, size);
+                size = toUpper(size);
+                if (validSizes.find(size) != validSizes.end()) break;
+                cout << "<!> Size khong hop le. Vui long nhap lai." << endl;
+            }
+
+            while (true) {
+                cout << "<!> Nhap mau (Red, Blue, Green, Yellow, Black, White, Purple, Brown, Pink, Beige, Gray, Orange): ";
+                getline(cin, color);
+                color = nameStr(color);
+                if (validColors.find(color) != validColors.end()) break;
+                cout << "<!> Mau khong hop le. Vui long nhap lai." << endl;
+            }
+
+            while (true) {
+             cout << "<!> Nhap so luong: ";
+            getline(cin, quantity2);
+            if(isCharacter(quantity2)){
+            cout << "<!> So luong phai la so. Vui long nhap lai." << endl;
+            continue;
+            }
+            quantity = stoi(quantity2);
+            if (quantity <= 0) {
+            cout << "<!> So luong phai la so duong. Vui long nhap lai." << endl;
+            continue;
+            } else {
             cin.ignore();
+            break;
+        }
+    }
             addVariant(new Variant(size, color, quantity));
         }
     } while (addMore == 'y' || addMore == 'Y');

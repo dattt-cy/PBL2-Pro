@@ -5,7 +5,7 @@
 #include "Variant.h"
 #include <string>
 #include <vector>
-
+#include "support.h"
 using namespace std;
 
 class Children : public Clothes {

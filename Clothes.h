@@ -40,6 +40,7 @@ public:
     bool checkQuantity(const string& color, const string& size, int quantity) const; 
     void UpdateSL(const string& color, const string& size, int quantity);
     void increaseSL(const string& color, const string& size, int quantity);
+     int getTotalQuantity() const;
 };
 
 #endif // CLOTHES_H

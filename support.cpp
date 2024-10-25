@@ -175,3 +175,11 @@ string toUpper(const string& input) {
     }
     return result;
 }
+int isCharacter(const string& input) {
+    for (char c : input) {
+        if (!isalpha(c)) {
+            return 0;
+        }
+    }
+    return 1;
+}

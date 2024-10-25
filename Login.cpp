@@ -141,8 +141,7 @@ int login() {
 
     string username = getInput_admin(24, 5);
     string password = getInput(24, 8);
-
-    gotoXY(15, 13);
+    drawInterface();
     if ((username == admin && password == password_admin)) {
         setTextColor(10);
         cout << "\nDang nhap thanh cong voi quyen Admin!\n";

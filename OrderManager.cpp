@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-
+#include <stdexcept>
 using namespace std;
 
 void OrderManager::createOrder(ClothesManager& clothesManager) {
@@ -27,13 +27,13 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
     cout << "==================== CLOTHES MENU ====================" << endl;
     switch (productType) {
         case 1:
-            clothesManager.printByType("Male");
+            clothesManager.printByType("1");
             break;
         case 2:
-            clothesManager.printByType("Female");
+            clothesManager.printByType("2");
             break;
         case 3:
-            clothesManager.printByType("Children");
+            clothesManager.printByType("3");
             break;
         case 4:
             clothesManager.printAllClothes();
@@ -53,11 +53,33 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
             break;
         }
 
-        cout << "<!> Ban co muon them san pham khong? (1: Co, 0: Khong): ";
+        cout << "<!> Ban co muon tiep tuc them san pham khong? (1: Male, 2: Female, 3: Children, 4: All, 0: Khong): ";
         cin >> choice;
         cin.ignore();
-    } while (choice == 1);
 
+        if (choice == 0) {
+            break;
+        }
+        cout << "==================== CLOTHES MENU ====================" << endl;
+        switch (choice) {
+            case 1:
+                clothesManager.printByType("1");
+                break;
+            case 2:
+                clothesManager.printByType("2");
+                break;
+            case 3:
+                clothesManager.printByType("3");
+                break;
+            case 4:
+                clothesManager.printAllClothes();
+                break;
+            default:
+                cout << "Lua chon khong hop le. Vui long thu lai." << endl;
+                continue;
+        }
+        cout << "======================================================" << endl;
+    } while (true);
     do {
         system("cls");
         order->displayOrder();
@@ -101,13 +123,13 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
                             cout << "==================== CLOTHES MENU ====================" << endl;
                             switch (productType) {
                                 case 1:
-                                    clothesManager.printByType("Male");
+                                    clothesManager.printByType("1");
                                     break;
                                 case 2:
-                                    clothesManager.printByType("Female");
+                                    clothesManager.printByType("2");
                                     break;
                                 case 3:
-                                    clothesManager.printByType("Children");
+                                    clothesManager.printByType("3");
                                     break;
                                 case 4:
                                     clothesManager.printAllClothes();
@@ -129,13 +151,13 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
                             cout << "==================== CLOTHES MENU ====================" << endl;
                             switch (productType) {
                                 case 1:
-                                    clothesManager.printByType("Male");
+                                    clothesManager.printByType("1");
                                     break;
                                 case 2:
-                                    clothesManager.printByType("Female");
+                                    clothesManager.printByType("2");
                                     break;
                                 case 3:
-                                    clothesManager.printByType("Children");
+                                    clothesManager.printByType("3");
                                     break;
                                 case 4:
                                     clothesManager.printAllClothes();
@@ -173,7 +195,8 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
                 break;
             }
             case 0:
-                delete order;
+                order->restoreItems(clothesManager);
+               delete order;
                 cout << "<!> THONG BAO DON HANG DA BI HUY." << endl;
                 system("pause");
                 break;
@@ -195,3 +218,86 @@ int OrderManager::generateRandomOrderNumber() {
     return rand() % 900 + 100;  
 }
 
+void OrderManager::generateStatistics() {
+    double totalRevenue = 0.0;
+    double totalDiscount = 0.0;
+    int totalItemsSold = 0;
+    int totalOrders = 0;
+
+    map<string, int> productQuantities;
+    map<string, double> productRevenues;
+
+    Node<Order*>* currentOrder = orders.getHead();
+    while (currentOrder) {
+        totalOrders++;
+        totalRevenue += currentOrder->data->getTotalRevenue();
+        totalDiscount += currentOrder->data->getDiscountAmount();
+        totalItemsSold += currentOrder->data->getTotalItemsSold();
+
+        currentOrder->data->ProductStats(productQuantities, productRevenues);
+
+        currentOrder = currentOrder->next;
+    }
+
+    cout << "==================== THONG KE ====================" << endl;
+    cout << "Tong so don hang: " << totalOrders << endl;
+    cout << "Tong san pham da ban: " << totalItemsSold << endl;
+    cout << "Tong tien giam gia: " << totalDiscount << " VND" << endl;
+    cout << "Tong doanh thu: " << totalRevenue << " VND" << endl;
+
+    string bestSeller = "", nonSeller = "";
+    int maxSales = 0, minSales = INT_MAX;
+
+    for (const auto& entry : productQuantities) {
+        if (entry.second > maxSales) {
+            maxSales = entry.second;
+        }
+        if (entry.second < minSales) {
+            minSales = entry.second;
+        }
+    }
+    if(maxSales == minSales){
+        cout << "<!> San pham ban chay nhat: ";
+        for(const auto& entry : productQuantities){
+            if(entry.second == maxSales){
+                cout << entry.first << " ";
+            }
+        }
+        cout << "voi " << maxSales << " san pham" << endl;
+    } else {
+        cout << "<!> San pham ban chay nhat: ";
+        for(const auto& entry : productQuantities){
+            if(entry.second == maxSales){
+                cout << entry.first << ", ";
+            }
+        }
+        cout << "voi " << maxSales << " san pham" << endl;
+        cout << "<!> San pham ban it nhat: ";
+        for(const auto& entry : productQuantities){
+            if(entry.second == minSales){
+                cout << entry.first << ", ";
+            }
+        }
+        cout << "voi " << minSales << " san pham" << endl;
+    }
+    cout << "--------------------------------------------------------------" << endl;
+    cout << left << setw(20) << "Ten san pham"
+         << setw(15) << "So luong"
+         << setw(20) << "Doanh thu (VND)"
+         << "Phan tram (%)" << endl;
+    cout << "--------------------------------------------------------------" << endl;
+
+    for (const auto& entry : productQuantities) {
+        const string& itemName = entry.first;
+        int quantity = entry.second;
+        double revenue = productRevenues[itemName];
+        double percentRevenue = (totalRevenue > 0) ? (revenue / totalRevenue) * 100 : 0;
+
+        cout << left << setw(20) << itemName
+             << setw(15) << quantity
+             << setw(20) << fixed << setprecision(0) << revenue
+             << fixed << setprecision(2) << percentRevenue << "%" << endl;
+    }
+
+    cout << "===================================================" << endl;
+}

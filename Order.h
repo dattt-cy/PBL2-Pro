@@ -26,7 +26,8 @@ private:
     string customerName;
     string customerPhone;
     LinkedList<OrderItem*> items;
-    static double total;
+    double total;
+    double finalTotal;
 
 public:
     Order(int id, const string& name, const string& phone);
@@ -34,13 +35,18 @@ public:
     void addItem(OrderItem* item);
     bool removeItem(const string& itemID, ClothesManager& clothesManager);
     void editItem(ClothesManager& clothesManager);
-    static double calculateTotal();
+    double calculateTotal() const;
     void displayOrder() const;
-    void printInvoice() const;
+    void printInvoice();
     LinkedList<OrderItem*> getItems() const;
     bool addClothesItem(ClothesManager& clothesManager);
     string InvoiceID() const;
-    
+    double getFinalTotal() const;
+    double getDiscountAmount() const;
+    int getTotalItemsSold() const;
+    double getTotalRevenue() const;
+    void ProductStats(std::map<std::string, int>& productQuantities, std::map<std::string, double>& productRevenues) const;
+    void restoreItems(ClothesManager& clothesManager);
 };
 
 #endif // ORDER_H

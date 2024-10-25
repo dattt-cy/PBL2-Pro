@@ -1,13 +1,14 @@
 #include "Order.h"
 #include <iostream>
 #include <iomanip>
+#include <ctime>
 
 using namespace std;
 
-double Order::total = 0.0; 
 
 Order::Order(int id, const string& name, const string& phone)
-    : orderID(id), customerName(name), customerPhone(phone) {}
+    : orderID(id), customerName(name), customerPhone(phone), total(0.0), finalTotal(0.0) {}
+
 
 void Order::addItem(OrderItem* item) {
     items.addNode(item);
@@ -94,7 +95,7 @@ void Order::editItem(ClothesManager& clothesManager) {
         while (true) {
             cout << "\nNhap kich co moi (nhap 0 de huy): ";
             getline(cin, newSize);
-            newSize = nameStr(newSize);
+            newSize = toUpper(newSize);
             if (newSize == "0") {
                 cout << "<!> QUA TRINH CHINH SUA DA BI HUY!" << endl;
                 return;
@@ -115,6 +116,10 @@ void Order::editItem(ClothesManager& clothesManager) {
                 cout << "<!> QUA TRINH CHINH SUA DA BI HUY!" << endl;
                 cin.ignore();
                 return;
+            }
+            if(newQuantity < 0){
+                cout << "<!> SO LUONG PHAI LA SO DUONG. VUI LONG NHAP LAI" << endl;
+                continue;
             }
             if (!clothes->checkQuantity(newColor, newSize, newQuantity)) {
                 cout << "<!> SO LUONG NHAP VAO VUOT QUA SO LUONG HIEN CO. VUI LONG NHAP LAI." << endl;
@@ -148,7 +153,7 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
     Clothes* clothes = nullptr;
 
     while (true) {
-        cout << "\nNhap ma ID quan ao muon mua (nhap 0 de huy): ";
+        cout << "<!> Nhap ma ID quan ao muon mua (nhap 0 de huy): ";
         cin >> itemID;
         if (itemID == "0") {
             return false;
@@ -162,13 +167,16 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
             cout << "<!> KHONG TIM THAY SAN PHAM VOI MA ID: " << itemID << ". Vui long nhap lai." << endl;
             continue;
         }
-
+         if (clothes->getTotalQuantity() == 0) {
+            cout << "<!> SAN PHAM VOI MA ID: " << itemID << " DA HET HANG. Vui long chon san pham khac." << endl;
+            continue;
+        }
         cin.ignore();
         break;
     }
-
+    clothesManager.PrintClothesByID(itemID);
     while (true) {
-        cout << "\nChon mau sac cho san pham " << itemID << ": ";
+        cout << "<!> Chon mau sac cho san pham " << itemID << ": ";
         getline(cin, color);
         color = nameStr(color);
         if (!clothes->hasColor(color)) {
@@ -179,7 +187,7 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
     }
 
     while (true) {
-        cout << "\nChon kich co cho san pham " << itemID << ": ";
+        cout << "<!> Chon kich co cho san pham " << itemID << ": ";
         getline(cin, size);
         size = toUpper(size);
         if (!clothes->hasSize(color, size)) {
@@ -190,7 +198,7 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
     }
 
     while (true) {
-        cout << "\nChon so luong cho san pham " << itemID << ": ";
+        cout << "<!> Chon so luong cho san pham " << itemID << ": ";
         getline(cin, quantity2);
         quantity = stringToInt(quantity2);
         if (!clothes->checkQuantity(color, size, quantity)) {
@@ -208,13 +216,13 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
     return true;
 }
 
-double Order::calculateTotal() {
+double Order::calculateTotal() const {
     return total;
 }
 
 
 void Order::displayOrder() const {
-    cout << "============================ SHOP QUẦN ÁO GÂU GÂU ===============================\n";
+    cout << "============================ SHOP QUAN AO GAU GAU ===============================\n";
     cout << left << setw(10) << "ID"
          << setw(25) << "Ten San Pham"
          << setw(15) << "Mau"
@@ -232,20 +240,31 @@ void Order::displayOrder() const {
              << setw(15) << current->data->color
              << setw(10) << current->data->size
              << setw(12) << current->data->quantity
-             << setw(15) << fixed << setprecision(0) << current->data->price*current->data->quantity
+             << setw(15) << fixed << setprecision(0) << formatMoney(current->data->price*current->data->quantity)
              << endl;
         current = current->next;
     }
 
     cout << "--------------------------------------------------------------------------------\n";
     cout << right << setw(62) << "Tong Cong: "
-         << fixed << setprecision(0) << calculateTotal() << " VND\n";
+         << fixed << setprecision(0) << formatMoney(calculateTotal()) << " VND\n";
     cout << "================================================================================\n";
 }
 
 
-void Order::printInvoice() const {
+void Order::printInvoice()  {
     cout << "============================= SHOP QUAN AO GAU GAU =============================\n";
+    double totalAmount = calculateTotal();
+    double discount = 0.0;
+    if(totalAmount >= 1000000){
+        discount =  0.15;
+    } else if(totalAmount > 500000){
+        discount = 0.1;
+    }
+    double discountAmount = totalAmount * discount;
+    double finalTotall = totalAmount - discountAmount;
+    finalTotal = finalTotall;
+    cout << endl;
     cout << "Ma Hoa Don: " << InvoiceID() << "                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang" << endl;
     time_t now = time(NULL);
     tm* t = localtime(&now);
@@ -253,12 +272,14 @@ void Order::printInvoice() const {
 
     cout << "Time  In: ";
     cout << setw(1) << "" << t->tm_mday << "."<< "" << t->tm_mon + 1 << "." << "" << t->tm_year - 100 << " ";
-    cout << setw(1) << "" << t->tm_hour << ":" << "" << t->tm_min << "                                         SDT: 0372787650" << endl;
+    cout << setw(1) << "" << t->tm_hour << ":" << "" << t->tm_min << "                                       SDT: 0372787650" << endl;
 
     cout << "Time Out: ";
     cout << setw(1) << "" << t->tm_mday << "." << "" << t->tm_mon + 1 << "." << "" << t->tm_year - 100 << " ";
     cout << setw(1) << "" << t->tm_hour << ":" << "" << t->tm_min << endl;
-
+    cout << endl;
+    cout << "                               HOA DON THANH TOAN                                  " << endl;
+    cout << endl;
     cout << left << setw(20) << "Item"
          << right << setw(20) << "Price"
          << setw(18) << "Quantity"
@@ -269,7 +290,7 @@ void Order::printInvoice() const {
     Node<OrderItem*>* current = items.getHead();
     while (current) {
         cout << left << setw(20) << current->data->itemName
-             << right << setw(17) << fixed << setprecision(0) << current->data->price << " VND"
+             << right << setw(17) << fixed << setprecision(0) << formatMoney(current->data->price) << " VND"
              << right << setw(13) << current->data->quantity
              << right << setw(19) << fixed << setprecision(0) 
              << formatMoney(current->data->price * current->data->quantity) << " VND" << endl;
@@ -278,10 +299,12 @@ void Order::printInvoice() const {
     }
 
     cout << "--------------------------------------------------------------------------------\n";
-    cout << right << setw(10) << "Tong Cong: "
-         << fixed << setprecision(0) << formatMoney(calculateTotal()) << " VND\n";
+    cout << "Tong tien: " << fixed << setprecision(0) << formatMoney(totalAmount) << " VND" << endl;
+    cout << "Giam gia: " << discount * 100 << "%" << endl;
+    cout << "Tong tien duoc giam gia: " << fixed << setprecision(0) << formatMoney(discountAmount) << " VND" << endl;
+    cout << "Tong tien sau khi giam gia: " << fixed << setprecision(0) << formatMoney(finalTotall) << " VND" << endl;
     ostringstream oss;
-    read_number(calculateTotal(), oss);
+    read_number(finalTotal, oss);
     cout << oss.str() << endl;
     cout << "================================================================================\n";
 }
@@ -300,4 +323,47 @@ string Order::InvoiceID() const{
        << setw(3) << setfill('0') << orderID;
 
     return ss.str();
+}
+double Order::getFinalTotal() const {
+    return finalTotal;
+}
+void Order::ProductStats(std::map<std::string, int>& productQuantities, std::map<std::string, double>& productRevenues) const {
+    Node<OrderItem*>* current = items.getHead();
+    while (current) {
+        string itemName = current->data->itemName;
+        int quantity = current->data->quantity;
+        double revenue = current->data->price * quantity;
+
+        productQuantities[itemName] += quantity;
+        productRevenues[itemName] += revenue;
+
+        current = current->next;
+    }
+}
+double Order::getDiscountAmount() const {
+    return calculateTotal() - getFinalTotal();
+}
+
+int Order::getTotalItemsSold() const {
+    int totalItems = 0;
+    Node<OrderItem*>* current = items.getHead();
+    while (current) {
+        totalItems += current->data->quantity;
+        current = current->next;
+    }
+    return totalItems;
+}
+
+double Order::getTotalRevenue() const {
+    return getFinalTotal();
+}
+void Order::restoreItems(ClothesManager& clothesManager) {
+    Node<OrderItem*>* current = items.getHead();
+    while (current) {
+        Clothes* clothes = clothesManager.findByID(current->data->itemID);
+        if (clothes != nullptr) {
+            clothes->increaseSL(current->data->color, current->data->size, current->data->quantity);
+        }
+        current = current->next;
+    }
 }

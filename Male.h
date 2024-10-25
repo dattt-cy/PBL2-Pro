@@ -2,6 +2,11 @@
 #define MALE_H
 
 #include "Clothes.h"
+#include "support.h"
+#include "Variant.h"
+#include <string>
+#include <vector>
+#include <set>
 using namespace std;
 
 class Male : public Clothes {

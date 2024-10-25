@@ -15,4 +15,5 @@ void get(int vt, int c[], ostringstream& oss);
 void read_number(double d, ostringstream& oss);
 int stringToInt(std::string str);
 string toUpper(const string& input);
+int isCharacter(const string& input);
 #endif

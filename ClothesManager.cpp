@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <fstream>
 #include <sstream>
-
+#include <cstdlib>
 using namespace std;
 
 void ClothesManager::addClothes(Clothes* clothes) {
@@ -14,71 +14,37 @@ void ClothesManager::addClothes(Clothes* clothes) {
 }
 
 void ClothesManager::printAllClothes() const {
-    system("cls"); 
-
-    cout << endl;
-    cout << "==============================================================SHOP QUAN AO GAU GAU ================================================================\n";
-    cout << "                                                           --------------------------                                                              \n";
-    cout << "                                                              DANH SACH SAN PHAM                                                                   \n";
-    cout << "                                                           --------------------------                                                              \n";
-
-    Node<Clothes*>* current = list.getHead();
-
-    // In tiêu đề bảng
-    cout << "+----------+---------------------------+-------------------+---------------+-----------------------------------------------------------------------+" << endl;
-    cout << "| ID       | Ten san pham              | Thuong hieu       | Gia (VND)     | Size, Mau, So luong                                                   |" << endl;
-    cout << "+----------+---------------------------+-------------------+---------------+-----------------------------------------------------------------------+" << endl;
-
-    while (current != nullptr) {
-        // In thông tin cơ bản của sản phẩm
-        cout << "| " << left << setw(8) << current->data->getID() << " | "
-             << setw(25) << current->data->getName() << " | "
-             << setw(17) << current->data->getBranch() << " | "
-             << setw(13) << current->data->getPrice() << " | ";
-
-        stringstream ss;
-        Node<Variant*>* variant = current->data->getVariants().getHead();
-        bool hasValidVariant = false;
-
-        while (variant != nullptr) {
-            if (!variant->data->getSize().empty() &&
-                !variant->data->getColor().empty() &&
-                variant->data->getQuantity() >= 0) {
-
-                ss << "{" << variant->data->getSize()
-                   << ", " << variant->data->getColor()
-                   << ", " << variant->data->getQuantity() << "} ";
-                hasValidVariant = true;
-            }
-            variant = variant->next;
-        }
-
-        if (hasValidVariant) {
-            cout << left << setw(69) << ss.str() << " |" << endl;
-        } else {
-            cout << left << setw(69) << "<!> HET HANG CHO SAN PHAM NAY" << " |" << endl;
-        }
-
-        current = current->next;
-    }
-
-    // In dòng cuối cùng của bảng
-    cout << "+----------+---------------------------+-------------------+---------------+-----------------------------------------------------------------------+" << endl;
-
-    system("pause"); 
+    printByType("4");
 }
 
 void ClothesManager::printByType(const string& type) const {
-    system("cls"); // Xóa màn hình (Chạy trên Windows)
+    system("cls"); 
 
-    // Tiêu đề cho từng thể loại sản phẩm
     string title;
-    if (type == "Female") title = "SAN PHAM CHO NU";
-    else if (type == "Male") title = "SAN PHAM CHO NAM";
-    else if (type == "Children") title = "SAN PHAM CHO TRE EM";
-    else title = "LOAI SAN PHAM KHONG HOP LE";
-
- 
+    string selectedType;
+     int typeInt = atoi(type.c_str()); 
+    switch (typeInt) {
+        case 2:
+            title = "SAN PHAM CHO NU";
+            selectedType = "Female";
+            break;
+        case 1:
+            title = "SAN PHAM CHO NAM";
+            selectedType = "Male";
+            break;
+        case 3:
+            title = "SAN PHAM CHO TRE EM";
+            selectedType = "Children";
+            break;
+        case 4:
+            title = "TAT CA SAN PHAM";
+            selectedType = "All";
+            break;
+        default:
+            title = "LOAI SAN PHAM KHONG HOP LE";
+            selectedType = "Invalid";
+            break;
+    }
     cout << endl;
     cout << "==============================================================SHOP QUAN AO GAU GAU ================================================================\n";
     cout << "                                                           --------------------------                                                              \n";
@@ -91,21 +57,19 @@ void ClothesManager::printByType(const string& type) const {
     cout << "| ID       | Ten san pham              | Thuong hieu       | Gia (VND)     | Size, Mau, So luong                                                   |" << endl;
     cout << "+----------+---------------------------+-------------------+---------------+-----------------------------------------------------------------------+" << endl;
 
-    bool hasItems = false; // Kiểm tra xem có sản phẩm nào được in ra hay không
+    bool hasItems = false; 
 
     while (current != nullptr) {
-        // Kiểm tra loại sản phẩm và chỉ in nếu khớp với loại đã chọn
-        if ((type == "Female" && dynamic_cast<Female*>(current->data)) ||
-            (type == "Male" && dynamic_cast<Male*>(current->data)) ||
-            (type == "Children" && dynamic_cast<Children*>(current->data))) {
-
-            // In thông tin cơ bản của sản phẩm
+         if (selectedType == "All" || 
+            (selectedType == "Female" && dynamic_cast<Female*>(current->data)) ||
+            (selectedType == "Male" && dynamic_cast<Male*>(current->data)) ||
+            (selectedType == "Children" && dynamic_cast<Children*>(current->data))) {
+            
             cout << "| " << left << setw(8) << current->data->getID() << " | "
                  << setw(25) << current->data->getName() << " | "
                  << setw(17) << current->data->getBranch() << " | "
-                 << setw(13) << current->data->getPrice() << " | ";
+                 << setw(13) << fixed << setprecision(0) << current->data->getPrice() << " | ";
 
-            // In các biến thể trong cùng một dòng
             stringstream ss;
             Node<Variant*>* variant = current->data->getVariants().getHead();
             bool hasValidVariant = false;
@@ -113,7 +77,7 @@ void ClothesManager::printByType(const string& type) const {
             while (variant != nullptr) {
                 if (!variant->data->getSize().empty() &&
                     !variant->data->getColor().empty() &&
-                    variant->data->getQuantity() > 0) {
+                    variant->data->getQuantity() >= 0) {
 
                     ss << "{" << variant->data->getSize()
                        << ", " << variant->data->getColor()
@@ -136,7 +100,7 @@ void ClothesManager::printByType(const string& type) const {
 
      cout << "+----------+---------------------------+-------------------+---------------+-----------------------------------------------------------------------+" << endl;
 
-    system("pause"); // Tạm dừng màn hình (Chạy trên Windows)
+    system("pause"); 
 }
 
 
@@ -258,26 +222,77 @@ void ClothesManager::EditClothesByID(const string& id) {
         double newPrice;
         string newBranch;
         LinkedList<Variant*> newVariants;
-        cout << "Nhap ten moi: ";
-        cin.ignore();
+        while (true) {
+        cout << "<!> Nhap ten quan ao ( nhap 0 de huy ): ";
         getline(cin, newName);
-        cout << "Nhap gia moi: ";
-        cin >> newPrice;
-        cin.ignore();
-        cout << "Nhap ten thuong hieu: ";
+        newName = nameStr(newName);
+        if(newName == "0") return;
+        if (!newName.empty()) break;
+        cout << "<!> Ten quan ao khong duoc de trong. Vui long nhap lai." << endl;
+        }
+        while (true) {
+        string priceStr;
+        cout << "<!> Nhap gia: ";
+        getline(cin, priceStr);
+          if(isCharacter(priceStr)){
+            cout << "<!> Gia phai la so. Vui long nhap lai." << endl;
+            continue;
+        }
+        newPrice = stoi(priceStr);
+        if (newPrice <= 0) {
+            cout << "<!> Gia phai la so duong. Vui long nhap lai." << endl;
+            continue;
+        } else {
+            break;
+        }
+    }
+        while (true) {
+        cout << "<!> Nhap ten thuong hieu: ";
         getline(cin, newBranch);
+        newBranch = nameStr(newBranch);
+        if (!newBranch.empty()) break;
+        cout << "<!> Ten thuong hieu khong duoc de trong. Vui long nhap lai." << endl;
+        
+    }
         found->clearVariants();
         char addMore;
+        set<string> validSizes = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"};
+        set<string> validColors = {"Red", "Blue", "Green", "Yellow", "Black", "White", "Purple", "Brown", "Pink", "Beige", "Gray", "Orange"};
         do {
             string size, color;
             int quantity;
-            cout << "Nhap size: ";
+          
+
+          while (true) {
+            cout << "<!> Nhap size (XS, S, M, L, XL, XXL, XXXL): ";
             getline(cin, size);
-            cout << "Nhap mau: ";
+            size = toUpper(size);
+            if (validSizes.find(size) != validSizes.end()) break;
+            cout << "<!> Size khong hop le. Vui long nhap lai." << endl;
+            }
+            while (true) {
+             cout << "<!> Nhap mau (Red, Blue, Green, Yellow, Black, White, Purple, Brown, Pink, Beige, Gray, Orange): ";
             getline(cin, color);
-            cout << "Nhap so luong: ";
-            cin >> quantity;
-            cin.ignore();
+            color = nameStr(color);
+            if (validColors.find(color) != validColors.end()) break;
+            cout << "<!> Mau khong hop le. Vui long nhap lai." << endl;
+            }
+            while (true) {
+            string quantity2;
+            cout << "<!> Nhap so luong: ";
+            getline(cin, quantity2);
+            if(isCharacter(quantity2)){
+            cout << "<!> So luong phai la so. Vui long nhap lai." << endl;
+            continue;
+            }
+            quantity = stoi(quantity2);
+            if (quantity <= 0) {
+            cout << "<!> So luong phai la so duong. Vui long nhap lai." << endl;
+            continue;
+            } else {
+            break;
+        }
+    }
             newVariants.push_back(new Variant(size, color, quantity));
             cout << "<!> Ban co muon them bien the khac cho san pham nay khong? (y/n): ";
             cin >> addMore;
@@ -299,7 +314,6 @@ void ClothesManager::PrintClothesByID(const string& id) const {
     Node<Clothes*>* current = list.getHead();
     bool found = false;  
 
-    // Tiêu đề shop
     cout << "\n+===================================================SHOP QUAN AO GAU GAU====================================================\n";
     cout << "                                                  *** SAN PHAM DAC BIET ***                                                   \n";
 
@@ -310,7 +324,7 @@ void ClothesManager::PrintClothesByID(const string& id) const {
             cout << "| <!> ID QUAN AO: " << current->data->getID() << endl;
             cout << "| <!> TEN QUAN AO: "<< current->data->getName() << endl;
             cout << "| <!> DEN TU THUONG HIEU: " << current->data->getBranch() << endl;
-            cout << "| <!> GIA: " << current->data->getPrice() << " VND" << endl;
+            cout << "| <!> GIA: " << fixed << setprecision(0) << current->data->getPrice() << " VND" << endl;
             cout << "+---------------------------------------------------------------------------------------------------------------------------\n";
 
             stringstream ss;
@@ -322,7 +336,7 @@ void ClothesManager::PrintClothesByID(const string& id) const {
             while (variant != nullptr) {
                 if (!variant->data->getSize().empty() &&
                     !variant->data->getColor().empty() &&
-                    variant->data->getQuantity() > 0) {
+                    variant->data->getQuantity() >= 0) {
 
                     ss << "   - {" << variant->data->getSize()
                        << ", " << variant->data->getColor()

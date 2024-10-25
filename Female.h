@@ -2,7 +2,11 @@
 #define FEMALE_H
 
 #include "Clothes.h"
-
+#include "support.h"
+#include "Variant.h"
+#include <set>
+#include <string>
+#include <vector>
 class Female : public Clothes {
 public:
     Female(const string &id, const string &name, double price, const string &branch, const string &size, const string &color, int quantity);

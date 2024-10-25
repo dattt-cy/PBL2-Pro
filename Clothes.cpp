@@ -181,3 +181,12 @@ void Clothes::increaseSL(const string& color, const string& size, int quantity) 
         current = current->next;
     }
 }
+int Clothes::getTotalQuantity() const {
+    int totalQuantity = 0;
+    Node<Variant*>* current = variants.getHead();
+    while (current) {
+        totalQuantity += current->data->getQuantity();
+        current = current->next;
+    }
+    return totalQuantity;
+}

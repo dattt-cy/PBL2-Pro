@@ -5,6 +5,7 @@
 #include "LinkedList.h"
 #include "ClothesManager.h"
 #include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -16,6 +17,8 @@ public:
     void createOrder(ClothesManager& clothesManager);
     void checkoutOrder(Order* order);
     static int generateRandomOrderNumber();
+    void generateStatistics();
+    LinkedList<Order*> getOrders() const;
 };
 
 #endif // ORDERMANAGER_H
