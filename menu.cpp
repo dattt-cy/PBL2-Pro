@@ -254,10 +254,13 @@ void menu(ClothesManager& manager, OrderManager& orderManager) {
                 break;
             }
             case 4: {
+                system("cls");
                 orderManager.createOrder(manager);
+                system("pause");
                 break;
             }
             case 5: {
+                system("cls");
                 orderManager.generateStatistics();
                 system("pause");
                 break;

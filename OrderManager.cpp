@@ -11,7 +11,6 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
     string customerPhone;
 
     orderID = generateRandomOrderNumber();
-    cin.ignore();
     cout << "Nhap ten khach hang: ";
     getline(cin, customerName);
 

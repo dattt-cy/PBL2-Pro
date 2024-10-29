@@ -154,7 +154,7 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
 
     while (true) {
         cout << "<!> Nhap ma ID quan ao muon mua (nhap 0 de huy): ";
-        cin >> itemID;
+        getline(cin, itemID);
         if (itemID == "0") {
             return false;
         }
