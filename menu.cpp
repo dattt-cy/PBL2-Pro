@@ -5,19 +5,13 @@
 #undef byte
 #include <cstddef>
 #include <conio.h>
+#include "Admin_Manage.h"
+#include "Admin.h"
+#include "Login.h"
+#include "Set.h"
 
 using namespace std;
 
-static void gotoXY(int x, int y) {
-    COORD coord;
-    coord.X = x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
-
-static void setTextColor(int color) {
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-}
 
 void drawInterface(string menuItems[], int numItems, int selectedItem) {
     system("cls");
@@ -270,4 +264,118 @@ void menu(ClothesManager& manager, OrderManager& orderManager) {
             }
         }
     }
+}
+void chooseMenuPerson(Admin_Manage& Manager) {
+    Manager.sortByID();
+    setTextColor(6);
+    cout << "^-^ CHAO MUNG BAN DEN VOI HE THONG QUAN LY CUA HANG GAU GAU ^-^" << endl;
+    setTextColor(15);
+    while (true){
+    cout << "ADMIN: " << endl;
+    cout << "1. Xem danh sach Admin" << endl;
+    cout << "2. Them Admin moi" << endl;
+    cout << "3. Xoa Admin theo ID" << endl;
+    cout << "4. Tim kiem Admin theo ID" << endl;
+    cout << "==============================" << endl;
+    cout << "CUSTOMER: " << endl;
+    cout << "5. Xem danh sach Khach hang" << endl;
+    cout << "6. Them Khach hang moi" << endl;
+    cout << "7. Xoa Khach hang theo ID" << endl;
+    cout << "8. Tim kiem Khach hang theo ID" << endl;
+    cout << "9. Thoat" << endl;
+
+    int choice;
+    string filename, id, ngay, thang, nam;
+    int a,b,c;
+    Admin* newAdmin;
+    cout << "Nhap lua chon cua ban: ";
+    cin >> choice;
+
+        switch (choice) {
+            case 1:
+                system("cls");
+                Manager.ShowAdmin();
+                system("pause");
+                break;
+            case 2:
+                system("cls");
+                Manager.inputAdmin();
+                system("pause");
+                break;
+            
+            case 3:
+                system("cls");
+                cout << "Nhap ID cua Admin ban muon xoa: ";
+                cin >> id;
+                Manager.DeleteAdmin(id);
+                system("pause");
+                break;
+            
+            case 4:
+                system("cls");
+                cout << "Nhap ID cua Admin ban muon tim kiem: ";
+                cin >> id;
+                Manager.searchByID(id);
+                system("pause");
+                break;
+            case 5:
+                system("cls");
+                Manager.ShowCustomer();
+                system("pause");
+                break;
+            case 6:
+                system("cls");
+                Manager.inputCustomer();
+                system("pause");
+                break;
+            
+            case 7:
+                system("cls");
+                cout << "Nhap ID cua Khach hang ban muon xoa: ";
+                cin >> id;
+                Manager.DeleteCustomer(id);
+                system("pause");
+                break;
+            
+            case 8:
+                system("cls");
+                cout << "Nhap ID cua Khach hang ban muon tim kiem: ";
+                cin >> id;
+                Manager.findCustomer(id);
+                system("pause");
+                break;
+            case 9:
+                setTextColor(5);
+                cout << "Chao tam biet! Hen gap lai ban vao lan sau nhe ^-^" << endl;
+                return;
+            default:
+                cout << "Moi ban nhap lua chon cua minh!!!" << endl;
+        }
+    }
+    system("pause");
+
+}
+
+void chooseMenu(Admin_Manage& Manager, ClothesManager& manager, OrderManager& orderManager) {
+    setTextColor(15);
+    system("cls");
+    cout <<" ^^^^^^ HAVE A NICE DAY ^^^^^^" << endl;
+    cout << "1. Xem muc quan ly Admin va Khach hang. " << endl;
+    cout << "2. Quan ly Shop quan ao. " << endl;
+    cout << "========================================" << endl;
+    cout << "Hay nhap lua chon cua ban: ";
+    int choice;
+    cin >> choice;
+    switch (choice){
+        case 1:
+            chooseMenuPerson(Manager);
+            break;
+        case 2:
+            menu(manager, orderManager);
+            cout << "" << endl;
+            break;
+        default:
+            cout << "Lua chon khong hop le" << endl;
+    }
+    system("pause");
 }

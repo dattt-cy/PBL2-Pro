@@ -6,19 +6,14 @@
 #include <iostream>
 #include <conio.h>
 #include <windows.h>
+#include "Admin.h"
+#include "Admin_Manage.h"
+#include "Set.h"
+#include "menu.h"
+#include <sstream>
+#include <fstream>
 
 using namespace std;
-
-void gotoXY(int x, int y) {
-    COORD coord;
-    coord.X = x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
-
-void setTextColor(int color) {
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-}
 
 void drawBox(int x, int y, int width, int height) {
     gotoXY(x, y);
@@ -47,9 +42,9 @@ void drawInterface() {
 
     setTextColor(15);
     gotoXY(13, 5);
-    cout << "Name ";
+    cout << "ID   ";
     drawBox(23, 4, 30, 1);
-
+    setTextColor(15);
     gotoXY(12, 8);
     cout << "Password ";
     drawBox(23, 7, 30, 1);
@@ -133,26 +128,36 @@ string getInput(int x, int y, bool hide) {
     return input;
 }
 
-int login() {
-    string user = "user";
-    string password_nv = "2";
-    string admin = "admin";
-    string password_admin = "1";
+int login(Admin_Manage& n) {
+    int loginResult = 3; 
+    do {
+        system("cls"); 
+        drawInterface();
+        gotoXY(24, 5);
+        string username = getInput_admin(24, 5, false); 
+        gotoXY(24, 8);
+        string password = getInput(24, 8, true);
 
-    string username = getInput_admin(24, 5);
-    string password = getInput(24, 8);
-    drawInterface();
-    if ((username == admin && password == password_admin)) {
-        setTextColor(10);
-        cout << "\nDang nhap thanh cong voi quyen Admin!\n";
-        return 1;
-    } else if ((username == user && password == password_nv)) {
-        setTextColor(10);
-        cout << "\nDang nhap thanh cong voi quyen Nhan Vien!\n";
-        return 2;
-    } else {
-        setTextColor(12);
-        cout << "\nTen dang nhap hoac mat khau khong hop le!";
-        return 3;
-    }
+        gotoXY(15, 13); 
+        loginResult = n.checkLogin(username, password);
+
+        if (loginResult == 1) {
+            setTextColor(2); 
+            cout << "\nDang nhap thanh cong voi quyen Admin!\n";
+            system("pause");
+            return 1; 
+            
+        } else if (loginResult == 2) {
+            setTextColor(2); 
+            cout << "\nDang nhap thanh cong voi quyen Customer!\n";
+            system("pause");
+            return 2;
+        } else {
+            setTextColor(12); 
+            cout << "\nTen dang nhap hoac mat khau khong hop le! Vui long thu lai.\n";
+            system("pause");
+        }
+    } while (loginResult != 1 && loginResult != 2); 
+
+    return 0;
 }

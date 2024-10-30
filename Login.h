@@ -2,10 +2,11 @@
 #define LOGIN_H
 
 #include <string>
+#include "LinkedList.h"
+#include "Admin.h"
+#include "Admin_Manage.h"
 using namespace std;
-void gotoXY(int x, int y);
 
-void setTextColor(int color);
 
 void drawBox(int x, int y, int width, int height);
 
@@ -17,6 +18,7 @@ string getInput_admin(int x, int y, bool hide = false);
 
 string getInput(int x, int y, bool hide = false);
 
-int login();
+int login(Admin_Manage& n);
+
 
 #endif // LOGIN_H
