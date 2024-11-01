@@ -8,7 +8,9 @@
 #include "Admin.h"
 
 using namespace std;
-
+string Admin_Manage::phone = ""; 
+string Admin_Manage::name = ""; 
+string Admin_Manage::id = "";
 void Admin_Manage::sortByID() {
     ListNV.Sort();
 }
@@ -37,7 +39,7 @@ int Admin_Manage::AdminID(const string& filename) {
     string line;
     int count = 0;
     while (getline(file, line)) {
-        if (!line.empty() && line.find("AD") == 0) { 
+        if (!line.empty() && line.find("KH") == 0) { 
             count++;
         }
     }
@@ -46,8 +48,8 @@ int Admin_Manage::AdminID(const string& filename) {
 }
 
 string Admin_Manage::generateNewID() {
-    std::stringstream ss;
-    ss << "AD" << std::setw(3) << std::setfill('0') << AdminID("Admin.txt") + 1;  
+    stringstream ss;
+    ss << "KH" << setw(3) << setfill('0') << AdminID("Customerr.txt") + 1;  
 
 
     return ss.str();  
@@ -59,7 +61,7 @@ void Admin_Manage::ShowAdmin() {
     cout << "| ID               | Ten                   | Gioi tinh  | Ngay sinh       | So dien thoai      | Dia chi                        | Ngay vao lam    |" << endl;
     cout << "+------------------+-----------------------+------------+-----------------+--------------------+--------------------------------+-----------------+" << endl;
     while (current != nullptr) {
-        current->data->ShowC();
+        current->data->Show();
         current = current->next;
     }
 
@@ -198,7 +200,8 @@ void Admin_Manage::inputAdmin() {
 
     admin->setID(generateNewID());
     cout << "***-----MOI BAN NHAP THONG TIN ADMIN-----***" << endl;
-
+    cout << "ID cua ban la: " << generateNewID() << endl;
+    admin->setID(generateNewID());
     cout << "Nhap ten Admin moi: ";
     cin.ignore();
     getline(cin, input); 
@@ -328,6 +331,9 @@ int Admin_Manage::checkLogin(const string& username, const string& password) {
     Node<Admin*>* cur = ListKH.getHead();
     while (cur != nullptr) {
         if (cur->data->checkLogin(username, password)) {
+            name = cur->data->getName();
+            phone = cur->data->getnumberPhone();
+            id = cur->data->getID();
             return 2; 
         }
         cur = cur->next;
@@ -378,6 +384,9 @@ void Admin_Manage::inputCustomer() {
     customer->setID(generateNewID());
     cout << "***-----MOI BAN NHAP THONG TIN KHACH HANG-----***" << endl;
 
+    cout << "ID cua ban la: " << generateNewIDKH() << endl;
+    customer->setID(generateNewIDKH());
+    
     cout << "Nhap ten Khach hang moi: ";
     cin.ignore();
     getline(cin, input); 
@@ -426,7 +435,7 @@ void Admin_Manage::inputCustomer() {
         }
         if (valid) {
             customer->setnumberPhone(input);
-            break; // ThoĂ¡t vĂ²ng láº·p náº¿u sá»‘ Ä‘iá»‡n thoáº¡i há»£p lá»‡
+            break; 
         } else {
             std::cout << "So dien thoai chi duoc chua cac chu so. Vui long nhap lai.\n";
             continue;
@@ -467,7 +476,7 @@ void Admin_Manage::WriteFileCustomer(const string& filename) {
                 << birthDate.year << ",";
 
         fileout << admin->getnumberPhone() << ","
-                << admin->getAddress() << ",";
+                << admin->getAddress() << "\n";
 
         current = current->next;
     }
@@ -488,6 +497,28 @@ void Admin_Manage::UpdateCustomerID() {
         current = current->next;
     }
 }
+int Admin_Manage::CustomerID(const string& filename) {
+    ifstream file(filename);  
+    if (!file.is_open()) { 
+        cerr << "Khong the mo file: " << filename << endl;
+        return 0;
+    }
+    string line;
+    int count = 0;
+    while (getline(file, line)) {
+        if (!line.empty() && line.find("KH") == 0) { 
+            count++;
+        }
+    }
+    file.close(); 
+     return count; 
+}
+
+string Admin_Manage::generateNewIDKH() {
+    std::stringstream ss;
+    ss << "KH" << std::setw(3) << std::setfill('0') << CustomerID("Customerr.txt") + 1;
+    return ss.str();
+     }
 
 void Admin_Manage::DeleteCustomer(string ID) {
     if (ListKH.removeById(ID)) {
@@ -517,4 +548,56 @@ bool Admin_Manage::findCustomer(const string& ID) {
         current = current->next; 
     }
     return false;
+}
+bool Admin_Manage::createAccount(const string& ID, const string& password, const string& name) {
+    Node<Admin*>* current = ListKH.getHead();
+    while (current != NULL) {
+        if (current->data->getID() == ID) {
+            return false; 
+        }
+        current = current->next;
+    }
+    Admin* admin = new Admin();
+    admin->setID(ID);
+    admin->setpassWord(password);
+    admin->setName(name);
+    ListKH.push_back(admin);
+    return true;
+}
+bool Admin_Manage::isCustomerInfoComplete(const string& id) {
+    Node<Admin*>* current = ListKH.getHead();
+    while (current != nullptr) {
+        if (current->data->getID() == id) {
+            return !current->data->getbirthDay().empty() &&
+                   !current->data->getAddress().empty() && !current->data->getGender().empty() &&
+                   !current->data->getnumberPhone().empty();
+        }
+        current = current->next;
+    }
+    return false;
+}
+
+
+void Admin_Manage::updateCustomerInfo(const string& id, const string& dob, const string& address, const string& gender, const string& phone) {
+    Node<Admin*>* current = ListKH.getHead();
+    while (current != nullptr) {
+        if (current->data->getID() == id) {
+            if (!dob.empty()) {
+                Date birthDate = parseDate(dob);
+                current->data->setbirthDay(birthDate.day, birthDate.month, birthDate.year);
+            }
+            if (!address.empty()) {
+                current->data->setAddress(address);
+            }
+            if (!gender.empty()) {
+                current->data->setGender(gender);
+            }
+            if (!phone.empty()) {
+                current->data->setnumberPhone(phone);
+            }
+            break;
+        }
+        current = current->next;
+    }
+    WriteFileCustomer("Customerr.txt");
 }

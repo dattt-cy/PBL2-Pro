@@ -11,11 +11,9 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
     string customerPhone;
 
     orderID = generateRandomOrderNumber();
-    cout << "Nhap ten khach hang: ";
-    getline(cin, customerName);
+    customerName = Admin_Manage::name;
+    customerPhone = Admin_Manage::phone;
 
-    cout << "Nhap so dien thoai khach hang: ";
-    getline(cin, customerPhone);
 
     Order* order = new Order(orderID, customerName, customerPhone);
 
@@ -95,6 +93,7 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
                     clothesManager.readClothesFromFile("clothes.txt");
                     system("cls");
                     checkoutOrder(order);
+                    order->writeInvoiceToFile(Admin_Manage::id, Admin_Manage::name, Admin_Manage::phone);
                     orders.addNode(order);
                     system("pause");
                 break;
@@ -120,6 +119,7 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
                             cin >> productType;
                             cin.ignore();
                             cout << "==================== CLOTHES MENU ====================" << endl;
+                            do{
                             switch (productType) {
                                 case 1:
                                     clothesManager.printByType("1");
@@ -137,6 +137,7 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
                                     cout << "Lua chon khong hop le. Vui long thu lai." << endl;
                                     break;
                             }
+                            }while(productType != 1 && productType != 2 && productType != 3 && productType != 4);
                             cout << "======================================================" << endl;
                             order->editItem(clothesManager);
                             system("pause");

@@ -2,10 +2,12 @@
 #include "Admin_Manage.h"
 #include <iostream>
 #include <iomanip>
+#include <fstream>
+#include <sstream>
 
 int Admin::count = 0;
 
-Admin::Admin() : numberPhone("h"), passWord("h"), ID("h"), name("h"), gender("h"), address("h"), birthDay({0, 0, 0}), dayofWork({0, 0, 0}) {}
+Admin::Admin() : numberPhone(""), passWord(""), ID(""), name(""), gender(""), address(""), birthDay({0, 0, 0}), dayofWork({0, 0, 0}) {}
 
 Admin::~Admin() {}
 
@@ -119,3 +121,4 @@ void Admin::ShowC() {
 bool Admin::checkLogin(const string& username, const string& password) {
     return (username == ID && password == passWord);
 }
+

@@ -183,3 +183,37 @@ int isCharacter(const string& input) {
     }
     return 1;
 }
+bool isPhoneNumber(const string& input){
+    if (input.length() != 10 || input[0] != '0') {
+        return false;
+    }
+    for (int i = 1; i < input.length(); ++i) {
+        if (!isdigit(input[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+bool isDate(const string& input){
+    if (input.length() != 10) {
+        return false;
+    }
+    if (input[2] != '/' || input[5] != '/') {
+        return false;
+    }
+    for (int i = 0; i < input.length(); ++i) {
+        if (i == 2 || i == 5) {
+            continue;
+        }
+        if (!isdigit(input[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+bool isSex(const string& input){
+    if (input == "Nam" || input == "Nu") {
+        return true;
+    }
+    return false;
+}

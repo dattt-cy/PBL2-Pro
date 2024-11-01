@@ -16,4 +16,7 @@ void read_number(double d, ostringstream& oss);
 int stringToInt(std::string str);
 string toUpper(const string& input);
 int isCharacter(const string& input);
+bool isPhoneNumber(const string& input);
+bool isDate(const string& input);
+bool isSex(const string& input);
 #endif

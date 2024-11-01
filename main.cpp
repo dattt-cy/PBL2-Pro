@@ -4,11 +4,7 @@
 int main() {
     ClothesManager manager;
     OrderManager orderManager;
-    Admin_Manage Managerr;
-    Managerr.ReadFileCustomer("Customerr.txt");
-    Managerr.ReadFileAdmin("Admin.txt");
-    if(login(Managerr) == 1){
-    chooseMenu(Managerr, manager, orderManager);
-    }
+    Admin_Manage KHvaAD;
+    chooseLogin(KHvaAD, manager, orderManager);
     return 0;
 }

@@ -77,7 +77,7 @@ void ClothesManager::printByType(const string& type) const {
             while (variant != nullptr) {
                 if (!variant->data->getSize().empty() &&
                     !variant->data->getColor().empty() &&
-                    variant->data->getQuantity() >= 0) {
+                    variant->data->getQuantity() > 0) {
 
                     ss << "{" << variant->data->getSize()
                        << ", " << variant->data->getColor()
@@ -336,7 +336,7 @@ void ClothesManager::PrintClothesByID(const string& id) const {
             while (variant != nullptr) {
                 if (!variant->data->getSize().empty() &&
                     !variant->data->getColor().empty() &&
-                    variant->data->getQuantity() >= 0) {
+                    variant->data->getQuantity() > 0) {
 
                     ss << "   - {" << variant->data->getSize()
                        << ", " << variant->data->getColor()
@@ -366,38 +366,65 @@ void ClothesManager::PrintClothesByID(const string& id) const {
 
     system("pause");  
 }
+
 void ClothesManager::SearchBySubstring(const string& sub, const string& brand, const string& color, const string& size, const string& type) const {
     system("cls"); 
     Node<Clothes*>* current = list.getHead();
     bool found = false;
+    string title;
+    string selectedType;
+    int typeInt = atoi(type.c_str()); 
+
+
+    switch (typeInt) {
+        case 2:
+            title = "SAN PHAM CHO NU";
+            selectedType = "Female";
+            break;
+        case 1:
+            title = "SAN PHAM CHO NAM";
+            selectedType = "Male";
+            break;
+        case 3:
+            title = "SAN PHAM CHO TRE EM";
+            selectedType = "Children";
+            break;
+        case 4:
+            title = "TAT CA SAN PHAM";
+            selectedType = "All";
+            break;
+        default:
+            title = "LOAI SAN PHAM KHONG HOP LE";
+            selectedType = "Invalid";
+            break;
+    }
+
+    cout << "\n==============================================================SHOP QUAN AO GAU GAU ================================================================\n";
+    cout << "                                                           --------------------------                                                              \n";
+    cout << "                                                           " <<"     " << title << "                                                              \n";
+    cout << "                                                           --------------------------                                                              \n";
 
     cout << "+----------+---------------------------+-------------------+---------------+-----------------------------------------------------------------------+" << endl;
     cout << "| ID       | Ten san pham              | Thuong hieu       | Gia (VND)     | Size, Mau, So luong                                                   |" << endl;
     cout << "+----------+---------------------------+-------------------+---------------+-----------------------------------------------------------------------+" << endl;
 
     while (current != nullptr) {
-        bool isTypeValid = (type == "All") || 
-                           (type == "Male" && dynamic_cast<Male*>(current->data)) ||
-                           (type == "Female" && dynamic_cast<Female*>(current->data)) ||
-                           (type == "Children" && dynamic_cast<Children*>(current->data));
+        bool isTypeValid = (selectedType == "All" || 
+                            (selectedType == "Female" && dynamic_cast<Female*>(current->data)) ||
+                            (selectedType == "Male" && dynamic_cast<Male*>(current->data)) ||
+                            (selectedType == "Children" && dynamic_cast<Children*>(current->data)));
 
-        bool check = true; // Đổi tên biến từ matches thành check
+        bool check = true; 
 
-        // Kiểm tra thương hiệu
         if (!brand.empty() && current->data->getBranch() != brand) {
             check = false;
         }
-
-        // Kiểm tra màu sắc
         if (!color.empty() && !checkColor(current->data, color)) {
             check = false;
         }
-
-        // Kiểm tra kích thước
         if (!size.empty() && !checkSize(current->data, size)) {
             check = false;
         }
-
         if (isTypeValid && current->data->getName().find(sub) != string::npos && check) {
             cout << "| " << left << setw(8) << current->data->getID() << " | "
                  << setw(25) << current->data->getName() << " | "
@@ -436,8 +463,10 @@ void ClothesManager::SearchBySubstring(const string& sub, const string& brand, c
     }
 
     cout << "+----------+---------------------------+-------------------+---------------+-----------------------------------------------------------------------+" << endl;
-    system("pause"); 
+
+    system("pause");
 }
+       
 
 bool ClothesManager::checkColor(Clothes* cloth, const string& color) const {
     Node<Variant*>* variant = cloth->getVariants().getHead();

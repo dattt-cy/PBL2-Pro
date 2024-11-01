@@ -47,6 +47,7 @@ public:
     double getTotalRevenue() const;
     void ProductStats(std::map<std::string, int>& productQuantities, std::map<std::string, double>& productRevenues) const;
     void restoreItems(ClothesManager& clothesManager);
+    void writeInvoiceToFile(const string& customerID, const string& customerName, const string& customerPhone);
 };
 
 #endif // ORDER_H

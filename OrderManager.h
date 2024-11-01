@@ -6,6 +6,7 @@
 #include "ClothesManager.h"
 #include <string>
 #include <iomanip>
+#include "Admin_Manage.h"
 
 using namespace std;
 

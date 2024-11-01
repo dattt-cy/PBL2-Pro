@@ -8,7 +8,6 @@
 using namespace std;
 
 
-void drawBox(int x, int y, int width, int height);
 
 void drawInterface();
 
@@ -19,6 +18,7 @@ string getInput_admin(int x, int y, bool hide = false);
 string getInput(int x, int y, bool hide = false);
 
 int login(Admin_Manage& n);
+int createAccount(Admin_Manage& n);
 
 
 #endif // LOGIN_H

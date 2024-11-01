@@ -1,10 +1,10 @@
-C100,Ao Thun Tre Em,600,Nike,S,Orange,10,M,Purple,9
+C100,Ao Thun Tre Em,600,Nike,S,Orange,8,M,Purple,9
 C101,Quan Short Cau Vong,700,Adidas,S,Green,15,M,White,5
 C102,Ao Sieu Nhe Cho Be,500,Nike,M,Light Blue,25,S,Pink,12
 C103,Quan Dai Co Vang,750,Adidas,S,Beige,10,M,Brown,8
 C200,Dam Xoe Co Tron,1600,Puma,M,Purple,4,S,Red,6
 C201,Ao Ba Lo,950,Nike,L,Red,10,M,Black,5
-C202,Ao Baby Tre Em,10000,Nike,S,Blue,10,M,Red,12
+C202,Ao Baby Tre Em,10000,Nike,S,Blue,10,M,Red,2
 F100,Dam Maxi Hoa Tiet,1500,Nike
 F101,Ao Sat Nach Basic,800,Nike
 F102,Ao Dai Mua He,1200,Nike
@@ -15,8 +15,8 @@ F202,Ao Khoac Da,2000,Nike,XL,Brown,7,M,Orange,3
 F203,Quan Short Nam,900,Adidas,S,Gray,15,M,Beige,8
 F300,Dam Dai Mua He,1700,Nike,M,White,4
 F301,Quan Dai The Thao,1100,Adidas,M,White,6,L,Blue,8
-F302,Ao Croptop Hoa Tiet,900,Puma,M,Yellow,10
+F302,Ao Croptop Hoa Tiet,900,Puma,M,Yellow,9
 F400,Ao Khoac Bomber,1800,Nike,XL,Green,5,L,Black,4
-F401,Quan Kaki Dai,1300,Adidas,M,Brown,7,S,Gray,6
-F500,Ao Tam Thoi Trang,950,Nike,L,Yellow,14,S,Pink,3
+F401,Quan Kaki Dai,1300,Adidas,M,Brown,7
+F500,Ao Tam Thoi Trang,950,Nike,L,Yellow,1,S,Pink,2
 F501,Ao Thun Co Hoc,850,Puma

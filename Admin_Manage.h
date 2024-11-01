@@ -9,8 +9,12 @@ class Admin_Manage {
 private:
     LinkedList<Admin*> ListNV;
     LinkedList<Admin*> ListKH;
+    
 
 public:
+    static string name;
+    static string phone;
+    static string id;
     void sortByID();
     void WriteFileAdmin(const std::string& filename);
     void ShowAdmin();
@@ -34,6 +38,13 @@ public:
     void DeleteCustomer(string ID);
     void UpdateCustomerID();
     bool findCustomer(const string& ID);
+    bool createAccount(const string& ID, const string& password, const string& name);
+    bool isCustomerInfoComplete(const string& id);
+    void updateCustomerInfo(const string& id, const string& dob, const string& address, const string& gender, const string& phone);
+    int CustomerID(const string& filename);
+    string generateNewIDKH();
+
+
 };
 
 #endif // ADMIN_MANAGE_H

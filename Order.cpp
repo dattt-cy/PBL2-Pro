@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
-
+#include <fstream>
 using namespace std;
 
 
@@ -74,6 +74,7 @@ void Order::editItem(ClothesManager& clothesManager) {
             cout << "<!> KHONG TIM THAY SAN PHAM VOI MA ID: " << newItemID << ". Vui long nhap lai." << endl;
             continue;
         }
+        clothesManager.PrintClothesByID(newItemID);
 
         newItemName = clothes->getName(); 
 
@@ -205,6 +206,10 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
             cout << "<!> SO LUONG NHAP VAO VUOT QUA SO LUONG HIEN CO. VUI LONG NHAP LAI." << endl;
             continue;
         }
+        if(quantity < 0){
+            cout << "<!> SO LUONG PHAI LA SO DUONG. VUI LONG NHAP LAI" << endl;
+            continue;
+        }
         break;
     }
     clothes->UpdateSL(color, size, quantity);
@@ -249,8 +254,74 @@ void Order::displayOrder() const {
     cout << right << setw(62) << "Tong Cong: "
          << fixed << setprecision(0) << formatMoney(calculateTotal()) << " VND\n";
     cout << "================================================================================\n";
-}
+} 
+void Order::writeInvoiceToFile(const string& customerID, const string& customerName, const string& customerPhone){
+    stringstream fileName;
+    fileName << customerID << "_" << customerName << ".txt";
 
+    ofstream outFile(fileName.str(), ios::app);
+    if (!outFile.is_open()) {
+        cerr << "Khong the mo file de ghi hoa don!" << endl;
+        return;
+    }
+    outFile << "============================= SHOP QUAN AO GAU GAU =============================\n";
+    double totalAmount = calculateTotal();
+    double discount = 0.0;
+    if(totalAmount >= 1000000){
+        discount =  0.15;
+    } else if(totalAmount > 500000){
+        discount = 0.1;
+    }
+    double discountAmount = totalAmount * discount;
+    double finalTotall = totalAmount - discountAmount;
+    finalTotal = finalTotall;
+
+
+    outFile << "Ma Hoa Don: " << InvoiceID() << "                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang" << endl;
+    time_t now = time(NULL);
+    tm* t = localtime(&now);
+
+
+    outFile << "Time  In: ";
+    outFile  << setw(1) << "" << t->tm_mday << "."<< "" << t->tm_mon + 1 << "." << "" << t->tm_year - 100 << " ";
+    outFile  << setw(1) << "" << t->tm_hour << ":" << "" << t->tm_min << "                                       SDT: 0372787650" << endl;
+
+    outFile  << "Time Out: ";
+    outFile  << setw(1) << "" << t->tm_mday << "." << "" << t->tm_mon + 1 << "." << "" << t->tm_year - 100 << " ";
+    outFile  << setw(1) << "" << t->tm_hour << ":" << "" << t->tm_min << endl;
+    outFile  << "Ten Khach Hang: " << customerName << endl;
+    outFile  << "So Dien Thoai: " << customerPhone << endl;
+    outFile  << endl;
+    outFile << "                               HOA DON THANH TOAN                                  " << endl;
+    outFile << endl;
+    outFile << left << setw(20) << "Item"
+            << right << setw(20) << "Price"
+            << setw(18) << "Quantity"
+            << setw(17) << "Total" << endl;
+
+    outFile << "--------------------------------------------------------------------------------\n";
+
+    Node<OrderItem*>* current = items.getHead();
+    while (current != nullptr) {
+        OrderItem* item = current->data;
+        outFile << left << setw(20) << current->data->itemName
+             << right << setw(17) << fixed << setprecision(0) << formatMoney(current->data->price) << " VND"
+             << right << setw(13) << current->data->quantity
+             << right << setw(19) << fixed << setprecision(0) 
+             << formatMoney(current->data->price * current->data->quantity) << " VND" << endl;
+        current = current->next;
+    }
+
+    outFile << "--------------------------------------------------------------------------------\n";
+    outFile << "Tong tien: " << fixed << setprecision(0) << formatMoney(totalAmount) << " VND" << endl;
+    outFile << "Giam gia: " << discount * 100 << "%" << endl;
+    outFile << "Tong tien duoc giam gia: " << fixed << setprecision(0) << formatMoney(discountAmount) << " VND" << endl;
+    outFile << "Tong tien sau khi giam gia: " << fixed << setprecision(0) << formatMoney(finalTotall) << " VND" << endl;
+    ostringstream oss;
+    read_number(finalTotal, oss);
+    outFile << oss.str() << "dong" << endl;
+    outFile << "================================================================================\n";
+}
 
 void Order::printInvoice()  {
     cout << "============================= SHOP QUAN AO GAU GAU =============================\n";
@@ -277,6 +348,8 @@ void Order::printInvoice()  {
     cout << "Time Out: ";
     cout << setw(1) << "" << t->tm_mday << "." << "" << t->tm_mon + 1 << "." << "" << t->tm_year - 100 << " ";
     cout << setw(1) << "" << t->tm_hour << ":" << "" << t->tm_min << endl;
+    cout << "Ten Khach Hang: " << customerName << endl;
+    cout << "So Dien Thoai: " << customerPhone << endl;
     cout << endl;
     cout << "                               HOA DON THANH TOAN                                  " << endl;
     cout << endl;
@@ -305,9 +378,10 @@ void Order::printInvoice()  {
     cout << "Tong tien sau khi giam gia: " << fixed << setprecision(0) << formatMoney(finalTotall) << " VND" << endl;
     ostringstream oss;
     read_number(finalTotal, oss);
-    cout << oss.str() << endl;
+    cout << oss.str() << "dong" << endl;
     cout << "================================================================================\n";
 }
+
 LinkedList<OrderItem*> Order::getItems() const {
     return items;
 }
