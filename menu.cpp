@@ -110,6 +110,94 @@ int subMenuCase2() {
 
     return interactiveMenu(menuItems, numItems);
 }
+void Statistics(OrderManager& orderManager) {
+    string menuItems[] = {
+        "1. THONG KE NGAY HOM NAY",
+        "2. THONG KE THEO NGAY",
+        "3. THONG KE THEO THANG",
+        "4. THONG KE THEO NAM",
+        "5. TRO VE MENU CHINH"
+    };
+    int numItems = sizeof(menuItems) / sizeof(menuItems[0]);
+    int choice;
+    orderManager.clearOrders();
+    do {
+        choice = interactiveMenu(menuItems, numItems);
+      
+        switch (choice) {
+            case 0: {
+                system("cls");
+                orderManager.readOrdersFromFile("Doanhthu.txt");
+                time_t now = time(0);
+                tm* ltm = localtime(&now);
+                int day = ltm->tm_mday;
+                int month = ltm->tm_mon + 1;
+                int year = ltm->tm_year + 1900;
+                orderManager.generateStatistics(day, month, year, "day");
+                orderManager.clearOrders();
+                system("pause");
+                break;
+            }
+            case 1: {
+                system("cls");
+                string dateStr;
+                int day, month, year;
+                orderManager.readOrdersFromFile("Doanhthu.txt");
+                cout << "Nhap ngay (dd/mm/yyyy): ";
+                getline(cin, dateStr);
+                if (parseDate(dateStr, day, month, year)) {
+                    orderManager.generateStatistics(day, month, year, "day");
+                } else {
+                    cout << "<!> Ngay khong hop le!" << endl;
+                }
+                orderManager.clearOrders();
+                system("pause");
+                break;
+            }
+            case 2: {
+                system("cls");
+                string dateStr;
+                int day = 1, month, year;
+                orderManager.readOrdersFromFile("Doanhthu.txt");
+                cout << "Nhap thang va nam (mm/yyyy): ";
+                getline(cin, dateStr);
+                if (parseDate("01/" + dateStr, day, month, year)) { 
+                    orderManager.generateStatistics(0, month, year, "month");
+                } else {
+                    cout << "<!> Thang hoac nam khong hop le!" << endl;
+                }
+                orderManager.clearOrders();
+                system("pause");
+                break;
+            }
+            case 3: {
+                system("cls");
+                string dateStr;
+                orderManager.readOrdersFromFile("Doanhthu.txt");
+                int day = 1, month = 1, year;
+                cout << "Nhap nam (yyyy): ";
+                getline(cin, dateStr);
+                if (parseDate("01/01/" + dateStr, day, month, year)) { 
+                    orderManager.generateStatistics(0, 0, year, "year");
+                } else {
+                    cout << "<!> Nam khong hop le!" << endl;
+                }
+                orderManager.clearOrders();
+                system("pause");
+                break;
+            }
+            case 4: {
+                break;
+            }
+            default: {
+                cout << "<!> Lua chon khong hop le!" << endl;
+                system("pause");
+                break;
+            }
+        }
+    } while (choice != 4); 
+}
+
 
 void menu(ClothesManager& manager, OrderManager& orderManager) {
     manager.readClothesFromFile("CLOTHES.txt");
@@ -123,6 +211,7 @@ void menu(ClothesManager& manager, OrderManager& orderManager) {
             "4. LUU VAO FILE",
             "5. DAT HANG",
             "6. THONG KE DOANH THU",
+            "7. XEM HOA DON KHACH HANG",
             "0. THOAT"
         };
         int numMainItems = sizeof(mainMenuItems) / sizeof(mainMenuItems[0]);
@@ -159,11 +248,9 @@ void menu(ClothesManager& manager, OrderManager& orderManager) {
                 while (!exitSubMenu) {  
                     int subChoice = subMenuCase1();
                     string name, brand, type, color, size, ID;
-                     cin.ignore();
                     switch (subChoice) {
                         case 0:
                             system("cls");
-                           
                             cout << "[!] LUU Y CO THE VIET THUONG HOAC VIET HOA THONG TIN CAN TIM." << endl;
                             cout << "<!> Nhap mot phan hoac toan bo ten san pham can tim: ";
                             getline(cin, name);
@@ -244,10 +331,14 @@ void menu(ClothesManager& manager, OrderManager& orderManager) {
                     switch (subChoice) {
                         case 0:
                             system("cls");
-                            manager.addClothesManually();
+                            if(manager.addClothesManually()){
+                                manager.Sort_ByID();
+                                manager.printAllClothes();
+                            }
                             break;
                           case 1: {
                             system("cls");
+                            cout << "<!> LUU Y CO THE VIET THUONG HOAC VIET HOA ID CAN SUA." << endl;
                             cout << "<!> Nhap the loai quan ao can sua (1: Male, 2: Female, 3: Children, 4: All): ";
                             string type;
                             getline(cin, type);
@@ -256,24 +347,34 @@ void menu(ClothesManager& manager, OrderManager& orderManager) {
                                 cout << "<!> Nhap ma ID quan ao can sua: ";
                                 getline(cin, id);
                                 id = nameStr(id);
-                                manager.EditClothesByID(id);
-                                system("pause");
+                                if(manager.EditClothesByID(id)){
+                                    manager.printByType(type);
+                                }
                             } else {
                                 cout << "<!> Lua chon khong hop le !!" << endl;
-                                system("pause");
                             }
+                            system("pause");
                             break;
                         }
                         case 2:
                             system("cls");
-                            cout << "<!> Nhap the loai quan ao can sua (1: Male, 2: Female, 3: Children, 4: All): ";
+                            cout << "<!> LUU Y CO THE VIET THUONG HOAC HOA ID CAN XOA." << endl;
+                            cout << "<!> Nhap the loai quan ao can xoa (1: Male, 2: Female, 3: Children, 4: All): ";
                             getline(cin, type);
                             if (type == "1" || type == "2" || type == "3" || type == "4") {
                                 manager.printByType(type);
                                 cout << "<!> Nhap ma ID quan ao can xoa: ";
                                 getline(cin, id);
-                                manager.removeClothesByID(id);
-                                system("pause");
+                                id = nameStr(id);
+                                if(manager.removeClothesByID(id)){
+                                    cout << "<!> DA XOA QUAN AO THANH CONG." << endl;
+                                    system("pause");
+                                    manager.printByType(type);
+                                } else {
+                                    cout << "<!> KHONG TIM THAY AO QUAN VOI " << id << endl;
+                                    cout << "<!> VUI LONG KIEM TRA LAI." << endl;
+                                    system("pause");
+                                }
                             }
                             break;
                         case 3:
@@ -297,13 +398,26 @@ void menu(ClothesManager& manager, OrderManager& orderManager) {
             }
             case 5: {
                 system("cls");
-                orderManager.generateStatistics();
-                system("pause");
+                Statistics(orderManager);
                 break;
             }
             case 6: {
-                return;
+                system("cls");
+                string nameFile;
+                string ID;
+                cout << "---------------------------------------------------------" << endl;
+                cout << "<!> Nhap ID cua khach hang can xem hoa don: ";
+                getline(cin, ID);
+                if(!orderManager.readInvoiceFromFile(ID)){
+                    cout << "<!> KHONG TIM THAY HOA DON CUA KHACH HANG NAY!" << endl;
+                }
+                break;
+                system("pause");
+                cout << "---------------------------------------------------------" << endl;
             }
+            case 7: {
+                return;
+        }
         }
     }
 }
@@ -316,7 +430,8 @@ void menuForCustomer(ClothesManager& manager, OrderManager& orderManager) {
             "1. XEM QUAN AO",
             "2. TIM KIEM QUAN AO",
             "3. DAT HANG",
-            "4. TRO VE MAN HINH DANG NHAP",
+            "4. XEM HOA DON CUA BAN",
+            "5. THOAT"
         };
         int numMainItems = sizeof(mainMenuItems) / sizeof(mainMenuItems[0]);
 
@@ -355,6 +470,8 @@ void menuForCustomer(ClothesManager& manager, OrderManager& orderManager) {
                     switch (subChoice) {
                         case 0:
                             system("cls");
+                            manager.printByType("4");
+                            cout << "---------------------------------------------------------" << endl;
                             cout << "<!> Nhap ten san pham can tim: ";
                             getline(cin, name);
                             manager.SearchBySubstring(name, "", "", "", "All");
@@ -362,36 +479,46 @@ void menuForCustomer(ClothesManager& manager, OrderManager& orderManager) {
                             break;
                         case 1:
                             system("cls");
+                            manager.printByType("4");
+                            cout << "---------------------------------------------------------" << endl;
                             cout << "<!> Nhap thuong hieu can tim: ";
                             getline(cin, brand);
                             manager.SearchBySubstring("", brand, "", "", "All");
                             break;
                         case 2:
                             system("cls");
-                            cout << "<!> Nhap the loai (Male/Female/Children): ";
+                             manager.printByType("4");
+                            cout << "---------------------------------------------------------" << endl;
+                            cout << "<!> Nhap the loai (1. Male/3. Female/3. Children/ 4. ALL): ";
                             getline(cin, type);
                             manager.SearchBySubstring("", "", "", "", type);
                             break;
                         case 3:
                             system("cls");
+                            manager.printByType("4");
+                            cout << "---------------------------------------------------------" << endl;
                             cout << "<!> Nhap mau sac can tim: ";
                             getline(cin, color);
                             manager.SearchBySubstring("", "", color, "", "All");
                             break;
                         case 4:
                             system("cls");
+                            manager.printByType("4");
+                            cout << "---------------------------------------------------------" << endl;
                             cout << "<!> Nhap size can tim: ";
                             getline(cin, size);
                             manager.SearchBySubstring("", "", "", size, "All");
                             break;
                         case 5:
                             system("cls");
+                            manager.printByType("4");
+                            cout << "---------------------------------------------------------" << endl;
                             cout << "<!> CO THE NHAP TOAN BO HOAC 1 PHAN THONG TIN DUOI DAY" << endl;
                             cout << "<!> Nhap ten quan ao muon tim: ";
                             getline(cin, name);
                             cout << "<!> Nhap ten thuong hieu muon tim: ";
                             getline(cin, brand);
-                            cout << "<!> Nhap loai quan ao muon tim: ";
+                            cout << "<!> Nhap the loai (1. Male/2. Female/3. Children/ 4. All): ";
                             getline(cin, type);
                             cout << "<!> Nhap mau sac muon tim: ";
                             getline(cin, color);
@@ -414,6 +541,20 @@ void menuForCustomer(ClothesManager& manager, OrderManager& orderManager) {
             }
             case 3: {
                 system("cls");
+                string ID = Admin_Manage::id;
+                if(!orderManager.readInvoiceFromFile(ID)){
+                    cout << "<!> HIEN TAI BAN CHUA CO DON HANG NAO. HAY NHANH TAY DAT HANG NHE ^_^!" << endl;
+                }
+                system("pause");
+                break;
+            }
+            case 4: {
+                setTextColor(7);
+                system("cls");
+                cout << "***------------------------------------------------------------***" << endl;
+                cout << "        CHAO TAM BIET! HEN GAP LAI BAN VAO LAN SAU NHE ^-^" << endl;
+                cout << "    !SHOP QUAN AO GAU GAU XIN CHAN THANH CAM ON BAN RAT NHIEU!     " << endl;
+                system("pause");
                 return;
             }
         }

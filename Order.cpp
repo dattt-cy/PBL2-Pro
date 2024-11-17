@@ -11,7 +11,7 @@ Order::Order(int id, const string& name, const string& phone)
 
 
 void Order::addItem(OrderItem* item) {
-    items.addNode(item);
+    items.push_back(item);
     total += item->price * item->quantity; 
 }
 
@@ -152,7 +152,6 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
     string quantity2;
     int quantity;
     Clothes* clothes = nullptr;
-
     while (true) {
         cout << "<!> Nhap ma ID quan ao muon mua (nhap 0 de huy): ";
         getline(cin, itemID);
@@ -172,7 +171,6 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
             cout << "<!> SAN PHAM VOI MA ID: " << itemID << " DA HET HANG. Vui long chon san pham khac." << endl;
             continue;
         }
-        cin.ignore();
         break;
     }
     clothesManager.PrintClothesByID(itemID);
@@ -215,13 +213,23 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
     clothes->UpdateSL(color, size, quantity);
     double price = clothes->getPrice();
     string itemName = clothes->getName(); 
-    OrderItem* item = new OrderItem(itemID, itemName, color, size, quantity, price);
+    time_t now = time(0);
+    tm* ltm = localtime(&now);
+    Datee orderDate(ltm->tm_mday, ltm->tm_mon + 1, ltm->tm_year + 1900);
+    int orderID = items.getHead() ? items.getHead()->data->orderID2 : 0;
+    OrderItem* item = new OrderItem(orderID ,itemID, itemName, color, size, quantity, price, orderDate);
     addItem(item);
     cout << "<!> DA THEM SAN PHAM VAO GIO HANG!" << endl;
     return true;
 }
 
 double Order::calculateTotal() const {
+    double total = 0.0;
+    Node<OrderItem*>* current = items.getHead();
+    while (current) {
+        total += current->data->price * current->data->quantity;
+        current = current->next;
+    }
     return total;
 }
 
@@ -382,7 +390,7 @@ void Order::printInvoice()  {
     cout << "================================================================================\n";
 }
 
-LinkedList<OrderItem*> Order::getItems() const {
+LinkedList<OrderItem*>& Order::getItems(){
     return items;
 }
 string Order::InvoiceID() const{
@@ -440,4 +448,68 @@ void Order::restoreItems(ClothesManager& clothesManager) {
         }
         current = current->next;
     }
+}
+void Order::saveOrderToFile(const string& filename) {
+    ofstream outFile(filename, ios::app);
+    if (!outFile.is_open()) {
+        cerr << "Khong the mo file de ghi hoa don!" << endl;
+        return;
+    }
+    time_t now = time(NULL);
+    tm* t = localtime(&now);
+    string orderDate = to_string(t->tm_mday) + "/" + to_string(t->tm_mon + 1) + "/" + to_string(t->tm_year + 1900);
+    
+    Node<OrderItem*>* current = items.getHead();
+    while(current) {
+        outFile << orderDate << "," << orderID << "," << current->data->itemID << "," << current->data->itemName << "," << current->data->color << "," << current->data->size << "," << current->data->quantity << "," << current->data->price << endl;
+        current = current->next;
+    }
+
+    outFile.close();
+}
+
+
+void Order::readFromFile(std::ifstream& inFile) {
+    std::string itemID, itemName, color, size;
+    int orderID, day, month, year, quantity;
+    double price;
+
+    char delimiter;
+
+     while (inFile >> day >> delimiter >> month >> delimiter >> year >> delimiter >> orderID >> delimiter) {
+        std::getline(inFile, itemID, ',');
+        std::getline(inFile, itemName, ',');
+        std::getline(inFile, color, ',');
+        std::getline(inFile, size, ',');
+        if (!(inFile >> quantity >> delimiter >> price)) break;
+        inFile.ignore(); 
+
+        if (itemID.empty() || itemName.empty() || color.empty() || size.empty()) {
+            std::cerr << "Loi: Du lieu khong hop le trong file." << std::endl;
+            continue; 
+        }
+
+        Datee orderDate(day, month, year);
+        this->orderID = orderID;
+        OrderItem* item = new OrderItem(orderID, itemID, itemName, color, size, quantity, price, orderDate);
+        this->addItem(item);
+
+    }
+}
+bool Order::containsItemsMatching(int day, int month, int year, const string& filterType) const {
+    Node<OrderItem*>* currentItem = items.getHead();
+    while (currentItem) {
+        const Datee& orderDate = currentItem->data->orderDate;
+
+        if (filterType == "day" && orderDate.day == day && orderDate.month == month && orderDate.year == year) {
+            return true;
+        } else if (filterType == "month" && day == 0 && orderDate.month == month && orderDate.year == year) {
+            return true;
+        } else if (filterType == "year" && orderDate.year == year) {
+            return true;
+        }
+
+        currentItem = currentItem->next;
+    }
+    return false;
 }

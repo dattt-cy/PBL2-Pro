@@ -69,7 +69,7 @@ void drawCompleteCustomerInfoInterface() {
     drawBox(33, 7, 40, 1);
     setTextColor(15);
     gotoXY(13, 11);
-    cout << "Gioi tinh (Nam/Nu): ";
+    cout << "1. Nam/0. Nu: ";
     drawBox(33, 10, 40, 1);
     setTextColor(15);
     gotoXY(13, 14);
@@ -81,7 +81,7 @@ bool isValidCharacter(char ch) {
     if ((ch >= '0' && ch <= '9') || 
         (ch >= 'a' && ch <= 'z') || 
         (ch >= 'A' && ch <= 'Z') || 
-        ch == 9 || ch == 8 || ch == ' ' || ch == '/') { 
+        ch == 9 || ch == 8 || ch == ' ' || ch == '/' || ch == ',' || ch == '-') { 
         return true;
     }
     return false;
@@ -104,7 +104,7 @@ string getInput_admin(int x, int y, bool hide) {
                     cout << "\b \b";
                 }
             } else if (isprint(ch)) {
-                if (input_admin.length() <= 16) {
+                if (input_admin.length() <= 50) {
                     input_admin.push_back(ch);
                     cout << ch;
                 }
@@ -203,7 +203,7 @@ void completeCustomerInfo(Admin_Manage& n, const string& id) {
             gotoXY(34, 14);
             cout << "So dien thoai phai bao gom 10 chu so.";
             setTextColor(15);
-            gotoXY(34, 14); // Di chuyển lại để người dùng nhập lại
+            gotoXY(34, 14); 
             phone = getInput_admin(34, 14, false);
 
             
@@ -211,7 +211,12 @@ void completeCustomerInfo(Admin_Manage& n, const string& id) {
             cout << "                                       "; 
         }
     } while (!isPhoneNumber(phone));
-
+    if(gender == "1"){ 
+        gender = "Nam";
+    }
+    else if(gender == "0"){
+        gender = "Nu";
+    }
     n.updateCustomerInfo(id, dob, address, gender, phone);
 
     gotoXY(0, 23);

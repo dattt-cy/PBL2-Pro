@@ -19,4 +19,6 @@ int isCharacter(const string& input);
 bool isPhoneNumber(const string& input);
 bool isDate(const string& input);
 bool isSex(const string& input);
+bool parseDate(const string& dateStr, int& day, int& month, int& year);
+bool checkDate(int day, int month, int year) ;
 #endif

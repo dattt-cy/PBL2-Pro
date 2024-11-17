@@ -43,6 +43,8 @@ public:
     void updateCustomerInfo(const string& id, const string& dob, const string& address, const string& gender, const string& phone);
     int CustomerID(const string& filename);
     string generateNewIDKH();
+    void deleteList();
+    Admin* findKhachHang(const string& id);
 
 
 };

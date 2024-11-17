@@ -18,9 +18,13 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
     Order* order = new Order(orderID, customerName, customerPhone);
 
     cout << "Ban quan tam den san pham nao? (1. Male, 2. Female, 3. Children, 4. All): ";
-    int productType;
-    cin >> productType;
-    cin.ignore();
+    string product;
+    getline(cin, product);
+    if(isCharacter(product)){
+        cout << "Lua chon khong hop le. Vui long thu lai." << endl;
+        return;
+    }
+    int productType = atoi(product.c_str());
     cout << "==================== CLOTHES MENU ====================" << endl;
     switch (productType) {
         case 1:
@@ -79,6 +83,10 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
     } while (true);
     do {
         system("cls");
+        if(order->getItems().isEmpty()){
+            cout << "<!> GIO HANG CUA BAN DANG TRONG. VUI LONG THEM SAN PHAM VAO GIO HANG." << endl;
+            break;
+        }
         order->displayOrder();
         cout << "\nBAN CO CHAC CHAN MUON THANH TOAN KHONG?" << endl;
         cout << "\n1. XAC NHAN THANH TOAN." << endl;
@@ -93,13 +101,17 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
                     clothesManager.readClothesFromFile("clothes.txt");
                     system("cls");
                     checkoutOrder(order);
+                    order->saveOrderToFile("DoanhThu.txt");
                     order->writeInvoiceToFile(Admin_Manage::id, Admin_Manage::name, Admin_Manage::phone);
                     orders.addNode(order);
-                    system("pause");
                 break;
             }
             case 2: {
                 system("cls");
+                if(order->getItems().isEmpty()){
+                    cout << "<!> GIO HANG CUA BAN DANG TRONG. VUI LONG THEM SAN PHAM VAO GIO HANG." << endl;
+                    break;
+                }
                 order->displayOrder();
                 int subChoice;
                 do {
@@ -198,7 +210,6 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
                 order->restoreItems(clothesManager);
                delete order;
                 cout << "<!> THONG BAO DON HANG DA BI HUY." << endl;
-                system("pause");
                 break;
             default:
                 cout << "Lua chon khong hop le. Vui long thu lai." << endl;
@@ -218,33 +229,69 @@ int OrderManager::generateRandomOrderNumber() {
     return rand() % 900 + 100;  
 }
 
-void OrderManager::generateStatistics() {
+void OrderManager::generateStatistics(int day, int month, int year, const string& filterType) {
+  
     double totalRevenue = 0.0;
-    double totalDiscount = 0.0;
     int totalItemsSold = 0;
-    int totalOrders = 0;
+    double totalSales = 0.0;
 
+    map<string, double> orderCount;
     map<string, int> productQuantities;
     map<string, double> productRevenues;
 
     Node<Order*>* currentOrder = orders.getHead();
     while (currentOrder) {
-        totalOrders++;
-        totalRevenue += currentOrder->data->getTotalRevenue();
-        totalDiscount += currentOrder->data->getDiscountAmount();
-        totalItemsSold += currentOrder->data->getTotalItemsSold();
+        if (currentOrder->data->containsItemsMatching(day, month, year, filterType)) {
+            Node<OrderItem*>* currentItem = currentOrder->data->getItems().getHead();
+            while (currentItem) {
+                const Datee& orderDate = currentItem->data->orderDate;
+                bool includeOrder = false;
+           
+                if (filterType == "day" && orderDate.day == day && orderDate.month == month && orderDate.year == year) {
+                    includeOrder = true;
+                } else if (filterType == "month" && day == 0 && orderDate.month == month && orderDate.year == year) {
+                    includeOrder = true;
+                } else if (filterType == "year" && orderDate.year == year) {
+                    includeOrder = true;
+                }
 
-        currentOrder->data->ProductStats(productQuantities, productRevenues);
+                if (includeOrder) {
+                    orderCount[currentItem->data->getOrderID2()]+=currentItem->data->price * currentItem->data->quantity;
+                    totalRevenue += currentItem->data->price * currentItem->data->quantity;
+                    totalItemsSold += currentItem->data->quantity;
+
+                    productQuantities[currentItem->data->itemName] += currentItem->data->quantity;
+                    productRevenues[currentItem->data->itemName] += currentItem->data->price * currentItem->data->quantity;
+                }
+
+                currentItem = currentItem->next;
+            }
+        }
 
         currentOrder = currentOrder->next;
     }
-
-    cout << "==================== THONG KE ====================" << endl;
-    cout << "Tong so don hang: " << totalOrders << endl;
+    int totalOrder = orderCount.size();
+    for(const auto& entry : orderCount){
+        if(entry.second >= 1000000){
+            totalSales += entry.second * 0.15;
+        }
+        else if(totalSales >= 500000){
+            totalSales += entry.second * 0.1;
+        }
+    }
+    if(totalOrder == 0){
+        cout << "***--------------------------------------------------***" << endl;
+        cout << "   <!> KHONG CO DON HANG NAO TRONG THOI GIAN NAY. " << endl;
+        cout << "***--------------------------------------------------***" << endl;
+        return;
+    }
+    cout << "===================================== THONG KE ================================" << endl;
+    cout << "Tong so don hang: " << totalOrder << endl;
     cout << "Tong san pham da ban: " << totalItemsSold << endl;
-    cout << "Tong tien giam gia: " << totalDiscount << " VND" << endl;
-    cout << "Tong doanh thu: " << totalRevenue << " VND" << endl;
-
+    cout << "Tong so tien da giam gia: " << fixed << setprecision(0) << formatMoney(totalSales) << " VND" << endl;
+    cout << "Tong so tien truoc khi giam gia: " << fixed << setprecision(0) << formatMoney(totalRevenue) << " VND" << endl;
+    cout << "Tong doanh thu: " << fixed << setprecision(0) << formatMoney(totalRevenue - totalSales) << " VND" << endl;
+    
     string bestSeller = "", nonSeller = "";
     int maxSales = 0, minSales = INT_MAX;
 
@@ -256,48 +303,91 @@ void OrderManager::generateStatistics() {
             minSales = entry.second;
         }
     }
-    if(maxSales == minSales){
+    if (maxSales == minSales) {
         cout << "<!> San pham ban chay nhat: ";
-        for(const auto& entry : productQuantities){
-            if(entry.second == maxSales){
+        for (const auto& entry : productQuantities) {
+            if (entry.second == maxSales) {
                 cout << entry.first << " ";
             }
         }
         cout << "voi " << maxSales << " san pham" << endl;
     } else {
         cout << "<!> San pham ban chay nhat: ";
-        for(const auto& entry : productQuantities){
-            if(entry.second == maxSales){
+        for (const auto& entry : productQuantities) {
+            if (entry.second == maxSales) {
                 cout << entry.first << ", ";
             }
         }
         cout << "voi " << maxSales << " san pham" << endl;
         cout << "<!> San pham ban it nhat: ";
-        for(const auto& entry : productQuantities){
-            if(entry.second == minSales){
+        for (const auto& entry : productQuantities) {
+            if (entry.second == minSales) {
                 cout << entry.first << ", ";
             }
         }
         cout << "voi " << minSales << " san pham" << endl;
     }
-    cout << "--------------------------------------------------------------" << endl;
-    cout << left << setw(20) << "Ten san pham"
-         << setw(15) << "So luong"
-         << setw(20) << "Doanh thu (VND)"
-         << "Phan tram (%)" << endl;
-    cout << "--------------------------------------------------------------" << endl;
-
+cout << "--------------------------------------------------------------------------------" << endl;
+cout << left << setw(30) << "Ten san pham"
+     << "|" << setw(15) << "So luong"
+     << "|" << setw(20) << "Doanh thu (VND)"
+     << "|" << "Phan tram (%)" << endl;
+cout << "--------------------------------------------------------------------------------" << endl;
     for (const auto& entry : productQuantities) {
         const string& itemName = entry.first;
         int quantity = entry.second;
         double revenue = productRevenues[itemName];
         double percentRevenue = (totalRevenue > 0) ? (revenue / totalRevenue) * 100 : 0;
 
-        cout << left << setw(20) << itemName
-             << setw(15) << quantity
-             << setw(20) << fixed << setprecision(0) << revenue
-             << fixed << setprecision(2) << percentRevenue << "%" << endl;
+ cout << left << setw(30) << itemName
+         << "|" << setw(15) << quantity
+         << "|" << setw(20) << fixed << setprecision(0) << formatMoney(revenue)
+         << "|" << fixed << setprecision(2) << percentRevenue << "%" << endl;
     }
 
-    cout << "===================================================" << endl;
+    cout << "================================================================================" << endl;
+}
+
+void OrderManager::readOrdersFromFile(const std::string& filename) {
+    std::ifstream inFile(filename);
+    if (!inFile.is_open()) {
+        std::cerr << "Khong the mo file de doc hoa don!" << std::endl;
+        return;
+    }
+
+    while (inFile.good()) {
+        Order* order = new Order(0, "", ""); 
+        order->readFromFile(inFile);
+        if (order->getID() != "0") { 
+            orders.push_back(order);
+        } else {
+            delete order; 
+        }
+    }
+
+    inFile.close();
+}
+void OrderManager::clearOrders() {
+    orders.clear();
+}
+bool OrderManager::readInvoiceFromFile(const string& id){
+    Admin_Manage KH;
+    KH.ReadFileCustomer("Customerr.txt");
+    Admin* kh = KH.findKhachHang(id);
+    if(kh == nullptr){
+        cout << "<!> KHONG TIM THAY KHACH HANG CO ID " << id << endl;
+        return false;
+    }
+    string tenFile = id + "_" + kh->getName() + ".txt";
+    ifstream inFile(tenFile);
+    if (!inFile.is_open()) {
+        return false;
+    }
+    string line;
+    while(getline(inFile, line)){
+        cout << line << endl;
+    }
+    inFile.close();
+    KH.deleteList();
+    return true;
 }

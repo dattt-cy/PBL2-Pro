@@ -20,7 +20,7 @@ protected:
 public:
     virtual void ReadFile(istream& filein);
     virtual void WriteFile(ostream& out) const;
-    virtual void ReadInput() = 0;
+    virtual bool ReadInput() = 0;
     virtual void Print() const;
     Clothes(const string &id, const string &name, const string &branch);
     virtual string getID() const;

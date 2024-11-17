@@ -7,6 +7,7 @@
 
 void drawInterface(string menuItems[], int numItems, int selectedItem);
 int interactiveMenu();
+void Statistics(OrderManager& orderManager);
 void menu(ClothesManager& manager, OrderManager& orderManager);
 void menuForCustomer(ClothesManager& manager, OrderManager& orderManager);
 void chooseMenu(Admin_Manage& Manager, ClothesManager& manager, OrderManager& orderManager);

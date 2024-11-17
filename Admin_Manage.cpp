@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <string>
 #include "Admin.h"
-
+#include "support.h"
 using namespace std;
 string Admin_Manage::phone = ""; 
 string Admin_Manage::name = ""; 
@@ -196,7 +196,7 @@ void Admin_Manage::inputAdmin() {
     Admin* admin = new Admin();
     string input;
     int day, month, year;
-    int gt;
+    string gt;
 
     admin->setID(generateNewID());
     cout << "***-----MOI BAN NHAP THONG TIN ADMIN-----***" << endl;
@@ -206,7 +206,7 @@ void Admin_Manage::inputAdmin() {
     cin.ignore();
     getline(cin, input); 
     admin->setName(input);
-
+    
     cout << "Nhap mat khau: ";
     cin.ignore();
     getline(cin, input); 
@@ -214,13 +214,12 @@ void Admin_Manage::inputAdmin() {
 
     while (true) {
         cout << "Nhap gioi tinh Admin (1: Nam, 0: Nu): ";
-        cin >> gt;
-
-        if (gt == 1) {
+        getline(cin, gt);
+        if (gt == "1") {
             input = "Nam";
             admin->setGender(input);
             break;  
-        } else if (gt == 0) {
+        } else if (gt == "0") {
             input = "Nu";
             admin->setGender(input);
             break;  
@@ -228,11 +227,18 @@ void Admin_Manage::inputAdmin() {
             cout << "Nhap sai! Vui long nhap lai!" << endl;
         }
     }
-    cout << "Nhap ngay sinh (dd/mm/yyyy): ";
-    cin.ignore();
-    getline(cin, input); 
-    Date birthDate = parseDate(input); 
-    admin->setbirthDay(birthDate.day, birthDate.month, birthDate.year);
+    while (true) {
+        cout << "Nhap ngay sinh (dd/mm/yyyy): ";
+        getline(cin, input); 
+        if(isDate(input)){
+            Date birthDate = parseDate(input); 
+            admin->setbirthDay(birthDate.day, birthDate.month, birthDate.year);
+            break;
+        }
+        else{
+            cout << "Ngay sinh khong hop le! Vui long nhap lai." << endl;
+        }
+    }
 
     while (true) {
         cout << "Nhap so dien thoai: ";
@@ -324,6 +330,9 @@ int Admin_Manage::checkLogin(const string& username, const string& password) {
     Node<Admin*>* current = ListNV.getHead();
     while(current != NULL){
         if (current->data->checkLogin(username, password)) {
+            name = current->data->getName();
+            phone = current->data->getnumberPhone();
+            id = current->data->getID();
             return 1; 
         }
         current = current->next;
@@ -600,4 +609,18 @@ void Admin_Manage::updateCustomerInfo(const string& id, const string& dob, const
         current = current->next;
     }
     WriteFileCustomer("Customerr.txt");
+}
+void Admin_Manage::deleteList() {
+    ListNV.clear();
+    ListKH.clear();
+}
+Admin* Admin_Manage::findKhachHang(const string& id) {
+    Node<Admin*>* current = ListKH.getHead();
+    while (current != nullptr) {
+        if (current->data->getID() == id) {
+            return current->data;
+        }
+        current = current->next;
+    }
+    return nullptr;
 }

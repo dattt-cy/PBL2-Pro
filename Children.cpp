@@ -53,19 +53,28 @@ void Children::WriteFile(ostream& fileout) const {
     fileout << endl;
 }
 
-void Children::ReadInput() {
+bool Children::ReadInput() {
     char prefix = 'C';
     highestIDMap[prefix]++;
     clothesID = prefix + to_string(highestIDMap[prefix]);
+    cout << "[!] CO THE NHAP 0 BAT KI VI TRI NAO DE HUY QUA TRINH THEM." << endl;
+    cout << "--------------------------------------------------------------------------------" << endl;
     cout << "<!> Ma quan ao (tu dong): " << clothesID << endl;
-
     while (true) {
         cout << "<!> Nhap ten quan ao ( nhap 0 de huy ): ";
         getline(cin, name);
         name = nameStr(name);
-        if(name == "0") return;
-        if (!name.empty()) break;
+        if(name == "0") {
+            cout << endl;
+            cout << "<!> QUA TRINH THEM DA BI HUY!" << endl;
+              highestIDMap[prefix]--;
+            return false;
+        }
+       if (name.empty()){
         cout << "<!> Ten quan ao khong duoc de trong. Vui long nhap lai." << endl;
+        } else {
+            break;
+        };
     }
 
     while (true) {
@@ -77,7 +86,12 @@ void Children::ReadInput() {
             continue;
         }
         price = stoi(priceStr);
-        if (price <= 0) {
+        if(price == 0){
+            cout << "<!> QUA TRINH THEM DA BI HUY!" << endl;
+            highestIDMap[prefix]--;
+            return false;
+        }
+        if (price < 0) {
             cout << "<!> Gia phai la so duong. Vui long nhap lai." << endl;
             continue;
         } else {
@@ -89,6 +103,12 @@ void Children::ReadInput() {
         cout << "<!> Nhap ten thuong hieu: ";
         getline(cin, branch);
         branch = nameStr(branch);
+        if(branch == "0"){
+            cout << endl;
+            cout << "<!> QUA TRINH THEM DA BI HUY!" << endl;
+            highestIDMap[prefix]--;
+            return false;
+        }
         if (!branch.empty()) break;
         cout << "<!> Ten thuong hieu khong duoc de trong. Vui long nhap lai." << endl;
     }
@@ -103,6 +123,12 @@ void Children::ReadInput() {
         cout << "<!> Nhap size (XS, S, M, L, XL, XXL, XXXL): ";
         getline(cin, size);
         size = toUpper(size);
+        if (size == "0") {
+            cout << endl;
+            cout << "<!> QUA TRINH THEM DA BI HUY!" << endl;
+            highestIDMap[prefix]--;
+            return false;
+        }
         if (validSizes.find(size) != validSizes.end()) break;
         cout << "<!> Size khong hop le. Vui long nhap lai." << endl;
     }
@@ -113,6 +139,12 @@ void Children::ReadInput() {
         cout << "<!> Nhap mau (Red, Blue, Green, Yellow, Black, White, Purple, Brown, Pink, Beige, Gray, Orange): ";
         getline(cin, color);
         color = nameStr(color);
+        if(color == "0"){
+            cout << endl;
+            cout << "<!> QUA TRINH THEM DA BI HUY!" << endl;
+            highestIDMap[prefix]--;
+            return false;
+        }
         if (validColors.find(color) != validColors.end()) break;
         cout << "<!> Mau khong hop le. Vui long nhap lai." << endl;
     }
@@ -125,6 +157,12 @@ void Children::ReadInput() {
             continue;
         }
         quantity = stoi(quantity2);
+        if(quantity == 0){
+            cout << endl;
+            cout << "<!> QUA TRINH THEM DA BI HUY!" << endl;
+            highestIDMap[prefix]--;
+            return false;
+        }
         if (quantity <= 0) {
             cout << "<!> So luong phai la so duong. Vui long nhap lai." << endl;
             continue;
@@ -144,6 +182,12 @@ void Children::ReadInput() {
                 cout << "<!> Nhap size (XS, S, M, L, XL, XXL, XXXL): ";
                 getline(cin, size);
                 size = toUpper(size);
+                if (size == "0") {
+                    cout << endl;
+                    cout << "<!> QUA TRINH THEM DA BI HUY!" << endl;
+                    highestIDMap[prefix]--;
+                    return false;
+                }
                 if (validSizes.find(size) != validSizes.end()) break;
                 cout << "<!> Size khong hop le. Vui long nhap lai." << endl;
             }
@@ -152,6 +196,12 @@ void Children::ReadInput() {
                 cout << "<!> Nhap mau (Red, Blue, Green, Yellow, Black, White, Purple, Brown, Pink, Beige, Gray, Orange): ";
                 getline(cin, color);
                 color = nameStr(color);
+                if(color == "0"){
+                    cout << endl;
+                    cout << "<!> QUA TRINH THEM DA BI HUY!" << endl;
+                    highestIDMap[prefix]--;
+                    return false;
+                }
                 if (validColors.find(color) != validColors.end()) break;
                 cout << "<!> Mau khong hop le. Vui long nhap lai." << endl;
             }
@@ -164,6 +214,12 @@ void Children::ReadInput() {
             continue;
             }
             quantity = stoi(quantity2);
+            if (quantity == 0) {
+                cout << endl;
+                cout << "<!> QUA TRINH THEM DA BI HUY!" << endl;
+                highestIDMap[prefix]--;
+                return false;
+            }
             if (quantity <= 0) {
             cout << "<!> So luong phai la so duong. Vui long nhap lai." << endl;
             continue;
@@ -175,4 +231,5 @@ void Children::ReadInput() {
             addVariant(new Variant(size, color, quantity));
         }
     } while (addMore == 'y' || addMore == 'Y');
+    return true;
 }

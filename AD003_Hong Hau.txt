@@ -1,0 +1,19 @@
+============================= SHOP QUAN AO GAU GAU =============================
+Ma Hoa Don: INV_101124_313                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang
+Time  In:  10.11.24  14:54                                       SDT: 0372787650
+Time Out:  10.11.24  14:54
+Ten Khach Hang: Hong Hau
+So Dien Thoai: 0987896543
+
+                               HOA DON THANH TOAN                                  
+
+Item                               Price          Quantity            Total
+--------------------------------------------------------------------------------
+Dat                           100.000 VND            9            900.000 VND
+--------------------------------------------------------------------------------
+Tong tien: 900.000 VND
+Giam gia: 10%
+Tong tien duoc giam gia: 90.000 VND
+Tong tien sau khi giam gia: 810.000 VND
+tam tram muoi nghin dong
+================================================================================

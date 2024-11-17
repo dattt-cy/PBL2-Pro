@@ -10,7 +10,7 @@
 using namespace std;
 
 void ClothesManager::addClothes(Clothes* clothes) {
-    list.addNode(clothes);
+    list.push_back(clothes);
 }
 
 void ClothesManager::printAllClothes() const {
@@ -68,7 +68,7 @@ void ClothesManager::printByType(const string& type) const {
             cout << "| " << left << setw(8) << current->data->getID() << " | "
                  << setw(25) << current->data->getName() << " | "
                  << setw(17) << current->data->getBranch() << " | "
-                 << setw(13) << fixed << setprecision(0) << current->data->getPrice() << " | ";
+                 << setw(13) << fixed << setprecision(0) << formatMoney(current->data->getPrice()) << " | ";
 
             stringstream ss;
             Node<Variant*>* variant = current->data->getVariants().getHead();
@@ -124,12 +124,15 @@ void ClothesManager::readClothesFromFile(const string& filename) {
     Clothes* item = nullptr;
 
     while (getline(filein, line)) {
+        if(line.empty()) continue;
         if (line[0] == 'M') {
             item = new Male("", "", 0.0, "", "", "", 0);
         } else if (line[0] == 'F') {
             item = new Female("", "", 0.0, "", "", "", 0);
         } else if (line[0] == 'C') {
             item = new Children("", "", 0.0, "", "", "", 0);
+        } else {
+            continue;
         }
 
         if (item != nullptr) {
@@ -137,6 +140,7 @@ void ClothesManager::readClothesFromFile(const string& filename) {
             item->ReadFile(ss);
             addClothes(item);
             Clothes::updateHighestID(item->getID()); 
+            item = nullptr;
         }
     }
 
@@ -155,9 +159,9 @@ void ClothesManager::writeClothesToFile(const string& filename) {
     }
     fileout.close();
 }
-void ClothesManager::addClothesManually() {
+bool ClothesManager::addClothesManually() {
     char type;
-    cout << "Nhap loai quan ao (M: Male, F: Female, C: Children): ";
+    cout << "<*> Nhap loai quan ao (M: Male, F: Female, C: Children): ";
     cin >> type;
     cin.ignore(); 
 
@@ -170,27 +174,35 @@ void ClothesManager::addClothesManually() {
     } else if (type == 'C') {
         item = new Children("", "", 0.0, "", "", "", 0);
     } else {
-        cout << "Loai quan ao khong hop le!" << endl;
-        return;
+        cout << "<!> Loai quan ao khong hop le!" << endl;
+        return false;
     }
 
     if (item != nullptr) {
-        item->ReadInput();
+    if (item->ReadInput()) {
         addClothes(item);
+        cout << "<!> Da them quan ao thanh cong." << endl;
+        system("pause");
+        return true;
+    } else {
+        delete item;
+        system("pause");
     }
+}
+        return false;
 }
 
 
 void ClothesManager::Sort_ByID() {
     list.Sort(); 
 }
-void ClothesManager::removeClothesByID(const string& id) {
+bool ClothesManager::removeClothesByID(const string& id) {
     if (list.removeById(id)) {
-        cout << "Element with id " << id << " was removed successfully." << endl;
         updateAllIDsFromID(id);
         Clothes::decrementHighestID(id[0]);
+        return true;
     } else {
-        cout << "Element with id " << id << " was not found." << endl;
+        return false;
     }
 }
 void ClothesManager::updateAllIDsFromID(const string& deletedID) {
@@ -213,10 +225,12 @@ void ClothesManager::updateAllIDsFromID(const string& deletedID) {
         current = current->next;  
     }
 }
-void ClothesManager::EditClothesByID(const string& id) {
+bool ClothesManager::EditClothesByID(const string& id) {
     Clothes* found = list.findByID(id);
     if(found != nullptr) {
     char continueEdit;
+    cout << "[!] CO THE NHAP 0 BAT KI DE HUY QUA TRINH SUA." << endl;
+    cout << "--------------------------------------------------------------------------------" << endl;
     do {
         string newName;
         double newPrice;
@@ -226,7 +240,11 @@ void ClothesManager::EditClothesByID(const string& id) {
         cout << "<!> Nhap ten quan ao ( nhap 0 de huy ): ";
         getline(cin, newName);
         newName = nameStr(newName);
-        if(newName == "0") return;
+        if(newName == "0"){
+            cout << endl;
+            cout << "<!> QUA TRINH SUA DA BI HUY!" << endl;
+            return false;
+        }
         if (!newName.empty()) break;
         cout << "<!> Ten quan ao khong duoc de trong. Vui long nhap lai." << endl;
         }
@@ -234,6 +252,11 @@ void ClothesManager::EditClothesByID(const string& id) {
         string priceStr;
         cout << "<!> Nhap gia: ";
         getline(cin, priceStr);
+        if(priceStr == "0"){
+            cout << endl;
+            cout << "<!> QUA TRINH SUA DA BI HUY!" << endl;
+            return false;
+        }
           if(isCharacter(priceStr)){
             cout << "<!> Gia phai la so. Vui long nhap lai." << endl;
             continue;
@@ -249,8 +272,14 @@ void ClothesManager::EditClothesByID(const string& id) {
         while (true) {
         cout << "<!> Nhap ten thuong hieu: ";
         getline(cin, newBranch);
+        if( newBranch == "0") {
+            cout << endl;
+            cout << "<!> QUA TRINH SUA DA BI HUY!" << endl;
+            return false;
+        }
         newBranch = nameStr(newBranch);
         if (!newBranch.empty()) break;
+        
         cout << "<!> Ten thuong hieu khong duoc de trong. Vui long nhap lai." << endl;
         
     }
@@ -267,6 +296,11 @@ void ClothesManager::EditClothesByID(const string& id) {
             cout << "<!> Nhap size (XS, S, M, L, XL, XXL, XXXL): ";
             getline(cin, size);
             size = toUpper(size);
+            if (size == "0") {
+                cout << endl;
+                cout << "<!> QUA TRINH SUA DA BI HUY!" << endl;
+                return false;
+            }
             if (validSizes.find(size) != validSizes.end()) break;
             cout << "<!> Size khong hop le. Vui long nhap lai." << endl;
             }
@@ -274,6 +308,11 @@ void ClothesManager::EditClothesByID(const string& id) {
              cout << "<!> Nhap mau (Red, Blue, Green, Yellow, Black, White, Purple, Brown, Pink, Beige, Gray, Orange): ";
             getline(cin, color);
             color = nameStr(color);
+            if(color == "0"){
+                cout << endl;
+                cout << "<!> QUA TRINH SUA DA BI HUY!" << endl;
+                return false;
+            }
             if (validColors.find(color) != validColors.end()) break;
             cout << "<!> Mau khong hop le. Vui long nhap lai." << endl;
             }
@@ -281,6 +320,11 @@ void ClothesManager::EditClothesByID(const string& id) {
             string quantity2;
             cout << "<!> Nhap so luong: ";
             getline(cin, quantity2);
+            if(quantity2 == "0"){
+                cout << endl;
+                cout << "<!> QUA TRINH SUA DA BI HUY!" << endl;
+                return false;
+            }
             if(isCharacter(quantity2)){
             cout << "<!> So luong phai la so. Vui long nhap lai." << endl;
             continue;
@@ -303,8 +347,10 @@ void ClothesManager::EditClothesByID(const string& id) {
         cin >> continueEdit;
         cin.ignore();
     } while(continueEdit == 'y' || continueEdit == 'Y');
+    return true;
     } else {
         cout << "<!> Khong tim thay san pham co ID " << id << endl;
+        return false;
 
     }
 }
@@ -324,7 +370,7 @@ void ClothesManager::PrintClothesByID(const string& id) const {
             cout << "| <!> ID QUAN AO: " << current->data->getID() << endl;
             cout << "| <!> TEN QUAN AO: "<< current->data->getName() << endl;
             cout << "| <!> DEN TU THUONG HIEU: " << current->data->getBranch() << endl;
-            cout << "| <!> GIA: " << fixed << setprecision(0) << current->data->getPrice() << " VND" << endl;
+            cout << "| <!> GIA: " << fixed << setprecision(0) << formatMoney(current->data->getPrice())<< " VND" << endl;
             cout << "+---------------------------------------------------------------------------------------------------------------------------\n";
 
             stringstream ss;
@@ -374,8 +420,6 @@ void ClothesManager::SearchBySubstring(const string& sub, const string& brand, c
     string title;
     string selectedType;
     int typeInt = atoi(type.c_str()); 
-
-
     switch (typeInt) {
         case 2:
             title = "SAN PHAM CHO NU";
@@ -429,7 +473,7 @@ void ClothesManager::SearchBySubstring(const string& sub, const string& brand, c
             cout << "| " << left << setw(8) << current->data->getID() << " | "
                  << setw(25) << current->data->getName() << " | "
                  << setw(17) << current->data->getBranch() << " | "
-                 << setw(13) << current->data->getPrice() << " | ";
+                 << setw(13) << formatMoney(current->data->getPrice()) << " | ";
 
             stringstream ss;
             Node<Variant*>* variant = current->data->getVariants().getHead();
@@ -499,4 +543,5 @@ double ClothesManager::getPriceByID(const string& itemID) const {
     }
     return -1; 
 }
+
 

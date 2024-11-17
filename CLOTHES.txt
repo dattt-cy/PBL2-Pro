@@ -1,22 +1,22 @@
-C100,Ao Thun Tre Em,600,Nike,S,Orange,8,M,Purple,9
-C101,Quan Short Cau Vong,700,Adidas,S,Green,15,M,White,5
-C102,Ao Sieu Nhe Cho Be,500,Nike,M,Light Blue,25,S,Pink,12
-C103,Quan Dai Co Vang,750,Adidas,S,Beige,10,M,Brown,8
-C200,Dam Xoe Co Tron,1600,Puma,M,Purple,4,S,Red,6
-C201,Ao Ba Lo,950,Nike,L,Red,10,M,Black,5
-C202,Ao Baby Tre Em,10000,Nike,S,Blue,10,M,Red,2
-F100,Dam Maxi Hoa Tiet,1500,Nike
-F101,Ao Sat Nach Basic,800,Nike
-F102,Ao Dai Mua He,1200,Nike
-F103,Ao Thun Co Tron,1000,Nike,M,Green,3
-F200,Ao Khoac Jean Tre Trung,1200,Adidas,L,Blue,3,S,Gray,10
-F201,Quan Jogger The Thao,1000,Puma,M,Black,12,L,Red,5
-F202,Ao Khoac Da,2000,Nike,XL,Brown,7,M,Orange,3
-F203,Quan Short Nam,900,Adidas,S,Gray,15,M,Beige,8
-F300,Dam Dai Mua He,1700,Nike,M,White,4
-F301,Quan Dai The Thao,1100,Adidas,M,White,6,L,Blue,8
-F302,Ao Croptop Hoa Tiet,900,Puma,M,Yellow,9
-F400,Ao Khoac Bomber,1800,Nike,XL,Green,5,L,Black,4
-F401,Quan Kaki Dai,1300,Adidas,M,Brown,7
-F500,Ao Tam Thoi Trang,950,Nike,L,Yellow,1,S,Pink,2
-F501,Ao Thun Co Hoc,850,Puma
+C100,Ao Thun Tre Em,160000,Nike,S,Orange,7,M,Purple,9
+C101,Quan Short Cau Vong,700000,Adidas,S,Green,15,M,White,5
+C102,Ao Sieu Nhe Cho Be,500000,Nike,M,Light Blue,23,S,Pink,12
+C103,Quan Dai Co Vang,750000,Adidas,S,Beige,10,M,Brown,8
+C200,Dam Xoe Co Tron,160000,Puma,M,Purple,4,S,Red,6
+C201,Ao Ba Lo,950000,Nike,L,Red,8,M,Black,5
+C202,Ao Baby Tre Em,100000,Nike,S,Blue,8,M,Red,4
+F100,Ao Dai Mua He,100000,Nike
+F101,Ao Thun Co Tron,10000,Nike,M,Green,3
+F198,Ao Khoac Jean Tre Trung,120000,Adidas,L,Blue,2,S,Gray,10
+F199,Quan Jogger The Thao,100000,Puma,M,Black,12,L,Red,5
+F200,Ao Khoac Da,200000,Nike,XL,Brown,7,M,Orange,3
+F201,Quan Short Nam,900000,Adidas,S,Gray,3,M,Beige,8
+F298,Dam Dai Mua He,170000,Nike,M,White,1
+F299,Quan Dai The Thao,110000,Adidas,M,White,6,L,Blue,8
+F300,Ao Croptop Hoa Tiet,900000,Puma,M,Yellow,1
+F398,Ao Khoac Bomber,180000,Nike,XL,Green,2,L,Black,4
+F399,Quan Kaki Dai,130000,Adidas
+F498,Ao Tam Thoi Trang,950000,Nike,L,Yellow,5,S,Pink,8
+F499,Ao Thun Co Hoc,850000,Puma,L,Brown,1
+F500,Ao Thun,100000,Puma,S,Gray,9,L,Gray,10
+F501,Dat,100000,Nike,XS,Purple,1
