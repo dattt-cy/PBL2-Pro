@@ -31,6 +31,7 @@ public:
     bool checkSize(Clothes* cloth, const string& size) const;
     double getPriceByID(const string& itemID) const;
      friend class OrderManager;
+     
 };
 
 #endif // CLOTHESMANAGER_H

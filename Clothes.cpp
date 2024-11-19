@@ -108,7 +108,7 @@ void Clothes::WriteFile(ostream& fileout) const {
 void Clothes::Edit(const string& newName, double newPrice, const string& newBranch, const LinkedList<Variant*>& newVariants) {
     name = newName;
     price = newPrice;
-    branch = newBranch; // Cập nhật branch
+    branch = newBranch; 
     Node<Variant*>* current = newVariants.getHead();
     while (current != nullptr) {
         variants.push_back(new Variant(current->data->getSize(), current->data->getColor(), current->data->getQuantity()));
@@ -189,4 +189,11 @@ int Clothes::getTotalQuantity() const {
         current = current->next;
     }
     return totalQuantity;
+}
+void Clothes::copyVariants(const LinkedList<Variant*>& newVariants) {
+    Node<Variant*>* current = newVariants.getHead();
+    while (current != nullptr) {
+        variants.push_back(new Variant(current->data->getSize(), current->data->getColor(), current->data->getQuantity()));
+        current = current->next;
+    }
 }

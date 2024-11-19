@@ -19,3 +19,9 @@ int Variant::getQuantity() const {
 void Variant::setQuantity(int quantity) {
     this->quantity = quantity;
 }
+void Variant::setColor(const string& color) {
+    this->color = color;
+}
+void Variant::setSize(const string& size) {
+    this->size = size;
+}

@@ -41,6 +41,7 @@ public:
     void UpdateSL(const string& color, const string& size, int quantity);
     void increaseSL(const string& color, const string& size, int quantity);
      int getTotalQuantity() const;
+    void copyVariants(const LinkedList<Variant*>& newVariants);
 };
 
 #endif // CLOTHES_H

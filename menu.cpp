@@ -347,13 +347,13 @@ void menu(ClothesManager& manager, OrderManager& orderManager) {
                                 cout << "<!> Nhap ma ID quan ao can sua: ";
                                 getline(cin, id);
                                 id = nameStr(id);
+                                manager.PrintClothesByID(id);
                                 if(manager.EditClothesByID(id)){
                                     manager.printByType(type);
                                 }
                             } else {
                                 cout << "<!> Lua chon khong hop le !!" << endl;
                             }
-                            system("pause");
                             break;
                         }
                         case 2:

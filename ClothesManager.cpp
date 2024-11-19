@@ -227,133 +227,154 @@ void ClothesManager::updateAllIDsFromID(const string& deletedID) {
 }
 bool ClothesManager::EditClothesByID(const string& id) {
     Clothes* found = list.findByID(id);
-    if(found != nullptr) {
-    char continueEdit;
-    cout << "[!] CO THE NHAP 0 BAT KI DE HUY QUA TRINH SUA." << endl;
-    cout << "--------------------------------------------------------------------------------" << endl;
-    do {
+    if (found != nullptr) {
+        cout << "[!] CO THE NHAP 0 BAT KI DE HUY QUA TRINH SUA." << endl;
+        cout << "[!] CO THE BO TRONG NHUNG PHAN KHONG CAN CHINH SUA." << endl;
+        cout << "--------------------------------------------------------------------------------" << endl;
+
+        int check = 0;
         string newName;
         double newPrice;
         string newBranch;
         LinkedList<Variant*> newVariants;
-        while (true) {
-        cout << "<!> Nhap ten quan ao ( nhap 0 de huy ): ";
-        getline(cin, newName);
-        newName = nameStr(newName);
-        if(newName == "0"){
-            cout << endl;
-            cout << "<!> QUA TRINH SUA DA BI HUY!" << endl;
-            return false;
+        Node<Variant*>* current = found->getVariants().getHead();
+        while (current != nullptr) {
+            Variant* newVariant = new Variant(current->data->getSize(), current->data->getColor(), current->data->getQuantity());
+            newVariants.push_back(newVariant);
+            current = current->next;
         }
-        if (!newName.empty()) break;
-        cout << "<!> Ten quan ao khong duoc de trong. Vui long nhap lai." << endl;
-        }
-        while (true) {
-        string priceStr;
-        cout << "<!> Nhap gia: ";
-        getline(cin, priceStr);
-        if(priceStr == "0"){
-            cout << endl;
-            cout << "<!> QUA TRINH SUA DA BI HUY!" << endl;
-            return false;
-        }
-          if(isCharacter(priceStr)){
-            cout << "<!> Gia phai la so. Vui long nhap lai." << endl;
-            continue;
-        }
-        newPrice = stoi(priceStr);
-        if (newPrice <= 0) {
-            cout << "<!> Gia phai la so duong. Vui long nhap lai." << endl;
-            continue;
-        } else {
-            break;
-        }
-    }
-        while (true) {
-        cout << "<!> Nhap ten thuong hieu: ";
-        getline(cin, newBranch);
-        if( newBranch == "0") {
-            cout << endl;
-            cout << "<!> QUA TRINH SUA DA BI HUY!" << endl;
-            return false;
-        }
-        newBranch = nameStr(newBranch);
-        if (!newBranch.empty()) break;
-        
-        cout << "<!> Ten thuong hieu khong duoc de trong. Vui long nhap lai." << endl;
-        
-    }
-        found->clearVariants();
-        char addMore;
-        set<string> validSizes = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"};
-        set<string> validColors = {"Red", "Blue", "Green", "Yellow", "Black", "White", "Purple", "Brown", "Pink", "Beige", "Gray", "Orange"};
-        do {
-            string size, color;
-            int quantity;
-          
 
-          while (true) {
-            cout << "<!> Nhap size (XS, S, M, L, XL, XXL, XXXL): ";
-            getline(cin, size);
-            size = toUpper(size);
-            if (size == "0") {
-                cout << endl;
-                cout << "<!> QUA TRINH SUA DA BI HUY!" << endl;
+        // Nhập tên quần áo
+        while (true) {
+            cout << "<!> Nhap ten quan ao (nhap 0 de huy): ";
+            getline(cin, newName);
+            newName = nameStr(newName);
+            if (newName == "0") {
+                cout << endl << "<!> QUA TRINH SUA DA BI HUY!" << endl;
                 return false;
             }
-            if (validSizes.find(size) != validSizes.end()) break;
-            cout << "<!> Size khong hop le. Vui long nhap lai." << endl;
+            if (!newName.empty()) break;
+            else {
+                newName = found->getName();
+                break;
             }
-            while (true) {
-             cout << "<!> Nhap mau (Red, Blue, Green, Yellow, Black, White, Purple, Brown, Pink, Beige, Gray, Orange): ";
-            getline(cin, color);
-            color = nameStr(color);
-            if(color == "0"){
-                cout << endl;
-                cout << "<!> QUA TRINH SUA DA BI HUY!" << endl;
-                return false;
-            }
-            if (validColors.find(color) != validColors.end()) break;
-            cout << "<!> Mau khong hop le. Vui long nhap lai." << endl;
-            }
-            while (true) {
-            string quantity2;
-            cout << "<!> Nhap so luong: ";
-            getline(cin, quantity2);
-            if(quantity2 == "0"){
-                cout << endl;
-                cout << "<!> QUA TRINH SUA DA BI HUY!" << endl;
-                return false;
-            }
-            if(isCharacter(quantity2)){
-            cout << "<!> So luong phai la so. Vui long nhap lai." << endl;
-            continue;
-            }
-            quantity = stoi(quantity2);
-            if (quantity <= 0) {
-            cout << "<!> So luong phai la so duong. Vui long nhap lai." << endl;
-            continue;
-            } else {
-            break;
         }
-    }
-            newVariants.push_back(new Variant(size, color, quantity));
-            cout << "<!> Ban co muon them bien the khac cho san pham nay khong? (y/n): ";
-            cin >> addMore;
-            cin.ignore();
-        } while(addMore == 'y' || addMore == 'Y');
+
+        while (true) {
+            string priceStr;
+            cout << "<!> Nhap gia: ";
+            getline(cin, priceStr);
+            if(priceStr == ""){
+                priceStr = doubleToString(found->getPrice());
+            }
+            if (priceStr == "0") {
+                cout << endl << "<!> QUA TRINH SUA DA BI HUY!" << endl;
+                return false;
+            }
+            if (isCharacter(priceStr)) {
+                cout << "<!> Gia phai la so. Vui long nhap lai." << endl;
+                continue;
+            }
+            newPrice = stoi(priceStr);
+            if (newPrice <= 0) {
+                cout << "<!> Gia phai la so duong. Vui long nhap lai." << endl;
+                continue;
+            } else {
+                break;
+            }
+        }
+        while (true) {
+            cout << "<!> Nhap ten thuong hieu: ";
+            getline(cin, newBranch);
+            if (newBranch == "0") {
+                cout << endl << "<!> QUA TRINH SUA DA BI HUY!" << endl;
+                return false;
+            }
+            newBranch = nameStr(newBranch);
+            if (!newBranch.empty()) break;
+            else {
+                newBranch = found->getBranch();
+                break;
+            }
+        }
+        bool check2 = false;
+        cout << "--------------------------------------------------------------------------------" << endl;
+        cout << "[!] BO TRONG PHAN NAY NEU BAN KHONG MUON CHINH SUA MAU SAC, SIZE VA SO LUONG: ";
+        string select;
+        getline(cin, select);
+        if (select == "") {
+            found->clearVariants();
+            check = 1;
+        }
+        if (check != 1) {
+            char addMore;
+            set<string> validSizes = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"};
+            set<string> validColors = {"Red", "Blue", "Green", "Yellow", "Black", "White", "Purple", "Brown", "Pink", "Beige", "Gray", "Orange"};
+            do {
+                string size, color;
+                int quantity;
+
+                while (true) {
+                    cout << "<!> Nhap size (XS, S, M, L, XL, XXL, XXXL): ";
+                    getline(cin, size);
+                    size = toUpper(size);
+                    if (size == "0") {
+                        cout << endl << "<!> QUA TRINH SUA DA BI HUY!" << endl;
+                        return false;
+                    }
+                    if (validSizes.find(size) != validSizes.end()) break;
+                    cout << "<!> Size khong hop le. Vui long nhap lai." << endl;
+                }
+                while (true) {
+                    cout << "<!> Nhap mau (Red, Blue, Green, Yellow, Black, White, Purple, Brown, Pink, Beige, Gray, Orange): ";
+                    getline(cin, color);
+                    color = nameStr(color);
+                    if (color == "0") {
+                        cout << endl << "<!> QUA TRINH SUA DA BI HUY!" << endl;
+                        return false;
+                    }
+                    if (validColors.find(color) != validColors.end()) break;
+                    cout << "<!> Mau khong hop le. Vui long nhap lai." << endl;
+                }
+                while (true) {
+                    string quantity2;
+                    cout << "<!> Nhap so luong: ";
+                    getline(cin, quantity2);
+                    if (quantity2 == "0") {
+                        cout << endl << "<!> QUA TRINH SUA DA BI HUY!" << endl;
+                        return false;
+                    }
+                    if (isCharacter(quantity2)) {
+                        cout << "<!> So luong phai la so. Vui long nhap lai." << endl;
+                        continue;
+                    }
+                    quantity = stoi(quantity2);
+                    if (quantity <= 0) {
+                        cout << "<!> So luong phai la so duong. Vui long nhap lai." << endl;
+                        continue;
+                    } else {
+                        break;
+                    }
+                }
+                if(check2 == false){
+                found->clearVariants();
+                newVariants.clear();
+                check2 = true;
+                }
+                newVariants.push_back(new Variant(size, color, quantity));
+                cout << "<!> Ban co muon them mau sac, size, so luong khac cho san pham nay khong? (y/n): ";
+                cin >> addMore;
+                cin.ignore();
+            } while (addMore == 'y' || addMore == 'Y');
+        }
         found->Edit(newName, newPrice, newBranch, newVariants);
-        cout << "<!> Ban co muon sua tiep khong? (y/n): ";
-        cin >> continueEdit;
-        cin.ignore();
-    } while(continueEdit == 'y' || continueEdit == 'Y');
-    return true;
+        return true;
     } else {
         cout << "<!> Khong tim thay san pham co ID " << id << endl;
         return false;
-
     }
 }
+
 void ClothesManager::PrintClothesByID(const string& id) const {
     system("cls"); 
 
@@ -366,7 +387,6 @@ void ClothesManager::PrintClothesByID(const string& id) const {
     while (current != nullptr) {
         if (current->data->getID() == id) {
             cout << "+===========================================================================================================================\n";
-
             cout << "| <!> ID QUAN AO: " << current->data->getID() << endl;
             cout << "| <!> TEN QUAN AO: "<< current->data->getName() << endl;
             cout << "| <!> DEN TU THUONG HIEU: " << current->data->getBranch() << endl;

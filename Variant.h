@@ -16,6 +16,8 @@ public:
     string getSize() const;
     int getQuantity() const;
     void setQuantity(int quantity);
+    void setColor(const string& color);
+    void setSize(const string& size);
 };
 
 #endif // VARIANT_H
