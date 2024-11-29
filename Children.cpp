@@ -13,7 +13,7 @@ Children::Children(const string &id, const string &name, double price, const str
     : Clothes(id, name, branch) {
     this->price = price;
     addVariant(new Variant(size, color, quantity));
-    //dell
+    //dungggggg
 }
 
 void Children::ReadFile(istream &filein) {
