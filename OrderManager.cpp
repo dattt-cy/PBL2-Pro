@@ -376,11 +376,13 @@ bool OrderManager::readInvoiceFromFile(const string& id){
     Admin* kh = KH.findKhachHang(id);
     if(kh == nullptr){
         cout << "<!> KHONG TIM THAY KHACH HANG CO ID " << id << endl;
+         system("pause");
         return false;
     }
     string tenFile = id + "_" + kh->getName() + ".txt";
     ifstream inFile(tenFile);
     if (!inFile.is_open()) {
+         system("pause");
         return false;
     }
     string line;
@@ -389,5 +391,6 @@ bool OrderManager::readInvoiceFromFile(const string& id){
     }
     inFile.close();
     KH.deleteList();
+      system("pause");
     return true;
 }
