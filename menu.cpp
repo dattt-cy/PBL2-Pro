@@ -562,94 +562,164 @@ void menuForCustomer(ClothesManager& manager, OrderManager& orderManager) {
 }
 void chooseMenuPerson(Admin_Manage& Manager) {
     Manager.sortByID();
-    setTextColor(6);
     cout << "^-^ CHAO MUNG BAN DEN VOI HE THONG QUAN LY CUA HANG GAU GAU ^-^" << endl;
-    setTextColor(15);
-    while (true){
-    system("cls");
-    cout << "ADMIN: " << endl;
-    cout << "1. Xem danh sach Admin" << endl;
-    cout << "2. Them Admin moi" << endl;
-    cout << "3. Xoa Admin theo ID" << endl;
-    cout << "4. Tim kiem Admin theo ID" << endl;
-    cout << "==============================" << endl;
-    cout << "CUSTOMER: " << endl;
-    cout << "5. Xem danh sach Khach hang" << endl;
-    cout << "6. Them Khach hang moi" << endl;
-    cout << "7. Xoa Khach hang theo ID" << endl;
-    cout << "8. Tim kiem Khach hang theo ID" << endl;
-    cout << "9. Thoat" << endl;
-    int choice;
-    string filename, id, ngay, thang, nam;
-    int a,b,c;
-    Admin* newAdmin;
-    cout << "Nhap lua chon cua ban: ";
-    cin >> choice;
+
+    string mainMenuItems[] = {
+        "1. XEM DANH SACH",
+        "2. TIM KIEM THEO ID",
+        "3. CHINH SUA THONG TIN",
+        "4. THEM MOI",
+        "5. XOA THEO ID",
+        "6. THOAT"
+    };
+    int numMainItems = sizeof(mainMenuItems) / sizeof(mainMenuItems[0]);
+
+    while (true) {
+        int choice = interactiveMenu(mainMenuItems, numMainItems);
+
         switch (choice) {
-            case 1:
-                system("cls");
-                Manager.ShowAdmin();
-                system("pause");
+            case 0: { // XEM DANH SACH
+                string subMenuItems[] = {
+                    "1.1 XEM DANH SACH ADMIN",
+                    "1.2 XEM DANH SACH CUSTOMER",
+                    "1.3 QUAY LAI MENU CHINH"
+                };
+                int numSubItems = sizeof(subMenuItems) / sizeof(subMenuItems[0]);
+                while (true) {
+                    int subChoice = interactiveMenu(subMenuItems, numSubItems);
+                    if (subChoice == 0) {
+                        system("cls");
+                        Manager.ShowAdmin();
+                        system("pause");
+                    } else if (subChoice == 1) {
+                        system("cls");
+                        Manager.ShowCustomer();
+                        system("pause");
+                    } else if (subChoice == 2) {
+                        break;
+                    } else {
+                        cout << "LUA CHON KHONG HOP LE!" << endl;
+                        system("pause");
+                    }
+                }
                 break;
-            case 2:
-                system("cls");
-                Manager.inputAdmin();
-                system("pause");
+            }
+
+            case 1: { // TIM KIEM
+                string subMenuItems[] = {
+                    "2.1 TIM KIEM ADMIN THEO ID",
+                    "2.2 TIM KIEM CUSTOMER THEO ID",
+                    "2.3 QUAY LAI MENU CHINH"
+                };
+                int numSubItems = sizeof(subMenuItems) / sizeof(subMenuItems[0]);
+                while (true) {
+                    int subChoice = interactiveMenu(subMenuItems, numSubItems);
+                    if (subChoice == 0 || subChoice == 1) {
+                        string id;
+                        cout << "NHAP ID BAN MUON TIM KIEM: ";
+                        cin >> id;
+                        Manager.findPerson(id);
+                        system("pause");
+                    } else if (subChoice == 2) {
+                        break;
+                    } else {
+                        cout << "LUA CHON KHONG HOP LE!" << endl;
+                        system("pause");
+                    }
+                }
                 break;
-            
-            case 3:
-                system("cls");
-                cout << "Nhap ID cua Admin ban muon xoa: ";
-                cin >> id;
-                Manager.DeleteAdmin(id);
-                system("pause");
+            }
+
+            case 2: { // CHINH SUA
+                string subMenuItems[] = {
+                    "3.1 CHINH SUA THONG TIN ADMIN",
+                    "3.2 CHINH SUA THONG TIN CUSTOMER",
+                    "3.3 QUAY LAI MENU CHINH"
+                };
+                int numSubItems = sizeof(subMenuItems) / sizeof(subMenuItems[0]);
+                while (true) {
+                    int subChoice = interactiveMenu(subMenuItems, numSubItems);
+                    if (subChoice == 0 || subChoice == 1) {
+                        string id;
+                        if (subChoice == 0) Manager.ShowAdmin();
+                        else Manager.ShowCustomer();
+                        cout << "NHAP ID BAN MUON CHINH SUA: ";
+                        cin >> id;
+                        cin.ignore();
+                        Manager.editPerson(id);
+                        system("pause");
+                    } else if (subChoice == 2) {
+                        break;
+                    } else {
+                        cout << "LUA CHON KHONG HOP LE!" << endl;
+                        system("pause");
+                    }
+                }
                 break;
-            
-            case 4:
-                system("cls");
-                cout << "Nhap ID cua Admin ban muon tim kiem: ";
-                cin >> id;
-                Manager.searchByID(id);
-                system("pause");
+            }
+
+            case 3: { // THEM MOI
+                string subMenuItems[] = {
+                    "4.1 THEM CUSTOMER MOI",
+                    "4.2 QUAY LAI MENU CHINH"
+                };
+                int numSubItems = sizeof(subMenuItems) / sizeof(subMenuItems[0]);
+                while (true) {
+                    int subChoice = interactiveMenu(subMenuItems, numSubItems);
+                    if (subChoice == 0) {
+                        string type = "Customer";
+                        Manager.inputPerson(type);
+                        Manager.ShowCustomer();
+                        system("pause");
+                    } else if (subChoice == 1) {
+                        break;
+                    } else {
+                        cout << "LUA CHON KHONG HOP LE!" << endl;
+                        system("pause");
+                    }
+                }
                 break;
+            }
+
+            case 4: { // XOA
+                string subMenuItems[] = {
+                    "5.1 XOA CUSTOMER THEO ID",
+                    "5.2 QUAY LAI MENU CHINH"
+                };
+                int numSubItems = sizeof(subMenuItems) / sizeof(subMenuItems[0]);
+                while (true) {
+                    int subChoice = interactiveMenu(subMenuItems, numSubItems);
+                    if (subChoice == 0) {
+                        string id;
+                        system("cls");
+                        Manager.ShowCustomer();
+                        cout << "NHAP ID BAN MUON XOA: ";
+                        cin >> id;
+                        Manager.DeletePerson(id);
+                        system("pause");
+                    } else if (subChoice == 1) {
+                        break;
+                    } else {
+                        cout << "LUA CHON KHONG HOP LE!" << endl;
+                        system("pause");
+                    }
+                }
+                break;
+            }
+
             case 5:
                 system("cls");
-                Manager.ShowCustomer();
+                cout << "CHAO TAM BIET! HEN GAP LAI BAN VAO LAN SAU NHE ^-^" << endl;
                 system("pause");
-                break;
-            case 6:
-                system("cls");
-                Manager.inputCustomer();
-                system("pause");
-                break;
-            
-            case 7:
-                system("cls");
-                cout << "Nhap ID cua Khach hang ban muon xoa: ";
-                cin >> id;
-                Manager.DeleteCustomer(id);
-                system("pause");
-                break;
-            
-            case 8:
-                system("cls");
-                cout << "Nhap ID cua Khach hang ban muon tim kiem: ";
-                cin >> id;
-                Manager.findCustomer(id);
-                system("pause");
-                break;
-            case 9:
-                setTextColor(5);
-                cout << "Chao tam biet! Hen gap lai ban vao lan sau nhe ^-^" << endl;
                 return;
+
             default:
-                cout << "Moi ban nhap lua chon cua minh!!!" << endl;
+                cout << "LUA CHON KHONG HOP LE, VUI LONG NHAP LAI!" << endl;
+                system("pause");
+                break;
         }
     }
-    system("pause");
-
 }
-
 void chooseMenu(Admin_Manage& Manager, ClothesManager& manager, OrderManager& orderManager) {
     string menuItems[] = {
         "1. QUAN LI ADMIN VA KHACH HANG",
@@ -675,8 +745,7 @@ void chooseMenu(Admin_Manage& Manager, ClothesManager& manager, OrderManager& or
     }
 }
 void chooseLogin(Admin_Manage& KHvaAD, ClothesManager& manager, OrderManager& orderManager) {
-    KHvaAD.ReadFileCustomer("Customerr.txt");
-    KHvaAD.ReadFileAdmin("Admin.txt");
+    KHvaAD.ReadFile("Data.txt");
 
     string menuItems[] = {"1. DANG NHAP", "2. DANG KI", "3. THOAT"};
     int choice;

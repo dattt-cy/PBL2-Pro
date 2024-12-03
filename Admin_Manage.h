@@ -2,51 +2,41 @@
 #define ADMIN_MANAGE_H
 
 #include "LinkedList.h"
+#include "Person.h"
 #include "Admin.h"
+#include "Customer.h"
 #include <string>
 
 class Admin_Manage {
 private:
-    LinkedList<Admin*> ListNV;
-    LinkedList<Admin*> ListKH;
-    
+    LinkedList<Person*> list;
 
 public:
     static string name;
     static string phone;
     static string id;
+
     void sortByID();
-    void WriteFileAdmin(const std::string& filename);
-    void ShowAdmin();
-    void addAdmin(Admin* admin);
-    void ReadFileAdmin(const std::string& filename);
-    void DeleteAdmin(std::string ID);
     void UpdateAdminID();
-    int AdminID(const string& filename);
-    void inputAdmin();
-    string generateNewID();
-    bool findAdmin(const string& ID);
-    void searchByID(const string& ID);
-    Date parseDate(const string& date);
-    LinkedList<Admin*> getList();
-    LinkedList<Admin*> getListKH();
-    int checkLogin(const string& username, const string& password);
-    void ReadFileCustomer(const string& filename);
+    int AdminID(const string& filename, const string& type);
+    string generateNewID(const string& type);
+    void ShowAdmin();
     void ShowCustomer();
-    void inputCustomer();
-    void WriteFileCustomer(const string& filename);
-    void DeleteCustomer(string ID);
-    void UpdateCustomerID();
-    bool findCustomer(const string& ID);
+    void addPerson(Person* person);
+    Date parseDate(const string& dateStr);
+    void ReadFile(const string& filename);
+    void WriteFile(const string& filename);
+    void inputPerson(const string& type);
+    void DeletePerson(const string& ID);
+    bool findPerson(const string& ID);
+    LinkedList<Person*> getList();
+    int checkLogin(const string& username, const string& password);
     bool createAccount(const string& ID, const string& password, const string& name);
     bool isCustomerInfoComplete(const string& id);
     void updateCustomerInfo(const string& id, const string& dob, const string& address, const string& gender, const string& phone);
-    int CustomerID(const string& filename);
-    string generateNewIDKH();
     void deleteList();
-    Admin* findKhachHang(const string& id);
-
-
+    Customer* findKhachHang(const string& id);
+    void editPerson(const std::string& id);
 };
 
 #endif // ADMIN_MANAGE_H

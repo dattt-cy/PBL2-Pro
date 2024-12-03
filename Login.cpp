@@ -243,7 +243,7 @@ int createAccount(Admin_Manage& n) {
         return 0;
     }
 
-    string newID = n.generateNewID();
+    string newID = n.generateNewID("KH");
 
     gotoXY(15, 17);
     if (n.createAccount(newID, password, username)) {

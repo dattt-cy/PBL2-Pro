@@ -372,8 +372,8 @@ void OrderManager::clearOrders() {
 }
 bool OrderManager::readInvoiceFromFile(const string& id){
     Admin_Manage KH;
-    KH.ReadFileCustomer("Customerr.txt");
-    Admin* kh = KH.findKhachHang(id);
+    KH.ReadFile("Data.txt");
+    Person* kh = KH.findKhachHang(id);
     if(kh == nullptr){
         cout << "<!> KHONG TIM THAY KHACH HANG CO ID " << id << endl;
          system("pause");
