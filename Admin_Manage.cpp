@@ -61,14 +61,33 @@ int Admin_Manage::AdminID(const string& filename, const string& type) {
     return count;
 }
 
-string Admin_Manage::generateNewID(const string& type) {
-    stringstream ss;
-    if (type == "AD") {
-        ss << "AD" << setw(3) << setfill('0') << AdminID("Data.txt", "AD") + 1;
-    } else if (type == "KH") {
-        ss << "KH" << setw(3) << setfill('0') << AdminID("Data.txt", "KH") + 1;
+int Admin_Manage::findAvailableID() {
+    set<int> usedIDs;
+
+    Node<Person*>* current = list.getHead();
+    while (current != nullptr) {
+        Customer* customer = dynamic_cast<Customer*>(current->data);
+        if (customer) {
+          
+            string id = customer->getID();
+            if (id.size() > 2 && id.substr(0, 2) == "KH") {
+                usedIDs.insert(stoi(id.substr(2))); 
+            }
+        }
+        current = current->next;
     }
-    return ss.str();
+
+    int id = 100;
+    while (usedIDs.find(id) != usedIDs.end()) {
+        id++;
+    }
+
+    return id; 
+}
+
+string Admin_Manage::generateNewID() {
+    int availableID = findAvailableID(); 
+    return "KH" + to_string(availableID); 
 }
 void Admin_Manage::ShowAdmin() {
     Node<Person*>* current = list.getHead();
@@ -237,10 +256,10 @@ void Admin_Manage::inputPerson(const string& type) {
     Person* person = nullptr;
     if (type == "Admin") {
         person = new Admin();
-        person->setID(generateNewID("AD"));
+        person->setID(generateNewID());
     } else if (type == "Customer") {
         person = new Customer();
-        person->setID(generateNewID("KH"));
+        person->setID(generateNewID());
     } else {
         cout << "Loai nguoi dung khong hop le!" << endl;
         return;
@@ -363,14 +382,25 @@ void Admin_Manage::editPerson(const string& id) {
 
     cout << "-----------------------------------------------------------" << endl;
     cout << "[!] Nhap 0 o vi tri bat ky de huy qua trinh sua." << endl;
+    cout << "[!] De trong neu khong muon thay doi thong tin." << endl;
+    cout << "[!] Nhap thong ngay, thang, nam theo dinh dang dd/mm/yyyy." << endl;
     cout << "-----------------------------------------------------------" << endl;
 
     while (current != nullptr) {
         if (current->data->getID() == id) {
             Person* person = current->data;
+
+            // Lưu trạng thái ban đầu vào các biến tạm
+            string originalName = person->getName();
+            string originalPassWord = person->getPassWord();
+            string originalGender = person->getGender();
+            string originalBirthDay = person->getBirthDay();
+            string originalPhone = person->getNumberPhone();
+            string originalAddress = person->getAddress();
+
             string input;
 
-            cout << "Nhap ten moi (de trong neu khong thay doi): ";
+            cout << "<!> Nhap ten moi: ";
             getline(cin, input);
             if (input == "0") {
                 cout << "Da huy qua trinh sua." << endl;
@@ -378,19 +408,21 @@ void Admin_Manage::editPerson(const string& id) {
             }
             if (!input.empty()) person->setName(input);
 
-            cout << "Nhap mat khau moi (de trong neu khong thay doi): ";
+            cout << "<!> Nhap mat khau moi: ";
             getline(cin, input);
             if (input == "0") {
+                person->setName(originalName); // Khôi phục tên
                 cout << "Da huy qua trinh sua." << endl;
                 return;
             }
             if (!input.empty()) person->setPassWord(input);
 
-            // Nhập giới tính
             do {
-                cout << "Nhap gioi tinh moi (1: Nam, 0: Nu, de trong neu khong thay doi): ";
+                cout << "Nhap gioi tinh moi (1: Nam, 0: Nu): ";
                 getline(cin, input);
                 if (input == "0") {
+                    person->setName(originalName);       // Khôi phục tên
+                    person->setPassWord(originalPassWord); // Khôi phục mật khẩu
                     cout << "Da huy qua trinh sua." << endl;
                     return;
                 }
@@ -407,9 +439,12 @@ void Admin_Manage::editPerson(const string& id) {
             } while (true);
 
             do {
-                cout << "Nhap ngay sinh moi (dd/mm/yyyy, de trong neu khong thay doi): ";
+                cout << "Nhap ngay sinh moi (dd/mm/yyyy): ";
                 getline(cin, input);
                 if (input == "0") {
+                    person->setName(originalName);       // Khôi phục tên
+                    person->setPassWord(originalPassWord); // Khôi phục mật khẩu
+                    person->setGender(originalGender);   // Khôi phục giới tính
                     cout << "Da huy qua trinh sua." << endl;
                     return;
                 }
@@ -423,47 +458,42 @@ void Admin_Manage::editPerson(const string& id) {
                 }
             } while (true);
 
-            cout << "Nhap so dien thoai moi (de trong neu khong thay doi): ";
-            getline(cin, input);
-            if (input == "0") {
-                cout << "Da huy qua trinh sua." << endl;
-                return;
-            }
-            if (!input.empty()) person->setNumberPhone(input);
+            do {
+                cout << "<!> Nhap so dien thoai moi: ";
+                getline(cin, input);
+                if (input == "0") {
+                    person->setName(originalName);       // Khôi phục tên
+                    person->setPassWord(originalPassWord); // Khôi phục mật khẩu
+                    person->setGender(originalGender);   // Khôi phục giới tính
+                    person->setBirthDay(stoi(originalBirthDay.substr(0, 2)), 
+                                        stoi(originalBirthDay.substr(3, 2)), 
+                                        stoi(originalBirthDay.substr(6, 4))); // Khôi phục ngày sinh
+                    cout << "Da huy qua trinh sua." << endl;
+                    return;
+                }
+                if (input.empty()) break;
+                if (isPhoneNumber(input)) {
+                    person->setNumberPhone(input);
+                    break;
+                } else {
+                    cout << "So dien thoai khong hop le. Vui long nhap lai.\n";
+                }
+            } while (true);
 
-            cout << "Nhap dia chi moi (de trong neu khong thay doi): ";
+            cout << "<!> Nhap dia chi moi: ";
             getline(cin, input);
             if (input == "0") {
+                person->setName(originalName);       // Khôi phục tên
+                person->setPassWord(originalPassWord); // Khôi phục mật khẩu
+                person->setGender(originalGender);   // Khôi phục giới tính
+                person->setBirthDay(stoi(originalBirthDay.substr(0, 2)), 
+                                    stoi(originalBirthDay.substr(3, 2)), 
+                                    stoi(originalBirthDay.substr(6, 4))); // Khôi phục ngày sinh
+                person->setNumberPhone(originalPhone); // Khôi phục số điện thoại
                 cout << "Da huy qua trinh sua." << endl;
                 return;
             }
             if (!input.empty()) person->setAddress(input);
-
-            if (Admin* admin = dynamic_cast<Admin*>(person)) {
-                do {
-                    cout << "Nhap ngay vao lam moi (dd/mm/yyyy, de trong neu khong thay doi): ";
-                    getline(cin, input);
-                    if (input == "0") {
-                        cout << "Da huy qua trinh sua." << endl;
-                        return;
-                    }
-                    if (input.empty()) break; 
-                    if (isDate(input)) {
-                        Date workDate = parseDate(input);
-                        Date birthDate = parseDate(admin->getBirthDay());
-                        if (workDate.year > birthDate.year ||
-                            (workDate.year == birthDate.year && workDate.month > birthDate.month) ||
-                            (workDate.year == birthDate.year && workDate.month == birthDate.month && workDate.day > birthDate.day)) {
-                            admin->setDayofwork(workDate.day, workDate.month, workDate.year);
-                            break;
-                        } else {
-                            cout << "Ngay vao lam phai lon hon ngay sinh! Vui long nhap lai.\n";
-                        }
-                    } else {
-                        cout << "Ngay vao lam khong hop le. Vui long nhap lai.\n";
-                    }
-                } while (true);
-            }
 
             cout << "Thong tin da duoc cap nhat." << endl;
             WriteFile("Data.txt");
@@ -474,21 +504,22 @@ void Admin_Manage::editPerson(const string& id) {
     cout << "Khong tim thay nguoi dung voi ID: " << id << endl;
 }
 
-void Admin_Manage::DeletePerson(const string& ID) {
-    while (true) {
-        cout << "Nhap ID cua nguoi dung ban muon xoa (nhap 0 de huy): ";
-        string id;
-        getline(cin, id);
-        if (id == "0") return;
 
-        if (list.removeById(id)) {
-            cout << "Nguoi dung co ID " << id << " da duoc xoa." << endl;
+void Admin_Manage::DeletePerson(const string& ID) {
+    Person* kh = findKhachHang(ID);
+    if(kh == nullptr){
+        cout << "Khong tim thay khach hang voi ID: " << ID << endl;
+        return;
+    }
+    while (true) {
+        if (list.removeById(ID)) {
+            cout << "Nguoi dung co ID " << ID << " da duoc xoa." << endl;
             WriteFile("Data.txt");
 
-            if (id.find("AD") == 0) {
+            if (ID.find("AD") == 0) {
                 cout << "Danh sach Admin sau khi xoa:" << endl;
                 ShowAdmin();
-            } else if (id.find("KH") == 0) {
+            } else if (ID.find("KH") == 0) {
                 cout << "Danh sach Customer sau khi xoa:" << endl;
                 ShowCustomer();
             }
@@ -506,19 +537,10 @@ bool Admin_Manage::findPerson(const string& ID) {
             Customer* customer = dynamic_cast<Customer*>(current->data);
 
             if (admin) {
-                cout << "+------------------+-----------------------+------------+-----------------+--------------------+--------------------------------+-----------------+" << endl;
-                cout << "| ID               | Ten                   | Gioi tinh  | Ngay sinh       | So dien thoai      | Dia chi                        | Ngay vao lam    |" << endl;
-                cout << "+------------------+-----------------------+------------+-----------------+--------------------+--------------------------------+-----------------+" << endl;
-
-                admin->Show();
-                cout << "+------------------+-----------------------+------------+-----------------+--------------------+--------------------------------+-----------------+" << endl;
+                admin->ShowByID();
+               
             } else if (customer) {
-                cout << "+------------------+-----------------------+------------+-----------------+--------------------+--------------------------------+" << endl;
-                cout << "| ID               | Ten                   | Gioi tinh  | Ngay sinh       | So dien thoai      | Dia chi                        |" << endl;
-                cout << "+------------------+-----------------------+------------+-----------------+--------------------+--------------------------------+" << endl;
-
-                customer->Show();
-                cout << "+------------------+-----------------------+------------+-----------------+--------------------+--------------------------------+" << endl;
+                customer->ShowByID();
             }
 
             return true;  

@@ -1,0 +1,38 @@
+============================= SHOP QUAN AO GAU GAU =============================
+Ma Hoa Don: INV_231224_426                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang
+Time  In:  23.12.24  22:1                                       SDT: 0372787650
+Time Out:  23.12.24  22:1
+Ten Khach Hang: Nguyen Van An
+So Dien Thoai: 0909123456
+
+                               HOA DON THANH TOAN                                  
+
+Item                               Price          Quantity            Total
+--------------------------------------------------------------------------------
+Ao Thun                       100.000 VND            1            100.000 VND
+--------------------------------------------------------------------------------
+Tong tien: 100.000 VND
+Giam gia: 0%
+Tong tien duoc giam gia: 0 VND
+Tong tien sau khi giam gia: 100.000 VND
+mot tram nghin dong
+================================================================================
+============================= SHOP QUAN AO GAU GAU =============================
+Ma Hoa Don: INV_231224_669                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang
+Time  In:  23.12.24  22:8                                       SDT: 0372787650
+Time Out:  23.12.24  22:8
+Ten Khach Hang: Nguyen Van An
+So Dien Thoai: 0909123456
+
+                               HOA DON THANH TOAN                                  
+
+Item                               Price          Quantity            Total
+--------------------------------------------------------------------------------
+Ao Ba Lo                      950.000 VND            2          1.900.000 VND
+--------------------------------------------------------------------------------
+Tong tien: 1.900.000 VND
+Giam gia: 15%
+Tong tien duoc giam gia: 285.000 VND
+Tong tien sau khi giam gia: 1.615.000 VND
+mot trieu sau tram muoi lam nghin dong
+================================================================================

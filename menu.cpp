@@ -200,7 +200,6 @@ void Statistics(OrderManager& orderManager) {
 
 
 void menu(ClothesManager& manager, OrderManager& orderManager) {
-    manager.readClothesFromFile("CLOTHES.txt");
     manager.Sort_ByID();
     
     while (true) {
@@ -421,16 +420,16 @@ void menu(ClothesManager& manager, OrderManager& orderManager) {
         }
     }
 }
-void menuForCustomer(ClothesManager& manager, OrderManager& orderManager) {
-    manager.readClothesFromFile("CLOTHES.txt");
-    manager.Sort_ByID();
-    
+void menuForCustomer(ClothesManager& manager, OrderManager& orderManager, Admin_Manage& adminManager) {
+     manager.Sort_ByID();
     while (true) {
         string mainMenuItems[] = {
             "1. XEM QUAN AO",
             "2. TIM KIEM QUAN AO",
             "3. DAT HANG",
             "4. XEM HOA DON CUA BAN",
+            "5. XEM THONG TIN CA NHAN",
+            "6. CHINH SUA THONG TIN CA NHAN",
             "5. THOAT"
         };
         int numMainItems = sizeof(mainMenuItems) / sizeof(mainMenuItems[0]);
@@ -466,67 +465,75 @@ void menuForCustomer(ClothesManager& manager, OrderManager& orderManager) {
                 bool exitSubMenu = false;  
                 while (!exitSubMenu) {  
                     int subChoice = subMenuCase1();
-                    string name, brand, type, color, size;
+                    string name, brand, type, color, size, ID;
                     switch (subChoice) {
                         case 0:
                             system("cls");
-                            manager.printByType("4");
-                            cout << "---------------------------------------------------------" << endl;
-                            cout << "<!> Nhap ten san pham can tim: ";
+                            cout << "[!] LUU Y CO THE VIET THUONG HOAC VIET HOA THONG TIN CAN TIM." << endl;
+                            cout << "<!> Nhap mot phan hoac toan bo ten san pham can tim: ";
                             getline(cin, name);
-                            manager.SearchBySubstring(name, "", "", "", "All");
-                            system("pause");
+                            name = nameStr(name);
+                            manager.SearchBySubstring(name, "", "", "", "4");
                             break;
                         case 1:
                             system("cls");
-                            manager.printByType("4");
-                            cout << "---------------------------------------------------------" << endl;
-                            cout << "<!> Nhap thuong hieu can tim: ";
+                            cout << "[!] LUU Y CO THE VIET THUONG HOAC VIET HOA THONG TIN CAN TIM." << endl;
+                            cout << "<!> Nhap mot phan hoac toan bo ten thuong hieu can tim: ";
                             getline(cin, brand);
-                            manager.SearchBySubstring("", brand, "", "", "All");
+                            brand = nameStr(brand);
+                            manager.SearchBySubstring("", brand, "", "", "4");
                             break;
                         case 2:
                             system("cls");
-                             manager.printByType("4");
-                            cout << "---------------------------------------------------------" << endl;
-                            cout << "<!> Nhap the loai (1. Male/3. Female/3. Children/ 4. ALL): ";
+                            cout << "[!] LUU Y CO THE VIET THUONG HOAC VIET HOA THONG TIN CAN TIM." << endl;
+                            cout << "<!> Nhap the loai (1: Male, 2: Female, 3: Children): ";
                             getline(cin, type);
+                            type = nameStr(type);
                             manager.SearchBySubstring("", "", "", "", type);
                             break;
                         case 3:
                             system("cls");
-                            manager.printByType("4");
-                            cout << "---------------------------------------------------------" << endl;
-                            cout << "<!> Nhap mau sac can tim: ";
+                            cout << "[!] LUU Y CO THE VIET THUONG HOAC VIET HOA THONG TIN CAN TIM." << endl;
+                            cout << "<!> Nhap mot phan hoac toan bo mau sac can tim: ";
                             getline(cin, color);
-                            manager.SearchBySubstring("", "", color, "", "All");
+                            color = nameStr(color);
+                            manager.SearchBySubstring("", "", color, "", "4");
                             break;
                         case 4:
                             system("cls");
-                            manager.printByType("4");
-                            cout << "---------------------------------------------------------" << endl;
+                            cout << "[!] LUU Y CO THE VIET THUONG HOAC VIET HOA THONG TIN CAN TIM." << endl;
                             cout << "<!> Nhap size can tim: ";
                             getline(cin, size);
-                            manager.SearchBySubstring("", "", "", size, "All");
+                            size = nameStr(size);
+                            manager.SearchBySubstring("", "", "", size, "4");
                             break;
                         case 5:
                             system("cls");
-                            manager.printByType("4");
-                            cout << "---------------------------------------------------------" << endl;
-                            cout << "<!> CO THE NHAP TOAN BO HOAC 1 PHAN THONG TIN DUOI DAY" << endl;
+                            cout << "[!] LUU Y CO THE VIET THUONG HOAC VIET HOA THONG TIN CAN TIM. CO THE BO TRONG THONG TIN KHONG CAN TIM !" << endl;
+                            cout << "[!] CO THE NHAP TOAN BO HOAC 1 PHAN THONG TIN DUOI DAY !!" << endl;
                             cout << "<!> Nhap ten quan ao muon tim: ";
                             getline(cin, name);
+                            name = nameStr(name);
                             cout << "<!> Nhap ten thuong hieu muon tim: ";
                             getline(cin, brand);
-                            cout << "<!> Nhap the loai (1. Male/2. Female/3. Children/ 4. All): ";
+                            brand = nameStr(brand);
+                            cout << "<!> Nhap the loai (1: Male, 2: Female, 3: Children, 4: ALL): ";
                             getline(cin, type);
                             cout << "<!> Nhap mau sac muon tim: ";
                             getline(cin, color);
+                            color = nameStr(color);
                             cout << "<!> Nhap size muon tim: ";
                             getline(cin, size);
+                            size = nameStr(size);
                             manager.SearchBySubstring(name, brand, color, size, type);
                             break;
                         case 6:
+                            system("cls");
+                            cout << "<!> Nhap chinh xac ma ID quan ao can tim: ";
+                            getline(cin, ID);
+                            manager.PrintClothesByID(ID);
+                            break;
+                        case 7:
                             exitSubMenu = true;  
                             break;
                     }
@@ -549,6 +556,19 @@ void menuForCustomer(ClothesManager& manager, OrderManager& orderManager) {
                 break;
             }
             case 4: {
+                system("cls");
+                adminManager.findPerson(Admin_Manage::id);
+                system("pause");
+                break;
+            }
+            case 5: {
+                system("cls");
+                adminManager.findPerson(Admin_Manage::id);
+                adminManager.editPerson(Admin_Manage::id);
+                system("pause");
+                break;
+            }
+            case 6: {
                 setTextColor(7);
                 system("cls");
                 cout << "***------------------------------------------------------------***" << endl;
@@ -616,13 +636,17 @@ void chooseMenuPerson(Admin_Manage& Manager) {
                     int subChoice = interactiveMenu(subMenuItems, numSubItems);
                     if (subChoice == 0 || subChoice == 1) {
                         string id;
+                        system("cls");
                         cout << "NHAP ID BAN MUON TIM KIEM: ";
-                        cin >> id;
-                        Manager.findPerson(id);
+                        getline(cin, id);
+                        if(!Manager.findPerson(id)){
+                            cout << "KHONG TIM THAY NGUOI DUNG HAY ADMIN CO ID " << id << endl;
+                        };
                         system("pause");
                     } else if (subChoice == 2) {
                         break;
                     } else {
+                        system("cls");
                         cout << "LUA CHON KHONG HOP LE!" << endl;
                         system("pause");
                     }
@@ -630,33 +654,48 @@ void chooseMenuPerson(Admin_Manage& Manager) {
                 break;
             }
 
-            case 2: { // CHINH SUA
-                string subMenuItems[] = {
-                    "3.1 CHINH SUA THONG TIN ADMIN",
-                    "3.2 CHINH SUA THONG TIN CUSTOMER",
-                    "3.3 QUAY LAI MENU CHINH"
-                };
-                int numSubItems = sizeof(subMenuItems) / sizeof(subMenuItems[0]);
-                while (true) {
-                    int subChoice = interactiveMenu(subMenuItems, numSubItems);
-                    if (subChoice == 0 || subChoice == 1) {
-                        string id;
-                        if (subChoice == 0) Manager.ShowAdmin();
-                        else Manager.ShowCustomer();
-                        cout << "NHAP ID BAN MUON CHINH SUA: ";
-                        cin >> id;
-                        cin.ignore();
-                        Manager.editPerson(id);
-                        system("pause");
-                    } else if (subChoice == 2) {
-                        break;
-                    } else {
-                        cout << "LUA CHON KHONG HOP LE!" << endl;
-                        system("pause");
-                    }
-                }
-                break;
+            case 2: { 
+    string subMenuItems[] = {
+        "3.1 CHINH SUA THONG TIN ADMIN",
+        "3.2 CHINH SUA THONG TIN CUSTOMER",
+        "3.3 QUAY LAI MENU CHINH"
+    };
+    int numSubItems = sizeof(subMenuItems) / sizeof(subMenuItems[0]);
+    while (true) {
+        int subChoice = interactiveMenu(subMenuItems, numSubItems);
+        if (subChoice == 0) { 
+            system("cls");
+            string IdAdmin;
+            IdAdmin = Admin_Manage::id;
+            system("cls");
+            if (!Manager.findPerson(IdAdmin)) {
+                cout << "KHONG TIM THAY ADMIN CO ID " << IdAdmin << endl;
+            } else {
+                Manager.editPerson(IdAdmin);
             }
+            system("pause");
+        } else if (subChoice == 1) { // Chỉnh sửa thông tin Customer
+            system("cls");
+            string id;
+            Manager.ShowCustomer();
+            cout << "NHAP ID CUSTOMER BAN MUON CHINH SUA: ";
+            getline(cin, id);
+            if (!Manager.findPerson(id)) {
+                cout << "KHONG TIM THAY CUSTOMER CO ID " << id << endl;
+            } else {
+                Manager.editPerson(id);
+            }
+            system("pause");
+        } else if (subChoice == 2) { // Quay lại menu chính
+            break;
+        } else { // Lựa chọn không hợp lệ
+            system("cls");
+            cout << "LUA CHON KHONG HOP LE!" << endl;
+            system("pause");
+        }
+    }
+    break;
+}
 
             case 3: { // THEM MOI
                 string subMenuItems[] = {
@@ -666,9 +705,12 @@ void chooseMenuPerson(Admin_Manage& Manager) {
                 int numSubItems = sizeof(subMenuItems) / sizeof(subMenuItems[0]);
                 while (true) {
                     int subChoice = interactiveMenu(subMenuItems, numSubItems);
+                    system("cls");
                     if (subChoice == 0) {
+                        Manager.ShowCustomer();
                         string type = "Customer";
                         Manager.inputPerson(type);
+                        system("cls");
                         Manager.ShowCustomer();
                         system("pause");
                     } else if (subChoice == 1) {
@@ -688,13 +730,15 @@ void chooseMenuPerson(Admin_Manage& Manager) {
                 };
                 int numSubItems = sizeof(subMenuItems) / sizeof(subMenuItems[0]);
                 while (true) {
+                    
                     int subChoice = interactiveMenu(subMenuItems, numSubItems);
+                    system("cls");
                     if (subChoice == 0) {
                         string id;
                         system("cls");
                         Manager.ShowCustomer();
                         cout << "NHAP ID BAN MUON XOA: ";
-                        cin >> id;
+                        getline(cin, id);
                         Manager.DeletePerson(id);
                         system("pause");
                     } else if (subChoice == 1) {
@@ -759,7 +803,7 @@ void chooseLogin(Admin_Manage& KHvaAD, ClothesManager& manager, OrderManager& or
             if (loginResult == 1) {
                 chooseMenu(KHvaAD, manager, orderManager);  
             } else if (loginResult == 2) {
-                menuForCustomer(manager, orderManager); 
+                menuForCustomer(manager, orderManager, KHvaAD); 
             }
         } else if (choice == 1) {  // DANG KI
             createAccount(KHvaAD);

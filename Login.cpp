@@ -243,7 +243,7 @@ int createAccount(Admin_Manage& n) {
         return 0;
     }
 
-    string newID = n.generateNewID("KH");
+    string newID = n.generateNewID();
 
     gotoXY(15, 17);
     if (n.createAccount(newID, password, username)) {
@@ -265,6 +265,9 @@ int login(Admin_Manage& n) {
         drawInterface();
         gotoXY(24, 5);
         string id = getInput_admin(24, 5, false); 
+        if(id == "0"){
+            return 0;
+        }
         gotoXY(24, 8);
         string password = getInput(24, 8, true);
 
@@ -288,8 +291,9 @@ int login(Admin_Manage& n) {
             return 2;
         } else {
             setTextColor(4); 
-            cout << "\nDang nhap that bai. Vui long thu lai.\n";
+            cout << "\nDang nhap that bai. Vui long thu lai hoac nhap 0 vao o ID de thoat qua trinh dang nhap!!.\n";
             system("pause");
+            setTextColor(7); 
         }  
     } while (loginResult != 1 && loginResult != 2); 
 

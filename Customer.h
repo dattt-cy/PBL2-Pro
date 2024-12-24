@@ -10,6 +10,7 @@ public:
     Customer();
     ~Customer();
     void Show() const override; 
+    void ShowByID() const override;
 };
 
 #endif

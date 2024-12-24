@@ -40,8 +40,7 @@ void Order::editItem(ClothesManager& clothesManager) {
     displayOrder();
     string itemID;
     cout << "Nhap ma ID san pham muon chinh sua: ";
-    cin >> itemID;
-    cin.ignore();
+    getline(cin, itemID);
     itemID = nameStr(itemID);
     bool found = false;
     while (current) {
@@ -64,6 +63,10 @@ void Order::editItem(ClothesManager& clothesManager) {
     while (true) {
         cout << "\nNhap ma ID san pham moi (nhap 0 de huy): ";
         getline(cin, newItemID);
+        if(newItemID.empty()){
+            cout << "<!> MA ID KHONG DUOC DE TRONG. VUI LONG NHAP LAI." << endl;
+            continue;
+        }
         if (newItemID == "0") {
             cout << "<!> QUA TRINH CHINH SUA DA BI HUY!" << endl;
             return;
@@ -82,6 +85,10 @@ void Order::editItem(ClothesManager& clothesManager) {
             cout << "\nNhap mau sac moi (nhap 0 de huy): ";
             getline(cin, newColor);
             newColor = nameStr(newColor);
+            if(newColor.empty()){
+                cout << "<!> MAU SAC KHONG DUOC DE TRONG. VUI LONG NHAP LAI." << endl;
+                continue;
+            }
             if (newColor == "0") {
                 cout << "<!> QUA TRINH CHINH SUA DA BI HUY!" << endl;
                 return;
@@ -96,6 +103,10 @@ void Order::editItem(ClothesManager& clothesManager) {
         while (true) {
             cout << "\nNhap kich co moi (nhap 0 de huy): ";
             getline(cin, newSize);
+            if(newSize.empty()){
+                cout << "<!> KICH CO KHONG DUOC DE TRONG. VUI LONG NHAP LAI." << endl;
+                continue;
+            }
             newSize = toUpper(newSize);
             if (newSize == "0") {
                 cout << "<!> QUA TRINH CHINH SUA DA BI HUY!" << endl;
@@ -112,10 +123,13 @@ void Order::editItem(ClothesManager& clothesManager) {
         while (true) {
             cout << "\nNhap so luong moi (nhap 0 de huy): ";
             getline(cin,newQuantity2);
+            if(newQuantity2.empty()){
+                cout << "<!> SO LUONG KHONG DUOC DE TRONG. VUI LONG NHAP LAI." << endl;
+                continue;
+            }
             newQuantity = stringToInt(newQuantity2);
             if (newQuantity == 0) {
                 cout << "<!> QUA TRINH CHINH SUA DA BI HUY!" << endl;
-                cin.ignore();
                 return;
             }
             if(newQuantity < 0){
@@ -129,7 +143,6 @@ void Order::editItem(ClothesManager& clothesManager) {
             break;
         }
 
-        cin.ignore();
 
         total -= current->data->price * current->data->quantity;
 
@@ -178,6 +191,10 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
         cout << "<!> Chon mau sac cho san pham " << itemID << ": ";
         getline(cin, color);
         color = nameStr(color);
+        if(color.empty()){
+            cout << "<!> MAU SAC KHONG DUOC DE TRONG. VUI LONG NHAP LAI." << endl;
+            continue;
+        }
         if (!clothes->hasColor(color)) {
             cout << "<!> KHONG TIM THAY MAU SAC: " << color << " CHO SAN PHAM VOI MA ID: " << itemID << ". Vui long nhap lai." << endl;
             continue;
@@ -188,6 +205,11 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
     while (true) {
         cout << "<!> Chon kich co cho san pham " << itemID << ": ";
         getline(cin, size);
+        if(size.empty())
+        {
+            cout << "<!> KICH CO KHONG DUOC DE TRONG. VUI LONG NHAP LAI." << endl;
+            continue;
+        }
         size = toUpper(size);
         if (!clothes->hasSize(color, size)) {
             cout << "<!> KHONG TIM THAY KICH CO: " << size << " CHO MAU SAC: " << color << " CUA SAN PHAM VOI MA ID: " << itemID << ". Vui long nhap lai." << endl;
@@ -199,6 +221,11 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
     while (true) {
         cout << "<!> Chon so luong cho san pham " << itemID << ": ";
         getline(cin, quantity2);
+        if(quantity2.empty())
+        {
+            cout << "<!> SO LUONG KHONG DUOC DE TRONG. VUI LONG NHAP LAI." << endl;
+            continue;
+        }
         quantity = stringToInt(quantity2);
         if (!clothes->checkQuantity(color, size, quantity)) {
             cout << "<!> SO LUONG NHAP VAO VUOT QUA SO LUONG HIEN CO. VUI LONG NHAP LAI." << endl;

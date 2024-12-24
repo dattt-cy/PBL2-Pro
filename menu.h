@@ -13,7 +13,7 @@ int subMenuCase1();
 int subMenuCase2();
 void Statistics(OrderManager& orderManager);
 void menu(ClothesManager& manager, OrderManager& orderManager);
-void menuForCustomer(ClothesManager& manager, OrderManager& orderManager);
+void menuForCustomer(ClothesManager& manager, OrderManager& orderManager, Admin_Manage& adminManager);
 void chooseMenu(Admin_Manage& Manager, ClothesManager& manager, OrderManager& orderManager);
 void chooseLogin(Admin_Manage& KHvaAD, ClothesManager& manager, OrderManager& orderManager);
 

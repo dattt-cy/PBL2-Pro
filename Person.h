@@ -52,6 +52,7 @@ public:
     string getBirthDay() const;
 
     virtual void Show() const = 0; 
+    virtual void ShowByID() const = 0;
     bool checkLogin(const string& username, const string& password);
 };
 

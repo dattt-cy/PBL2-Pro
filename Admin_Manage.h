@@ -6,6 +6,7 @@
 #include "Admin.h"
 #include "Customer.h"
 #include <string>
+#include <set>
 
 class Admin_Manage {
 private:
@@ -19,7 +20,7 @@ public:
     void sortByID();
     void UpdateAdminID();
     int AdminID(const string& filename, const string& type);
-    string generateNewID(const string& type);
+    string generateNewID();
     void ShowAdmin();
     void ShowCustomer();
     void addPerson(Person* person);
@@ -37,6 +38,7 @@ public:
     void deleteList();
     Customer* findKhachHang(const string& id);
     void editPerson(const std::string& id);
+    int findAvailableID();
 };
 
 #endif // ADMIN_MANAGE_H

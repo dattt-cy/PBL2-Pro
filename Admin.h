@@ -20,4 +20,5 @@ class Admin: public Person {
         void setDayofwork(int day, int month, int year);
         string getDayofwork();
         void Show() const override;
+        void ShowByID() const override;
 };

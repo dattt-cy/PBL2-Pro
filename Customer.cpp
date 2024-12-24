@@ -17,3 +17,14 @@ void Customer::Show() const {
               << "| " << setw(19) << numberPhone
               << "| " << setw(31) << address << "|\n";
 }
+void Customer::ShowByID() const {
+    cout << "\n========== THONG TIN KHACH HANG ==========\n";
+    cout << "ID: " << ID << "\n";
+    cout << "Ten: " << name << "\n";
+    cout << "Mat khau: " << passWord << "\n";
+    cout << "Gioi tinh: " << gender << "\n";
+    cout << "Ngay sinh: " << birthDay.toString() << "\n";
+    cout << "So dien thoai: " << numberPhone << "\n";
+    cout << "Dia chi: " << address << "\n";
+    cout << "===========================================\n";
+}

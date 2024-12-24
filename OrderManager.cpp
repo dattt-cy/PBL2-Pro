@@ -47,18 +47,27 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
 
     bool continueOrdering = true;
     int choice;
+    string choice2;
     do {
         continueOrdering = order->addClothesItem(clothesManager);
 
         if (!continueOrdering) {
             break;
         }
-
+        while(true){
         cout << "<!> Ban co muon tiep tuc them san pham khong? (1: Male, 2: Female, 3: Children, 4: All, 0: Khong): ";
-        cin >> choice;
-        cin.ignore();
-
-        if (choice == 0) {
+        getline(cin, choice2);
+        if(choice2 != "1" && choice2 != "2" && choice2 != "3" && choice2 != "4" && choice2 != "0"){
+            cout << "Lua chon khong hop le. Vui long thu lai." << endl;
+            continue;
+        }
+        else{
+            break;
+        }
+      
+        }
+        choice = stoi(choice2);
+        if(choice == 0){
             break;
         }
         cout << "==================== CLOTHES MENU ====================" << endl;
@@ -87,14 +96,25 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
             cout << "<!> GIO HANG CUA BAN DANG TRONG. VUI LONG THEM SAN PHAM VAO GIO HANG." << endl;
             break;
         }
+        while(true){
+        system("cls");
         order->displayOrder();
         cout << "\nBAN CO CHAC CHAN MUON THANH TOAN KHONG?" << endl;
         cout << "\n1. XAC NHAN THANH TOAN." << endl;
         cout << "\n2. CHINH SUA GIO HANG." << endl;
         cout << "\n0. HUY DON HANG." << endl;
         cout << "\nNhap lua chon cua ban: ";
-        cin >> choice;
-        cin.ignore();
+        getline(cin, choice2);
+        if(choice2 != "1" && choice2 != "2" && choice2 != "0"){
+            cout << "Lua chon khong hop le. Vui long thu lai." << endl;
+            system("pause");
+            continue;
+        }
+        else{
+            break;
+        }
+        }
+        choice = stoi(choice2);
         switch (choice) {
             case 1: {
                     clothesManager.writeClothesToFile("clothes.txt");
@@ -112,16 +132,29 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
                     cout << "<!> GIO HANG CUA BAN DANG TRONG. VUI LONG THEM SAN PHAM VAO GIO HANG." << endl;
                     break;
                 }
-                order->displayOrder();
                 int subChoice;
+                string subChoice2;
                 do {
+                    while(true){
+                    system("cls");
+                    order->displayOrder();
+                    cout << "\nBAN MUON LAM GI TIEP THEO?" << endl;
                     cout << "\n2.1 CHINH SUA SAN PHAM." << endl;
                     cout << "\n2.2 THEM SAN PHAM VAO DON HANG." << endl;
                     cout << "\n2.3 XOA SAN PHAM KHOI DON HANG." << endl;
                     cout << "\n0. QUAY LAI MENU CHINH." << endl;
                     cout << "\nNhap lua chon cua ban: ";
-                    cin >> subChoice;
-                    cin.ignore();
+                    getline(cin, subChoice2);
+                    if(subChoice2 != "1" && subChoice2 != "2" && subChoice2 != "3" && subChoice2 != "0"){
+                        cout << "Lua chon khong hop le. Vui long thu lai." << endl;
+                        system("pause");
+                        continue;
+                    }
+                    else{
+                        break;
+                    }
+                    }
+                    subChoice = stoi(subChoice2);
                     string productTypee;
                     string productTypeee;
                     string itemID;

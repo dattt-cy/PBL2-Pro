@@ -40,3 +40,16 @@ void Admin::Show() const{
               << "| " << setw(31) << address
               << "| " << setw(16) << workDate.str() << "|\n";
 }
+void Admin::ShowByID() const {
+    cout << "\n========== THONG TIN ADMIN ==========\n";
+    cout << "ID: " << ID << "\n";
+    cout << "Ten: " << name << "\n";
+    cout << "Mat khau: " << passWord << "\n";
+    cout << "Gioi tinh: " << gender << "\n";
+    cout << "Ngay sinh: " << birthDay.toString() << "\n";
+    cout << "So dien thoai: " << numberPhone << "\n";
+    cout << "Dia chi: " << address << "\n";
+    cout << "Ngay vao lam: " << dayofWork.toString() << "\n";
+    cout << "=======================================\n";
+}
+
