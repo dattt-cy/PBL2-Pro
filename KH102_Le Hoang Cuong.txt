@@ -1,0 +1,39 @@
+============================= SHOP QUAN AO GAU GAU =============================
+Ma Hoa Don: INV_241224_782                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang
+Time  In:  24.12.24  13:11                                       SDT: 0372787650
+Time Out:  24.12.24  13:11
+Ten Khach Hang: Le Hoang Cuong
+So Dien Thoai: 0923456789
+
+                               HOA DON THANH TOAN                                  
+
+Item                               Price          Quantity            Total
+--------------------------------------------------------------------------------
+Quan Short Cau Vong           700.000 VND            5          3.500.000 VND
+--------------------------------------------------------------------------------
+Tong tien: 3.500.000 VND
+Giam gia: 15%
+Tong tien duoc giam gia: 525.000 VND
+Tong tien sau khi giam gia: 2.975.000 VND
+hai trieu chin tram bay muoi lam nghin dong
+================================================================================
+============================= SHOP QUAN AO GAU GAU =============================
+Ma Hoa Don: INV_241224_751                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang
+Time  In:  24.12.24  13:13                                       SDT: 0372787650
+Time Out:  24.12.24  13:13
+Ten Khach Hang: Le Hoang Cuong
+So Dien Thoai: 0923456789
+
+                               HOA DON THANH TOAN                                  
+
+Item                               Price          Quantity            Total
+--------------------------------------------------------------------------------
+Quan Kaki Dai                 130.000 VND            2            260.000 VND
+Ao Khoac Bomber               180.000 VND            2            360.000 VND
+--------------------------------------------------------------------------------
+Tong tien: 620.000 VND
+Giam gia: 10%
+Tong tien duoc giam gia: 62.000 VND
+Tong tien sau khi giam gia: 558.000 VND
+nam tram nam muoi tam nghin dong
+================================================================================

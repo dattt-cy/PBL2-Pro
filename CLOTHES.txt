@@ -1,5 +1,5 @@
 C100,Ao Thun Tre Em,160000,Nike,S,Orange,7,M,Purple,9
-C101,Quan Short Cau Vong,700000,Adidas,S,Green,15,M,White,5
+C101,Quan Short Cau Vong,700000,Adidas,S,Green,10,M,White,5
 C102,Ao Sieu Nhe Cho Be,500000,Nike,M,Light Blue,23,S,Pink,12
 C103,Quan Dai Co Vang,750000,Adidas,S,Beige,10,M,Brown,8
 C104,Dam Xoe Co Tron,160000,Puma,M,Purple,4,S,Red,6
@@ -14,8 +14,8 @@ F105,Quan Short Nam,900000,Adidas,S,Gray,3,M,Beige,8
 F106,Dam Dai Mua He,170000,Nike,M,White,1
 F107,Quan Dai The Thao,110000,Adidas,M,White,6,L,Blue,8
 F108,Ao Croptop Hoa Tiet,900000,Puma,M,Yellow,1
-F109,Ao Khoac Bomber,180000,Nike,XL,Green,2,L,Black,4
-F110,Quan Kaki Dai,130000,Adidas,M,Brown,5,L,Black,6
+F109,Ao Khoac Bomber,180000,Nike,XL,Green,2,L,Black,2
+F110,Quan Kaki Dai,130000,Adidas,M,Brown,3,L,Black,6
 F111,Ao Tam Thoi Trang,950000,Nike,L,Yellow,5,S,Pink,8
 F112,Ao Thun Co Hoc,850000,Puma,L,Brown,1
 F113,Ao Thun,100000,Puma,S,Gray,8,L,Gray,10
@@ -24,7 +24,7 @@ M101,Quan Short Nam,300000,Nike,M,Blue,8,L,White,5
 M102,Ao Khoac Nam,500000,Puma,L,Green,12,M,Brown,6
 M103,Quan Jeans Nam,350000,Zara,L,Dark Blue,10,XL,Black,7
 M104,Ao Somi Nam,250000,Uniqlo,M,White,15,L,Beige,8
-M105,Ao Vest Nam,800000,H&M,L,Gray,5,XL,Black,3
+M105,Ao Vest Nam,800000,H&M,L,Gray,5,XL,Black,7
 M106,Quan Jogger Nam,450000,Adidas,M,Red,12,L,Gray,10
 M107,Ao Khoac Bomber Nam,600000,Nike,L,Black,10,XL,Green,4
 M108,Quan Kaki Nam,400000,Zara,M,Beige,14,L,Brown,7

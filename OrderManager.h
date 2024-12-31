@@ -7,6 +7,7 @@
 #include <string>
 #include <iomanip>
 #include "Admin_Manage.h"
+#include "Set.h"
 
 using namespace std;
 

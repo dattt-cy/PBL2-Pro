@@ -418,7 +418,7 @@ void Admin_Manage::editPerson(const string& id) {
             if (!input.empty()) person->setPassWord(input);
 
             do {
-                cout << "Nhap gioi tinh moi (1: Nam, 0: Nu): ";
+                cout << "<!> Nhap gioi tinh moi (1: Nam, 0: Nu): ";
                 getline(cin, input);
                 if (input == "0") {
                     person->setName(originalName);       // Khôi phục tên
@@ -439,7 +439,7 @@ void Admin_Manage::editPerson(const string& id) {
             } while (true);
 
             do {
-                cout << "Nhap ngay sinh moi (dd/mm/yyyy): ";
+                cout << "<!> Nhap ngay sinh moi (dd/mm/yyyy): ";
                 getline(cin, input);
                 if (input == "0") {
                     person->setName(originalName);       // Khôi phục tên

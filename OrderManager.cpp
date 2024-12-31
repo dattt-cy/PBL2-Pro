@@ -17,7 +17,35 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
 
     Order* order = new Order(orderID, customerName, customerPhone);
 
-    cout << "Ban quan tam den san pham nao? (1. Male, 2. Female, 3. Children, 4. All): ";
+    setTextColor(6); 
+    cout << "+====================================================================================+" << endl;
+
+    setTextColor(4); // Màu đỏ
+    cout << setw(50) << right << "SHOP QUAN AO GAU GAU" << endl;
+
+    setTextColor(6); // Màu vàng
+    cout << "+====================================================================================+" << endl;
+
+    setTextColor(3); // Màu cyan
+    cout << "**------------------------------------------------------------------------------------**" << endl;
+
+  
+    setTextColor(2); // Màu xanh lá
+    cout << "XIN CHAO QUY KHACH, BAN QUAN TAM DEN SAN PHAM NAOO CUA CUA HANG CHUNG TOI " << endl;;
+
+    setTextColor(5); // Màu tím
+    cout << "(1. Male, ";
+
+    setTextColor(13); // Màu hồng
+    cout << "2. Female, ";
+
+    setTextColor(3); // Màu cyan
+    cout << "3. Children, ";
+
+    setTextColor(1); // Màu xanh dương
+    cout << "4. All): ";
+
+    setTextColor(7);
     string product;
     getline(cin, product);
     if(isCharacter(product)){
