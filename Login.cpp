@@ -258,6 +258,68 @@ int createAccount(Admin_Manage& n) {
         return 0;
     }
 }
+void drawForgotPasswordInterface() {
+    setTextColor(11);
+    drawBox(10, 0, 60, 15);
+    gotoXY(28, 2);
+    cout << "QUEN MAT KHAU";
+
+    setTextColor(15);
+    gotoXY(13, 5);
+    cout << "Nhap ID: ";
+    drawBox(33, 4, 30, 1);
+    setTextColor(15);
+    gotoXY(13, 8);
+    cout << "So dien thoai: ";
+    drawBox(33, 7, 30, 1);
+    setTextColor(15);
+    gotoXY(13, 11);
+    cout << "Mat khau moi: ";
+    drawBox(33, 10, 30, 1);
+    setTextColor(15);
+    gotoXY(13, 14);
+    cout << "Xac nhan mat khau: ";
+    drawBox(33, 13, 30, 1);
+}
+
+void resetPassword(Admin_Manage& n) {
+    system("cls");
+    drawForgotPasswordInterface();
+
+    setTextColor(15);
+    string id, phone, newPassword, confirmPassword;
+
+    gotoXY(34, 5);
+    id = getInput_admin(34, 5, false);
+    gotoXY(34, 8);
+    phone = getInput_admin(34, 8, false);
+
+    Customer* customer = n.findKhachHang(id);
+    if (customer && customer->getNumberPhone() == phone) {
+        gotoXY(34, 11);
+        newPassword = getInput(34, 11, true);
+        gotoXY(34, 14);
+        confirmPassword = getInput(34, 14, true);
+
+        if (newPassword == confirmPassword) {
+            customer->setPassWord(newPassword);
+            n.WriteFile("Data.txt");
+            gotoXY(20, 17);
+            setTextColor(2);
+            cout << "Mat khau da duoc thay doi thanh cong!";
+        } else {
+            gotoXY(20, 17);
+            setTextColor(4);
+            cout << "Mat khau khong khop. Vui long thu lai.";
+        }
+    } else {
+        gotoXY(20, 17);
+        setTextColor(4);
+        cout << "ID hoac so dien thoai khong chinh xac!";
+    }
+    system("pause");
+}
+
 int login(Admin_Manage& n) {
     int loginResult = 3; 
     do {
@@ -265,23 +327,26 @@ int login(Admin_Manage& n) {
         drawInterface();
         gotoXY(24, 5);
         string id = getInput_admin(24, 5, false); 
-        if(id == "0"){
+
+        if (id == "1") { 
+            resetPassword(n);
+            continue;
+        }
+
+        if (id == "0") {
             return 0;
         }
+
         gotoXY(24, 8);
         string password = getInput(24, 8, true);
-
         gotoXY(15, 13); 
         loginResult = n.checkLogin(id, password);
 
         if (loginResult == 1) {
-            setTextColor(2); 
             cout << "\nDang nhap thanh cong voi quyen Admin!\n";
             system("pause");
             return 1; 
-            
         } else if (loginResult == 2) {
-            setTextColor(2); 
             cout << "\nDang nhap thanh cong voi quyen Customer!\n";
             system("pause");
             if (!n.isCustomerInfoComplete(id)) {
@@ -290,10 +355,11 @@ int login(Admin_Manage& n) {
             }
             return 2;
         } else {
-            setTextColor(4); 
-            cout << "\nDang nhap that bai. Vui long thu lai hoac nhap 0 vao o ID de thoat qua trinh dang nhap!!.\n";
+            setTextColor(11);
+            cout << "\nDANG NHAP THAT BAI. VUI LONG THU LAI HOAC NHAP 0 VAO O ID DE THOAT QUA TRINH DANG NHAP!\n";
+            cout << "NEU QUEN MAT KHAU, NHAP 1 VAO O ID DE RESET MAT KHAU!\n";
             system("pause");
-            setTextColor(7); 
+            setTextColor(7);
         }  
     } while (loginResult != 1 && loginResult != 2); 
 
