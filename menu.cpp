@@ -127,7 +127,7 @@ void Statistics(OrderManager& orderManager) {
         switch (choice) {
             case 0: {
                 system("cls");
-                orderManager.readOrdersFromFile("Doanhthu.txt");
+                orderManager.readOrdersFromFile("Information/Doanhthu.txt");
                 time_t now = time(0);
                 tm* ltm = localtime(&now);
                 int day = ltm->tm_mday;
@@ -142,7 +142,7 @@ void Statistics(OrderManager& orderManager) {
                 system("cls");
                 string dateStr;
                 int day, month, year;
-                orderManager.readOrdersFromFile("Doanhthu.txt");
+                orderManager.readOrdersFromFile("Information/Doanhthu.txt");
                 cout << "Nhap ngay (dd/mm/yyyy): ";
                 getline(cin, dateStr);
                 if (parseDate(dateStr, day, month, year)) {
@@ -158,7 +158,7 @@ void Statistics(OrderManager& orderManager) {
                 system("cls");
                 string dateStr;
                 int day = 1, month, year;
-                orderManager.readOrdersFromFile("Doanhthu.txt");
+                orderManager.readOrdersFromFile("Information/Doanhthu.txt");
                 cout << "Nhap thang va nam (mm/yyyy): ";
                 getline(cin, dateStr);
                 if (parseDate("01/" + dateStr, day, month, year)) { 
@@ -173,7 +173,7 @@ void Statistics(OrderManager& orderManager) {
             case 3: {
                 system("cls");
                 string dateStr;
-                orderManager.readOrdersFromFile("Doanhthu.txt");
+                orderManager.readOrdersFromFile("Information/Doanhthu.txt");
                 int day = 1, month = 1, year;
                 cout << "Nhap nam (yyyy): ";
                 getline(cin, dateStr);
@@ -384,7 +384,7 @@ void menu(ClothesManager& manager, OrderManager& orderManager) {
                 break;  
             }
             case 3: {
-                manager.writeClothesToFile("CLOTHES.txt");
+                manager.writeClothesToFile("Information/CLOTHES.txt");
                 cout << "<!> Da luu danh sach quan ao vao file." << endl;
                 system("pause");
                 break;
@@ -789,7 +789,7 @@ void chooseMenu(Admin_Manage& Manager, ClothesManager& manager, OrderManager& or
     }
 }
 void chooseLogin(Admin_Manage& KHvaAD, ClothesManager& manager, OrderManager& orderManager) {
-    KHvaAD.ReadFile("Data.txt");
+    KHvaAD.ReadFile("Information/Data.txt");
 
     string menuItems[] = {"1. DANG NHAP", "2. DANG KI", "3. THOAT"};
     int choice;

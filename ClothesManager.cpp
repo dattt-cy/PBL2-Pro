@@ -563,5 +563,8 @@ double ClothesManager::getPriceByID(const string& itemID) const {
     }
     return -1; 
 }
+void ClothesManager::clearClothes() {
+    list.clear();
+}
 
 

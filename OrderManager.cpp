@@ -145,11 +145,12 @@ void OrderManager::createOrder(ClothesManager& clothesManager) {
         choice = stoi(choice2);
         switch (choice) {
             case 1: {
-                    clothesManager.writeClothesToFile("clothes.txt");
-                    clothesManager.readClothesFromFile("clothes.txt");
+                    clothesManager.writeClothesToFile("Information/clothes.txt");
+                    clothesManager.clearClothes();
+                    clothesManager.readClothesFromFile("Information/clothes.txt");
                     system("cls");
                     checkoutOrder(order);
-                    order->saveOrderToFile("DoanhThu.txt");
+                    order->saveOrderToFile("Information/DoanhThu.txt");
                     order->writeInvoiceToFile(Admin_Manage::id, Admin_Manage::name, Admin_Manage::phone);
                     orders.addNode(order);
                 break;
@@ -433,14 +434,15 @@ void OrderManager::clearOrders() {
 }
 bool OrderManager::readInvoiceFromFile(const string& id){
     Admin_Manage KH;
-    KH.ReadFile("Data.txt");
+    KH.ReadFile("Information/Data.txt");
     Person* kh = KH.findKhachHang(id);
     if(kh == nullptr){
         cout << "<!> KHONG TIM THAY KHACH HANG CO ID " << id << endl;
          system("pause");
         return false;
     }
-    string tenFile = id + "_" + kh->getName() + ".txt";
+    string folderPath = "invoices/";
+    string tenFile = folderPath + id + "_" + kh->getName() + ".txt";
     ifstream inFile(tenFile);
     if (!inFile.is_open()) {
          system("pause");

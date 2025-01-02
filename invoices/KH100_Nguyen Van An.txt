@@ -36,3 +36,22 @@ Tong tien duoc giam gia: 285.000 VND
 Tong tien sau khi giam gia: 1.615.000 VND
 mot trieu sau tram muoi lam nghin dong
 ================================================================================
+============================= SHOP QUAN AO GAU GAU =============================
+Ma Hoa Don: INV_020125_711                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang
+Time  In:  2.1.25  21:28                                       SDT: 0372787650
+Time Out:  2.1.25  21:28
+Ten Khach Hang: Nguyen Van An
+So Dien Thoai: 0909123456
+
+                               HOA DON THANH TOAN                                  
+
+Item                               Price          Quantity            Total
+--------------------------------------------------------------------------------
+Ao Dai Mua He                 100.000 VND            2            200.000 VND
+--------------------------------------------------------------------------------
+Tong tien: 200.000 VND
+Giam gia: 0%
+Tong tien duoc giam gia: 0 VND
+Tong tien sau khi giam gia: 200.000 VND
+hai tram nghin dong
+================================================================================

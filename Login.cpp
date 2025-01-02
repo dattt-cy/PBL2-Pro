@@ -303,7 +303,7 @@ void resetPassword(Admin_Manage& n) {
 
         if (newPassword == confirmPassword) {
             customer->setPassWord(newPassword);
-            n.WriteFile("Data.txt");
+            n.WriteFile("Information/Data.txt");
             gotoXY(20, 17);
             setTextColor(2);
             cout << "Mat khau da duoc thay doi thanh cong!";

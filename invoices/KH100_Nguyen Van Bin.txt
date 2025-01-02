@@ -1,0 +1,58 @@
+============================= SHOP QUAN AO GAU GAU =============================
+Ma Hoa Don: INV_020125_572                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang
+Time  In:  2.1.25  12:46                                       SDT: 0372787650
+Time Out:  2.1.25  12:46
+Ten Khach Hang: Nguyen Van Bin
+So Dien Thoai: 0909123456
+
+                               HOA DON THANH TOAN                                  
+
+Item                               Price          Quantity            Total
+--------------------------------------------------------------------------------
+Ao Thun Co Tron                10.000 VND            1             10.000 VND
+--------------------------------------------------------------------------------
+Tong tien: 10.000 VND
+Giam gia: 0%
+Tong tien duoc giam gia: 0 VND
+Tong tien sau khi giam gia: 10.000 VND
+muoi nghin dong
+================================================================================
+============================= SHOP QUAN AO GAU GAU =============================
+Ma Hoa Don: INV_020125_535                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang
+Time  In:  2.1.25  12:51                                       SDT: 0372787650
+Time Out:  2.1.25  12:51
+Ten Khach Hang: Nguyen Van Bin
+So Dien Thoai: 0909123456
+
+                               HOA DON THANH TOAN                                  
+
+Item                               Price          Quantity            Total
+--------------------------------------------------------------------------------
+Ao Khoac Jean Tre Trung          120.000 VND            1            120.000 VND
+--------------------------------------------------------------------------------
+Tong tien: 120.000 VND
+Giam gia: 0%
+Tong tien duoc giam gia: 0 VND
+Tong tien sau khi giam gia: 120.000 VND
+mot tram hai muoi nghin dong
+================================================================================
+============================= SHOP QUAN AO GAU GAU =============================
+Ma Hoa Don: INV_020125_498                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang
+Time  In:  2.1.25  21:1                                       SDT: 0372787650
+Time Out:  2.1.25  21:1
+Ten Khach Hang: Nguyen Van Bin
+So Dien Thoai: 0909123456
+
+                               HOA DON THANH TOAN                                  
+
+Item                               Price          Quantity            Total
+--------------------------------------------------------------------------------
+Quan Short Cau Vong           700.000 VND            1            700.000 VND
+Quan Short Cau Vong           700.000 VND            2          1.400.000 VND
+--------------------------------------------------------------------------------
+Tong tien: 2.100.000 VND
+Giam gia: 15%
+Tong tien duoc giam gia: 315.000 VND
+Tong tien sau khi giam gia: 1.785.000 VND
+mot trieu bay tram tam muoi lam nghin dong
+================================================================================

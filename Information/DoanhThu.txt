@@ -15,3 +15,9 @@
 24/12/2024,782,C101,Quan Short Cau Vong,Green,S,5,700000
 24/12/2024,751,F110,Quan Kaki Dai,Brown,M,2,130000
 24/12/2024,751,F109,Ao Khoac Bomber,Black,L,2,180000
+2/1/2025,668,F100,Ao Dai Mua He,Orange,S,1,100000
+2/1/2025,572,F101,Ao Thun Co Tron,Green,M,1,10000
+2/1/2025,535,F102,Ao Khoac Jean Tre Trung,Gray,S,1,120000
+2/1/2025,498,C101,Quan Short Cau Vong,White,M,1,700000
+2/1/2025,498,C101,Quan Short Cau Vong,White,M,2,700000
+2/1/2025,711,F100,Ao Dai Mua He,Orange,S,2,100000

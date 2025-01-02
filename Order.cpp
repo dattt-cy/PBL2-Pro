@@ -35,6 +35,7 @@ bool Order::removeItem(const string& itemID, ClothesManager& clothesManager) {
     system("pause");
 }
 
+
 void Order::editItem(ClothesManager& clothesManager) {
     Node<OrderItem*>* current = items.getHead();
     displayOrder();
@@ -238,6 +239,17 @@ bool Order::addClothesItem(ClothesManager& clothesManager) {
         break;
     }
     clothes->UpdateSL(color, size, quantity);
+    Node<OrderItem*>* current = items.getHead();
+    while (current) {
+        OrderItem* existingItem = current->data;
+        if (existingItem->itemID == itemID && existingItem->color == color && existingItem->size == size) {
+            existingItem->quantity += quantity;
+            total += clothes->getPrice() * quantity;
+            cout << "<!> DA CAP NHAT SO LUONG CHO SAN PHAM " << itemID << endl;
+            return true;
+        }
+        current = current->next;
+    }
     double price = clothes->getPrice();
     string itemName = clothes->getName(); 
     time_t now = time(0);
@@ -291,8 +303,10 @@ void Order::displayOrder() const {
     cout << "================================================================================\n";
 } 
 void Order::writeInvoiceToFile(const string& customerID, const string& customerName, const string& customerPhone){
+    string folderPath = "invoices/"; 
+
     stringstream fileName;
-    fileName << customerID << "_" << customerName << ".txt";
+    fileName << folderPath << customerID << "_" << customerName << ".txt";
 
     ofstream outFile(fileName.str(), ios::app);
     if (!outFile.is_open()) {

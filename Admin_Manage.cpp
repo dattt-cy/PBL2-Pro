@@ -370,7 +370,7 @@ void Admin_Manage::inputPerson(const string& type) {
 
     addPerson(person);
     cout << "Da them " << type << " thanh cong!" << endl;
-    WriteFile("Data.txt");
+    WriteFile("Information/Data.txt");
     if (type == "Admin") {
         ShowAdmin();
     } else {
@@ -496,7 +496,7 @@ void Admin_Manage::editPerson(const string& id) {
             if (!input.empty()) person->setAddress(input);
 
             cout << "Thong tin da duoc cap nhat." << endl;
-            WriteFile("Data.txt");
+            WriteFile("Information/Data.txt");
             return;
         }
         current = current->next;
@@ -514,7 +514,7 @@ void Admin_Manage::DeletePerson(const string& ID) {
     while (true) {
         if (list.removeById(ID)) {
             cout << "Nguoi dung co ID " << ID << " da duoc xoa." << endl;
-            WriteFile("Data.txt");
+            WriteFile("Information/Data.txt");
 
             if (ID.find("AD") == 0) {
                 cout << "Danh sach Admin sau khi xoa:" << endl;
@@ -627,7 +627,7 @@ void Admin_Manage::updateCustomerInfo(const string& id, const string& dob, const
         }
         current = current->next;
     }
-    WriteFile("Data.txt");
+    WriteFile("Information/Data.txt");
 }
 void Admin_Manage::deleteList() {
     list.clear();

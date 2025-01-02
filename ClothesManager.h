@@ -30,6 +30,7 @@ public:
     bool checkColor(Clothes* cloth, const string& color) const;
     bool checkSize(Clothes* cloth, const string& size) const;
     double getPriceByID(const string& itemID) const;
+    void clearClothes();
      friend class OrderManager;
      
 };
