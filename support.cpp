@@ -194,24 +194,47 @@ bool isPhoneNumber(const string& input){
     }
     return true;
 }
-bool isDate(const string& input){
+bool isDate(string input) {
+    // Tách ngày, tháng, năm từ chuỗi
+    vector<string> parts;
+    stringstream ss(input);
+    string item;
+    while (getline(ss, item, '/')) {
+        parts.push_back(item);
+    }
+
+    // Kiểm tra có đúng 3 phần không
+    if (parts.size() != 3) {
+        return false;
+    }
+
+    // Thêm số 0 vào trước nếu cần thiết
+    if (parts[0].length() == 1) parts[0] = "0" + parts[0];
+    if (parts[1].length() == 1) parts[1] = "0" + parts[1];
+
+    // Tạo lại chuỗi theo định dạng chuẩn
+    input = parts[0] + "/" + parts[1] + "/" + parts[2];
+
+    // Kiểm tra độ dài chuẩn
     if (input.length() != 10) {
         return false;
     }
     if (input[2] != '/' || input[5] != '/') {
         return false;
     }
+
+    // Kiểm tra tất cả các ký tự còn lại phải là số
     for (int i = 0; i < input.length(); ++i) {
-        if (i == 2 || i == 5) {
-            continue;
-        }
-        if (!isdigit(input[i])) {
-            return false;
-        }
+        if (i == 2 || i == 5) continue;
+        if (!isdigit(input[i])) return false;
     }
+
+    // Chuyển đổi ngày, tháng, năm thành số nguyên
     int day = stoi(input.substr(0, 2));
     int month = stoi(input.substr(3, 2));
     int year = stoi(input.substr(6, 4));
+
+    // Gọi hàm kiểm tra ngày hợp lệ
     return checkDate(day, month, year);
 }
 bool isSex(const string& input){

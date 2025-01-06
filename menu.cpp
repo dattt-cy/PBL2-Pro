@@ -285,7 +285,7 @@ void menu(ClothesManager& manager, OrderManager& orderManager) {
                             cout << "[!] LUU Y CO THE VIET THUONG HOAC VIET HOA THONG TIN CAN TIM." << endl;
                             cout << "<!> Nhap size can tim: ";
                             getline(cin, size);
-                            size = nameStr(size);
+                            size = toUpper(size);
                             manager.SearchBySubstring("", "", "", size, "4");
                             break;
                         case 5:
@@ -305,7 +305,7 @@ void menu(ClothesManager& manager, OrderManager& orderManager) {
                             color = nameStr(color);
                             cout << "<!> Nhap size muon tim: ";
                             getline(cin, size);
-                            size = nameStr(size);
+                            size = toUpper(size);
                             manager.SearchBySubstring(name, brand, color, size, type);
                             break;
                         case 6:
@@ -504,7 +504,7 @@ void menuForCustomer(ClothesManager& manager, OrderManager& orderManager, Admin_
                             cout << "[!] LUU Y CO THE VIET THUONG HOAC VIET HOA THONG TIN CAN TIM." << endl;
                             cout << "<!> Nhap size can tim: ";
                             getline(cin, size);
-                            size = nameStr(size);
+                            size = toUpper(size);
                             manager.SearchBySubstring("", "", "", size, "4");
                             break;
                         case 5:
@@ -524,7 +524,7 @@ void menuForCustomer(ClothesManager& manager, OrderManager& orderManager, Admin_
                             color = nameStr(color);
                             cout << "<!> Nhap size muon tim: ";
                             getline(cin, size);
-                            size = nameStr(size);
+                            size = toUpper(size);
                             manager.SearchBySubstring(name, brand, color, size, type);
                             break;
                         case 6:

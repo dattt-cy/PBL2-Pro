@@ -1,0 +1,38 @@
+============================= SHOP QUAN AO GAU GAU =============================
+Ma Hoa Don: INV_060125_490                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang
+Time  In:  6.1.25  9:4                                       SDT: 0372787650
+Time Out:  6.1.25  9:4
+Ten Khach Hang: Nguyen Thanh Binh
+So Dien Thoai: 0984445304
+
+                               HOA DON THANH TOAN                                  
+
+Item                               Price          Quantity            Total
+--------------------------------------------------------------------------------
+Ao Khoac Bomber Nam           600.000 VND            1            600.000 VND
+--------------------------------------------------------------------------------
+Tong tien: 600.000 VND
+Giam gia: 10%
+Tong tien duoc giam gia: 60.000 VND
+Tong tien sau khi giam gia: 540.000 VND
+nam tram bon muoi nghin dong
+================================================================================
+============================= SHOP QUAN AO GAU GAU =============================
+Ma Hoa Don: INV_060125_364                K89/3 Dong Ke, Lien Chieu, Tp. Da Nang
+Time  In:  6.1.25  9:44                                       SDT: 0372787650
+Time Out:  6.1.25  9:44
+Ten Khach Hang: Nguyen Thanh Binh
+So Dien Thoai: 0984445304
+
+                               HOA DON THANH TOAN                                  
+
+Item                               Price          Quantity            Total
+--------------------------------------------------------------------------------
+Ao Khoac Bomber Nam           600.000 VND            1            600.000 VND
+--------------------------------------------------------------------------------
+Tong tien: 600.000 VND
+Giam gia: 10%
+Tong tien duoc giam gia: 60.000 VND
+Tong tien sau khi giam gia: 540.000 VND
+nam tram bon muoi nghin dong
+================================================================================

@@ -21,3 +21,7 @@
 2/1/2025,498,C101,Quan Short Cau Vong,White,M,1,700000
 2/1/2025,498,C101,Quan Short Cau Vong,White,M,2,700000
 2/1/2025,711,F100,Ao Dai Mua He,Orange,S,2,100000
+2/1/2025,303,F103,Quan Jogger The Thao,Black,M,1,100000
+5/1/2025,737,M100,Ao Thun Nam,Black,S,2,200000
+6/1/2025,490,M107,Ao Khoac Bomber Nam,Black,XXL,1,600000
+6/1/2025,364,M107,Ao Khoac Bomber Nam,Black,XXL,1,600000
